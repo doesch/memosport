@@ -1,0 +1,32 @@
+@PageContainerWidth: 1240px;
+@GlobalFontColor: #444;
+@GlobalMargin: 3%;
+@GlobalVMargin: 15px;
+@GlobalFontMargin: 7px;
+@GlobalButtonHeight: 35px;
+@GlobalFontSize: 13px;
+@GlobalFontFamily: 'Open Sans', sans-serif, Arial;
+@GlobalBoxShadow: 0px 1px 2px #777;
+@GlobalBoxShadowDropDown: 1px 1px 2px #ccc;
+@GlobalBttnPadding: 5px;
+@GlobalBorderRadius: 3px;
+@GlobalBarHeight: 45px; // height of the top bar in software
+@GlobalHoverBgColor: #ccc;
+@GlobalBorderColor: #ccc;
+@GlobalButtonBgColor: #777;
+@GlobalButtonBgColorHover: #555;
+@GlobalDropDownWidth: 260px;
+
+.dropdown-menu
+{
+  position: absolute;
+  top: @GlobalBarHeight;
+  width: @GlobalDropDownWidth;
+  left: 1%;
+  margin: 0;
+  border-top:  solid 1px @GlobalBorderColor;
+  border-left: solid 1px @GlobalBorderColor;
+  border-right: solid 1px @GlobalBorderColor;
+  box-shadow: @GlobalBoxShadowDropDown;
+  background-color: white;
+}
