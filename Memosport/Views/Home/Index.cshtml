@@ -2,293 +2,331 @@
     ViewData["Title"] = "Indexcard Trainer";
 }
 
-@Html.Partial("_IctNavBar")
+<!-- navigation -->
 
-<div class="software-container">
+<div id="navigation-bar">
+    <div id="navbar-container">
+        <button id="bttn-menu" class="bttn"><span class="icon icon-menu"></span><span class="bttn-icon-text remove-630px">Menü</span></button>
 
-    <!-- training area -->
-
-    <section id="ict-content">
-
-        <!-- ko if: $root.step() == 'restart' -->
-        <div id="mvmt-no-data-container" style="text-align: center;">
-            <p><span>Herzlichen Glückwunsch. <br /> Sie haben all <strong data-bind="text: $root.dataset().length"></strong> Karteikarten durchgearbeitet.</p>
-            <button class="bttn" data-bind="click: restart"><span class="icon icon-restart"></span><span class="bttn-icon-text">Neustart</span></button>
-        </div>
-        <!-- /ko -->
-        <!-- ko if: $root.step() == 'learn' -->
-
-        <div id="ict-col-container">
-
-            <div id="ict-col-left">
-                <!-- ko if: $root.editMode() == false -->
-                <div id="ict-header">
-                    <div id="ict-progress-container" data-bind="click: function() { $root.showProgressButtonBubble(true); };">
-                        <div id="ict-progress">
-                            <span class="text" data-bind="text: ($root.i() + 1) + '&#47;' + $root.dataset().length"></span>
-                        </div>
-
-                        <!-- ko if: $root.showProgressButtonBubble() -->
-                        <div id="ict-progress-bttn-bubble-container">
-                            <div id="ict-progress-bttn-bubble">
-                                <button class="bttn" data-bind="click: MoveBackward, clickBubble: false;"><span class="icon icon-arrow-left"></span></button>
-                                <button class="bttn" data-bind="click: MoveForward, clickBubble: false;"><span class="icon icon-arrow-right"></span></button>
-                                <button class="bttn" data-bind="click: function() { $root.showProgressButtonBubble(false); }, clickBubble: false;"><span class="icon icon-cancel"></span></button>
-                            </div>
-                        </div>
-                        <!-- /ko -->
-
-                    </div>
-
-                </div>
-                <!-- /ko -->
-                <!-- ko if: $root.displayJingle() && $root.editMode() == false -->
-                <div class="jingle-container">
-                    <button class="bttn bttn-icon bttn-close" data-bind="click: toggleJingle"><span class="icon icon-cancel"></span></button>
-                    <h2>Eselsbrücke</h2>
-                    <div class="jingle-content" data-bind="text: $root.currentIndexCard().jingle"></div>
-                </div>
-                <!-- /ko -->
-                <!-- ko if: $root.displayQuestionImage() && $root.editMode() == false -->
-                <div class="question-image-container">
-                    <button class="bttn bttn-icon bttn-close" data-bind="click: toggleQuestionImage"><span class="icon icon-cancel"></span></button>
-                    <h2>Bild zur Frage:</h2>
-                    <div class="question-image-content">
-                        <!-- ko if: $root.currentIndexCard().question_image_url != null -->
-                        <img alt="Lade Bild..." data-bind="attr : {src: Global.Uploads + $root.currentIndexCard().question_image_url}" />
-                        <!-- /ko -->
-
-                    </div>
-                </div>
-                <!-- /ko -->
-                <!-- ko if: $root.displayAnswerImage() && $root.editMode() == false -->
-                <div class="answer-image-container">
-                    <button class="bttn bttn-icon bttn-close" data-bind="click: toggleAnswerImage"><span class="icon icon-cancel"></span></button>
-                    <h2>Bild zur Antwort:</h2>
-                    <!-- ko if: $root.currentIndexCard().answer_image_url != null -->
-                    <img alt="Lade Bild..." data-bind="attr : {src: Global.Uploads + $root.currentIndexCard().answer_image_url}" />
-                    <!-- /ko -->
-
-                </div>
-                <!-- /ko -->
-                <!-- ko if: $root.displaySource() && $root.editMode() == false -->
-                <div class="ict-source-container">
-                    <button class="bttn bttn-icon bttn-close" data-bind="click: toggleShowSource"><span class="icon icon-cancel"></span></button>
-                    <h2>Quelle:</h2>
-                    <span data-bind="text: $root.currentIndexCard().source"></span>
-                </div>
-                <!-- /ko -->
-
-                <div class="question-answer-container">
-                    <div class="ict-question-container" data-bind="css: {'z-index-1' : $root.showQuestion()}">
-
-                        <!-- ko if: $root.editMode() == false -->
-                        <div class="ict-text-container" title="Bearbeiten" data-bind="click: function() { $root.editForm($root.currentIndexCard());}">
-                            <span class="question" data-bind="text: $root.currentIndexCard().question"></span>
-                        </div>
-
-                        <div class="ict-media-container">
-                            <!-- ko if: $root.currentIndexCard().question_image_url !== null -->
-                            <div class="img-mini-container cursor-pointer" data-bind="click: toggleQuestionImage">
-                                <img data-bind="attr: {src: Global.Uploads + $root.currentIndexCard().question_image_url}" alt="Lade Bild..." />
-                            </div>
-                            <!-- /ko -->
-                            <!-- ko if: $root.currentIndexCard().question_audio_url !== null -->
-                            <!-- ko template: { name: 'AudioBoxTemplate', data: {AudioUrl: $root.currentIndexCard().question_audio_url }} --><!-- /ko -->
-                            <!-- /ko -->
-                        </div>
-
-                        <!-- /ko -->
-                        <!-- ko if: $root.editMode() == true -->
-                        <textarea class="ict-question-answer-text" rows="50" maxlength="500" data-bind="textInput: editIndexCard().question"></textarea>
-                        <div class="ict-edit-img-container">
-                            <!-- ko if: editIndexCard().question_image_url == null -->
-                            <div id="ict-question-image-box" class="ict-img-box" tabindex="0">
-                                <!-- ko if: $root.editIndexCard().question_image_file() != null -->
-                                <span>Bild gewählt</span>
-                                <!-- /ko -->
-                                <!-- ko if: $root.editIndexCard().question_image_file() == null -->
-                                <span>Bild <a href="#" data-bind="click: function() { document.getElementById('ict-question-img-file').click(); }">wählen</a></span>
-                                <!-- /ko -->
-                            </div>
-                            <input name="question_image" id="ict-question-img-file" type="file" data-bind="event: { change: function(){  $root.QuestionImageChanged($element); }}" />
-                            <!-- /ko -->
-                            <!-- ko if: editIndexCard().question_image_url !== null -->
-                            <div class="ict-img-box">
-                                <img id="ict-question-img" data-bind="click: toggleQuestionImage, attr: {src : Global.Uploads + editIndexCard().question_image_url }" alt="Bild ausgewählt" />
-                            </div>
-                            <!-- /ko -->
-                            <!-- ko if: editIndexCard().question_image_url !== null || $root.editIndexCard().question_image_file() !== null -->
-                            <button class="bttn ict-bttn-delete-media" title="Bild löschen" data-bind="click: DeleteQuestionImage"><span class="icon icon-delete"></span></button>
-                            <!-- /ko -->
-
-                            <div class="clearfix"></div>
-                        </div>
-
-                        <div class="ict-edit-audio-container">
-                            <!-- ko if: editIndexCard().question_audio_url == null -->
-                            <div id="ict-question-audio-box" class="ict-audio-box" tabindex="1">
-                                <!-- ko if: $root.editIndexCard().question_audio_file() != null -->
-                                <span>Audio gewählt</span>
-                                <!-- /ko -->
-                                <!-- ko if: $root.editIndexCard().question_audio_file() == null -->
-                                <span>mp3 <a href="#" data-bind="click: function() { document.getElementById('ict-question-audio-file').click(); }">wählen</a></span>
-                                <!-- /ko -->
-                            </div>
-                            <input name="question_audio" id="ict-question-audio-file" type="file" data-bind="event: { change: function(){  $root.QuestionAudioChanged($element); }}" />
-                            <!-- /ko -->
-                            <!-- ko if: editIndexCard().question_audio_url !== null -->
-                            <!-- ko template: { name: 'AudioBoxTemplate', data: {AudioUrl: editIndexCard().question_audio_url }} --><!-- /ko -->
-                            <!-- /ko -->
-                            <!-- ko if: editIndexCard().question_audio_url !== null || $root.editIndexCard().question_audio_file() !== null -->
-                            <button class="bttn ict-bttn-delete-media" title="Audio löschen" data-bind="click: DeleteQuestionAudio"><span class="icon icon-delete"></span></button>
-                            <!-- /ko -->
-
-                            <div class="clearfix"></div>
-                        </div>
-                        <div class="clearfix"></div>
-                        <!-- /ko -->
-                    </div>
-
-                    <div class="ict-result-container" data-bind="css: {'z-index-1' : !$root.showQuestion()}">
-
-                        <!-- ko if: $root.editMode() == false -->
-                        <div class="ict-text-container" title="Bearbeiten" data-bind="click: function() { $root.editForm($root.currentIndexCard());}">
-                            <span class="result" data-bind="text: $root.currentIndexCard().answer"></span>
-                        </div>
-
-                        <div class="ict-media-container">
-                            <!-- ko if: $root.currentIndexCard().answer_image_url !== null -->
-                            <div class="img-mini-container cursor-pointer" data-bind="click: toggleAnswerImage">
-                                <img width="100" data-bind="attr: {src: Global.Uploads + $root.currentIndexCard().answer_image_url}" />
-                            </div>
-                            <!-- /ko -->
-                            <!-- ko if: $root.currentIndexCard().answer_audio_url !== null -->
-                            <!-- ko template: { name: 'AudioBoxTemplate', data: {AudioUrl: $root.currentIndexCard().answer_audio_url }} --><!-- /ko -->
-                            <!-- /ko -->
-                        </div>
-                        <!-- /ko -->
-                        <!-- ko if: $root.editMode() == true -->
-                        <textarea class="ict-question-answer-text" rows="50" maxlength="500" data-bind="textInput: editIndexCard().answer"></textarea>
-                        <div class="ict-edit-img-container">
-                            <!-- ko if: editIndexCard().answer_image_url == null -->
-                            <div id="ict-answer-image-box" class="ict-img-box" tabindex="2">
-                                <!-- ko if: $root.editIndexCard().answer_image_file() != null -->
-                                <span>Bild gewählt</span>
-                                <!-- /ko -->
-                                <!-- ko if: $root.editIndexCard().answer_image_file() == null -->
-                                <span>Bild <a href="#" data-bind="click: function() { document.getElementById('ict-answer-img-file').click(); }">wählen</a></span>
-                                <!-- /ko -->
-                            </div>
-                            <input name="answer_image" id="ict-answer-img-file" type="file" data-bind="event: { change: function(){  $root.AnswerImageChanged($element); }}" />
-                            <!-- /ko -->
-                            <!-- ko if: editIndexCard().answer_image_url !== null -->
-                            <div class="ict-img-box" style="float: left;">
-                                <img id="ict-answer-img" data-bind="click: toggleAnswerImage, attr: {src : Global.Uploads + editIndexCard().answer_image_url }" alt="Bild ausgewählt" />
-                            </div>
-                            <!-- /ko -->
-                            <!-- ko if: editIndexCard().answer_image_url !== null || $root.editIndexCard().answer_image_file() !== null -->
-                            <button class="bttn ict-bttn-delete-media" title="Bild löschen" data-bind="click: DeleteAnswerImage"><span class="icon icon-delete"></span></button>
-                            <!-- /ko -->
-
-                            <div class="clearfix"></div>
-                        </div>
-
-                        <div class="ict-edit-audio-container">
-                            <!-- ko if: editIndexCard().answer_audio_url == null -->
-                            <div id="ict-answer-audio-box" class="ict-audio-box" tabindex="1">
-                                <!-- ko if: $root.editIndexCard().answer_audio_file() != null -->
-                                <span>Audio gewählt</span>
-                                <!-- /ko -->
-                                <!-- ko if: $root.editIndexCard().answer_audio_file() == null -->
-                                <span>mp3 <a href="#" data-bind="click: function() { document.getElementById('ict-answer-audio-file').click(); }">wählen</a></span>
-                                <!-- /ko -->
-                            </div>
-                            <input name="answer_audio" id="ict-answer-audio-file" type="file" data-bind="event: { change: function(){  $root.AnswerAudioChanged($element); }}" />
-                            <!-- /ko -->
-                            <!-- ko if: editIndexCard().answer_audio_url !== null -->
-                            <!-- ko template: { name: 'AudioBoxTemplate', data: {AudioUrl: editIndexCard().answer_audio_url }} --><!-- /ko -->
-                            <!-- /ko -->
-                            <!-- ko if: editIndexCard().answer_audio_url !== null || $root.editIndexCard().answer_audio_file() !== null -->
-                            <button class="bttn ict-bttn-delete-media" title="Audio löschen" data-bind="click: DeleteAnswerAudio"><span class="icon icon-delete"></span></button>
-                            <!-- /ko -->
-
-                            <div class="clearfix"></div>
-                        </div>
-                        <div class="clearfix"></div>
-                        <!-- /ko -->
-                    </div>
-                </div>
-            </div>
-
-            <div id="ict-col-right">
-
-                <div id="ict-label-container">
-                    <button id="ict-label-question" class="ict-label cursor-pointer" data-bind="click: function() { $root.showQuestion(true);}, css: {'ict-label-activated' : $root.showQuestion()}">F<br />R<br />A<br />G<br />E</button>
-                    <button id="ict-label-answer" class="ict-label cursor-pointer" data-bind="click: function() { $root.showQuestion(false);}, css: {'ict-label-activated' : !$root.showQuestion()}">
-                        A<br />N<br />T<br />W<br />O<br />R<br />T
-                    </button>
-
-                </div>
-            </div>
-        </div>
+        @Html.Partial("_MainMenu")
+        @Html.Partial("_IctNavBar")
+        @Html.Partial("_IctOptions")
+        @Html.Partial("_IctTrainerButton")
         <div class="clearfix"></div>
 
-        <!-- ko if: $root.editMode() == false -->
-        <nav id="main-bttn-outer-container">
-            <div id="main-bttn-inner-container">
-
-                <button id="ict-bttn-edit-index-card" class="bttn bttn-icon" data-bind="click: function() { $root.editForm($root.currentIndexCard());}"><span class="icon icon-edit"></span></button>
-                <button id="ict-bttn-link" class="bttn bttn-icon" data-bind="click: function() { $root.toggleShowSource();}"><span class="icon icon-link"></span></button>
-                <button class="bttn bttn-icon" data-bind="click: toggleJingle"><span class="icon icon-bridge"></span></button>
-                <button id="ict-bttn-unknown" class="bttn ict-main-bttn" data-bind="click: function() { $root.next(0); }, disable: showQuestion" title="nicht gewusst"><span class="icon icon-thumb-down"></span></button>
-                <button id="ict-bttn-known" class="bttn ict-main-bttn" data-bind="click: function() { $root.next(1); }, disable: showQuestion" title="gewusst"><span class="icon icon-thumb-up"></span></button>
-
-                <div class="clearfix"></div>
-            </div>
-        </nav>
-        <!-- /ko -->
-        <!-- /ko -->
-        <!-- ko if: $root.editMode() == true -->
-
-        <fieldset id="form-misc">
-            <legend>Quelle</legend>
-            <input type="text" data-bind="textInput: editIndexCard().source">
-        </fieldset>
-
-        <fieldset id="form-misc">
-            <legend>Eselsbrücke</legend>
-            <input type="text" data-bind="textInput: editIndexCard().jingle">
-        </fieldset>
-
-        <fieldset id="ict-fieldset-stats" class="text-align-center">
-            <legend>Statistik</legend>
-            <span class="icon" data-bind="css: {'icon-thumb-up-green': editIndexCard().known > 2, 'icon-thumb-down-red': editIndexCard().known < 3}"></span>
-            <span data-bind="text: editIndexCard().known"></span>
-        </fieldset>
-
-        <hr />
-
-        <div id="ict-edit-mode-bttn-footer">
-            <!-- ko if: $root.editIndexCardIsLoading() == false -->
-            <div style="float: right;">
-                <button class="bttn bttn-main" data-bind="click: function() { $root.editSave(); }"><span class="icon icon-save"></span><span class="bttn-icon-text">Speichern</span></button>
-                <button class="bttn" data-bind="click: function() { $root.editCancel(); }"><span class="icon icon-cancel"></span><span class="bttn-icon-text">Abbrechen</span></button>
-            </div>
-            <div style="float: left;">
-                <button class="bttn" data-bind="click: function() { $root.editDelete(); }"><span class="icon icon-delete"></span><span class="bttn-icon-text">Löschen</span></button>
-            </div>
-
-            <!-- /ko -->
-            <!-- ko if: $root.editIndexCardIsLoading() == true -->
-            <div style="float: right;"><span>Lade&nbsp;</span><img src="/img/hour_glass.gif" alt="..." /></div>
-            <!-- /ko -->
-
-            <div class="clearfix"></div>
-        </div>
-        <!-- /ko -->
-    </section>
+    </div>
 </div>
+
+<!-- /navigation -->
+
+<div id="page-container">
+    <div id="content">
+
+        @*show flash messages here*@
+
+        <div class="clearfix"></div>
+
+        <div class="software-container">
+
+            <!-- training area -->
+
+            <section id="ict-content">
+
+                <!-- ko if: $root.step() == 'restart' -->
+                <div id="mvmt-no-data-container" style="text-align: center;">
+                    <p>Herzlichen Glückwunsch. <br /> Sie haben all <strong data-bind="text: $root.dataset().length"></strong> Karteikarten durchgearbeitet.</p>
+                    <button class="bttn" data-bind="click: restart"><span class="icon icon-restart"></span><span class="bttn-icon-text">Neustart</span></button>
+                </div>
+                <!-- /ko -->
+                <!-- ko if: $root.step() == 'learn' -->
+
+                <div id="ict-col-container">
+
+                    <div id="ict-col-left">
+                        <!-- ko if: $root.editMode() == false -->
+                        <div id="ict-header">
+                            <div id="ict-progress-container" data-bind="click: function() { $root.showProgressButtonBubble(true); };">
+                                <div id="ict-progress">
+                                    <span class="text" data-bind="text: ($root.i() + 1) + '&#47;' + $root.dataset().length"></span>
+                                </div>
+
+                                <!-- ko if: $root.showProgressButtonBubble() -->
+                                <div id="ict-progress-bttn-bubble-container">
+                                    <div id="ict-progress-bttn-bubble">
+                                        <button class="bttn" data-bind="click: MoveBackward, clickBubble: false;"><span class="icon icon-arrow-left"></span></button>
+                                        <button class="bttn" data-bind="click: MoveForward, clickBubble: false;"><span class="icon icon-arrow-right"></span></button>
+                                        <button class="bttn" data-bind="click: function() { $root.showProgressButtonBubble(false); }, clickBubble: false;"><span class="icon icon-cancel"></span></button>
+                                    </div>
+                                </div>
+                                <!-- /ko -->
+
+                            </div>
+
+                        </div>
+                        <!-- /ko -->
+                        <!-- ko if: $root.displayJingle() && $root.editMode() == false -->
+                        <div class="jingle-container">
+                            <button class="bttn bttn-icon bttn-close" data-bind="click: toggleJingle"><span class="icon icon-cancel"></span></button>
+                            <h2>Eselsbrücke</h2>
+                            <div class="jingle-content" data-bind="text: $root.currentIndexCard().jingle"></div>
+                        </div>
+                        <!-- /ko -->
+                        <!-- ko if: $root.displayQuestionImage() && $root.editMode() == false -->
+                        <div class="question-image-container">
+                            <button class="bttn bttn-icon bttn-close" data-bind="click: toggleQuestionImage"><span class="icon icon-cancel"></span></button>
+                            <h2>Bild zur Frage:</h2>
+                            <div class="question-image-content">
+                                <!-- ko if: $root.currentIndexCard().question_image_url != null -->
+                                <img alt="Lade Bild..." data-bind="attr : {src: Global.Uploads + $root.currentIndexCard().question_image_url}" />
+                                <!-- /ko -->
+
+                            </div>
+                        </div>
+                        <!-- /ko -->
+                        <!-- ko if: $root.displayAnswerImage() && $root.editMode() == false -->
+                        <div class="answer-image-container">
+                            <button class="bttn bttn-icon bttn-close" data-bind="click: toggleAnswerImage"><span class="icon icon-cancel"></span></button>
+                            <h2>Bild zur Antwort:</h2>
+                            <!-- ko if: $root.currentIndexCard().answer_image_url != null -->
+                            <img alt="Lade Bild..." data-bind="attr : {src: Global.Uploads + $root.currentIndexCard().answer_image_url}" />
+                            <!-- /ko -->
+
+                        </div>
+                        <!-- /ko -->
+                        <!-- ko if: $root.displaySource() && $root.editMode() == false -->
+                        <div class="ict-source-container">
+                            <button class="bttn bttn-icon bttn-close" data-bind="click: toggleShowSource"><span class="icon icon-cancel"></span></button>
+                            <h2>Quelle:</h2>
+                            <span data-bind="text: $root.currentIndexCard().source"></span>
+                        </div>
+                        <!-- /ko -->
+
+                        <div class="question-answer-container">
+                            <div class="ict-question-container" data-bind="css: {'z-index-1' : $root.showQuestion()}">
+
+                                <!-- ko if: $root.editMode() == false -->
+                                <div class="ict-text-container" title="Bearbeiten" data-bind="click: function() { $root.editForm($root.currentIndexCard());}">
+                                    <span class="question" data-bind="text: $root.currentIndexCard().question"></span>
+                                </div>
+
+                                <div class="ict-media-container">
+                                    <!-- ko if: $root.currentIndexCard().question_image_url !== null -->
+                                    <div class="img-mini-container cursor-pointer" data-bind="click: toggleQuestionImage">
+                                        <img data-bind="attr: {src: Global.Uploads + $root.currentIndexCard().question_image_url}" alt="Lade Bild..." />
+                                    </div>
+                                    <!-- /ko -->
+                                    <!-- ko if: $root.currentIndexCard().question_audio_url !== null -->
+                                    <!-- ko template: { name: 'AudioBoxTemplate', data: {AudioUrl: $root.currentIndexCard().question_audio_url }} --><!-- /ko -->
+                                    <!-- /ko -->
+                                </div>
+
+                                <!-- /ko -->
+                                <!-- ko if: $root.editMode() == true -->
+                                <textarea class="ict-question-answer-text" rows="50" maxlength="500" data-bind="textInput: editIndexCard().question"></textarea>
+                                <div class="ict-edit-img-container">
+                                    <!-- ko if: editIndexCard().question_image_url == null -->
+                                    <div id="ict-question-image-box" class="ict-img-box" tabindex="0">
+                                        <!-- ko if: $root.editIndexCard().question_image_file() != null -->
+                                        <span>Bild gewählt</span>
+                                        <!-- /ko -->
+                                        <!-- ko if: $root.editIndexCard().question_image_file() == null -->
+                                        <span>Bild <a href="#" data-bind="click: function() { document.getElementById('ict-question-img-file').click(); }">wählen</a></span>
+                                        <!-- /ko -->
+                                    </div>
+                                    <input name="question_image" id="ict-question-img-file" type="file" data-bind="event: { change: function(){  $root.QuestionImageChanged($element); }}" />
+                                    <!-- /ko -->
+                                    <!-- ko if: editIndexCard().question_image_url !== null -->
+                                    <div class="ict-img-box">
+                                        <img id="ict-question-img" data-bind="click: toggleQuestionImage, attr: {src : Global.Uploads + editIndexCard().question_image_url }" alt="Bild ausgewählt" />
+                                    </div>
+                                    <!-- /ko -->
+                                    <!-- ko if: editIndexCard().question_image_url !== null || $root.editIndexCard().question_image_file() !== null -->
+                                    <button class="bttn ict-bttn-delete-media" title="Bild löschen" data-bind="click: DeleteQuestionImage"><span class="icon icon-delete"></span></button>
+                                    <!-- /ko -->
+
+                                    <div class="clearfix"></div>
+                                </div>
+
+                                <div class="ict-edit-audio-container">
+                                    <!-- ko if: editIndexCard().question_audio_url == null -->
+                                    <div id="ict-question-audio-box" class="ict-audio-box" tabindex="1">
+                                        <!-- ko if: $root.editIndexCard().question_audio_file() != null -->
+                                        <span>Audio gewählt</span>
+                                        <!-- /ko -->
+                                        <!-- ko if: $root.editIndexCard().question_audio_file() == null -->
+                                        <span>mp3 <a href="#" data-bind="click: function() { document.getElementById('ict-question-audio-file').click(); }">wählen</a></span>
+                                        <!-- /ko -->
+                                    </div>
+                                    <input name="question_audio" id="ict-question-audio-file" type="file" data-bind="event: { change: function(){  $root.QuestionAudioChanged($element); }}" />
+                                    <!-- /ko -->
+                                    <!-- ko if: editIndexCard().question_audio_url !== null -->
+                                    <!-- ko template: { name: 'AudioBoxTemplate', data: {AudioUrl: editIndexCard().question_audio_url }} --><!-- /ko -->
+                                    <!-- /ko -->
+                                    <!-- ko if: editIndexCard().question_audio_url !== null || $root.editIndexCard().question_audio_file() !== null -->
+                                    <button class="bttn ict-bttn-delete-media" title="Audio löschen" data-bind="click: DeleteQuestionAudio"><span class="icon icon-delete"></span></button>
+                                    <!-- /ko -->
+
+                                    <div class="clearfix"></div>
+                                </div>
+                                <div class="clearfix"></div>
+                                <!-- /ko -->
+                            </div>
+
+                            <div class="ict-result-container" data-bind="css: {'z-index-1' : !$root.showQuestion()}">
+
+                                <!-- ko if: $root.editMode() == false -->
+                                <div class="ict-text-container" title="Bearbeiten" data-bind="click: function() { $root.editForm($root.currentIndexCard());}">
+                                    <span class="result" data-bind="text: $root.currentIndexCard().answer"></span>
+                                </div>
+
+                                <div class="ict-media-container">
+                                    <!-- ko if: $root.currentIndexCard().answer_image_url !== null -->
+                                    <div class="img-mini-container cursor-pointer" data-bind="click: toggleAnswerImage">
+                                        <img width="100" data-bind="attr: {src: Global.Uploads + $root.currentIndexCard().answer_image_url}" />
+                                    </div>
+                                    <!-- /ko -->
+                                    <!-- ko if: $root.currentIndexCard().answer_audio_url !== null -->
+                                    <!-- ko template: { name: 'AudioBoxTemplate', data: {AudioUrl: $root.currentIndexCard().answer_audio_url }} --><!-- /ko -->
+                                    <!-- /ko -->
+                                </div>
+                                <!-- /ko -->
+                                <!-- ko if: $root.editMode() == true -->
+                                <textarea class="ict-question-answer-text" rows="50" maxlength="500" data-bind="textInput: editIndexCard().answer"></textarea>
+                                <div class="ict-edit-img-container">
+                                    <!-- ko if: editIndexCard().answer_image_url == null -->
+                                    <div id="ict-answer-image-box" class="ict-img-box" tabindex="2">
+                                        <!-- ko if: $root.editIndexCard().answer_image_file() != null -->
+                                        <span>Bild gewählt</span>
+                                        <!-- /ko -->
+                                        <!-- ko if: $root.editIndexCard().answer_image_file() == null -->
+                                        <span>Bild <a href="#" data-bind="click: function() { document.getElementById('ict-answer-img-file').click(); }">wählen</a></span>
+                                        <!-- /ko -->
+                                    </div>
+                                    <input name="answer_image" id="ict-answer-img-file" type="file" data-bind="event: { change: function(){  $root.AnswerImageChanged($element); }}" />
+                                    <!-- /ko -->
+                                    <!-- ko if: editIndexCard().answer_image_url !== null -->
+                                    <div class="ict-img-box" style="float: left;">
+                                        <img id="ict-answer-img" data-bind="click: toggleAnswerImage, attr: {src : Global.Uploads + editIndexCard().answer_image_url }" alt="Bild ausgewählt" />
+                                    </div>
+                                    <!-- /ko -->
+                                    <!-- ko if: editIndexCard().answer_image_url !== null || $root.editIndexCard().answer_image_file() !== null -->
+                                    <button class="bttn ict-bttn-delete-media" title="Bild löschen" data-bind="click: DeleteAnswerImage"><span class="icon icon-delete"></span></button>
+                                    <!-- /ko -->
+
+                                    <div class="clearfix"></div>
+                                </div>
+
+                                <div class="ict-edit-audio-container">
+                                    <!-- ko if: editIndexCard().answer_audio_url == null -->
+                                    <div id="ict-answer-audio-box" class="ict-audio-box" tabindex="1">
+                                        <!-- ko if: $root.editIndexCard().answer_audio_file() != null -->
+                                        <span>Audio gewählt</span>
+                                        <!-- /ko -->
+                                        <!-- ko if: $root.editIndexCard().answer_audio_file() == null -->
+                                        <span>mp3 <a href="#" data-bind="click: function() { document.getElementById('ict-answer-audio-file').click(); }">wählen</a></span>
+                                        <!-- /ko -->
+                                    </div>
+                                    <input name="answer_audio" id="ict-answer-audio-file" type="file" data-bind="event: { change: function(){  $root.AnswerAudioChanged($element); }}" />
+                                    <!-- /ko -->
+                                    <!-- ko if: editIndexCard().answer_audio_url !== null -->
+                                    <!-- ko template: { name: 'AudioBoxTemplate', data: {AudioUrl: editIndexCard().answer_audio_url }} --><!-- /ko -->
+                                    <!-- /ko -->
+                                    <!-- ko if: editIndexCard().answer_audio_url !== null || $root.editIndexCard().answer_audio_file() !== null -->
+                                    <button class="bttn ict-bttn-delete-media" title="Audio löschen" data-bind="click: DeleteAnswerAudio"><span class="icon icon-delete"></span></button>
+                                    <!-- /ko -->
+
+                                    <div class="clearfix"></div>
+                                </div>
+                                <div class="clearfix"></div>
+                                <!-- /ko -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="ict-col-right">
+
+                        <div id="ict-label-container">
+                            <button id="ict-label-question" class="ict-label cursor-pointer" data-bind="click: function() { $root.showQuestion(true);}, css: {'ict-label-activated' : $root.showQuestion()}">F<br />R<br />A<br />G<br />E</button>
+                            <button id="ict-label-answer" class="ict-label cursor-pointer" data-bind="click: function() { $root.showQuestion(false);}, css: {'ict-label-activated' : !$root.showQuestion()}">
+                                A<br />N<br />T<br />W<br />O<br />R<br />T
+                            </button>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+
+                <!-- ko if: $root.editMode() == false -->
+                <nav id="main-bttn-outer-container">
+                    <div id="main-bttn-inner-container">
+
+                        <button id="ict-bttn-edit-index-card" class="bttn bttn-icon" data-bind="click: function() { $root.editForm($root.currentIndexCard());}"><span class="icon icon-edit"></span></button>
+                        <button id="ict-bttn-link" class="bttn bttn-icon" data-bind="click: function() { $root.toggleShowSource();}"><span class="icon icon-link"></span></button>
+                        <button class="bttn bttn-icon" data-bind="click: toggleJingle"><span class="icon icon-bridge"></span></button>
+                        <button id="ict-bttn-unknown" class="bttn ict-main-bttn" data-bind="click: function() { $root.next(0); }, disable: showQuestion" title="nicht gewusst"><span class="icon icon-thumb-down"></span></button>
+                        <button id="ict-bttn-known" class="bttn ict-main-bttn" data-bind="click: function() { $root.next(1); }, disable: showQuestion" title="gewusst"><span class="icon icon-thumb-up"></span></button>
+
+                        <div class="clearfix"></div>
+                    </div>
+                </nav>
+                <!-- /ko -->
+                <!-- /ko -->
+                <!-- ko if: $root.editMode() == true -->
+
+                <fieldset id="form-misc">
+                    <legend>Quelle</legend>
+                    <input type="text" data-bind="textInput: editIndexCard().source">
+                </fieldset>
+
+                <fieldset id="form-misc">
+                    <legend>Eselsbrücke</legend>
+                    <input type="text" data-bind="textInput: editIndexCard().jingle">
+                </fieldset>
+
+                <fieldset id="ict-fieldset-stats" class="text-align-center">
+                    <legend>Statistik</legend>
+                    <span class="icon" data-bind="css: {'icon-thumb-up-green': editIndexCard().known > 2, 'icon-thumb-down-red': editIndexCard().known < 3}"></span>
+                    <span data-bind="text: editIndexCard().known"></span>
+                </fieldset>
+
+                <hr />
+
+                <div id="ict-edit-mode-bttn-footer">
+                    <!-- ko if: $root.editIndexCardIsLoading() == false -->
+                    <div style="float: right;">
+                        <button class="bttn bttn-main" data-bind="click: function() { $root.editSave(); }"><span class="icon icon-save"></span><span class="bttn-icon-text">Speichern</span></button>
+                        <button class="bttn" data-bind="click: function() { $root.editCancel(); }"><span class="icon icon-cancel"></span><span class="bttn-icon-text">Abbrechen</span></button>
+                    </div>
+                    <div style="float: left;">
+                        <button class="bttn" data-bind="click: function() { $root.editDelete(); }"><span class="icon icon-delete"></span><span class="bttn-icon-text">Löschen</span></button>
+                    </div>
+
+                    <!-- /ko -->
+                    <!-- ko if: $root.editIndexCardIsLoading() == true -->
+                    <div style="float: right;"><span>Lade&nbsp;</span><img src="/img/hour_glass.gif" alt="..." /></div>
+                    <!-- /ko -->
+
+                    <div class="clearfix"></div>
+                </div>
+                <!-- /ko -->
+            </section>
+        </div>
+
+    </div>
+</div>
+<footer id="footer">
+    <nav id="main-menu">
+        <a id="bttn-start" href="#">Seitenanfang</a>
+        <a id="bttn-home" href="/">Home</a>
+        <a id="bttn-support" href="/contact">Kontakt</a>
+        <a id="bttn-impressum" href="/imprint">Impressum</a>
+        <div class="clearfix"></div>
+    </nav>
+    <p id="link-to-homepage">
+        <a href="http://www.simon-doetsch.de">© http://www.simon-dötsch.de</a>
+    </p>
+</footer>
+
 
 <script id="AudioBoxTemplate" type="text/html">
     <div class="ict-audio-box cursor-pointer" data-bind="click: function(){ $root.PlayAudioFile($data.AudioUrl);return false;}" title="Abspielen">

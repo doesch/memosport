@@ -1,0 +1,30 @@
+﻿<button id="software-bttn-config" class="bttn" data-bind="click: toggleMenu"><span class="icon icon-options"></span><span class="bttn-icon-text remove-630px">Einstellungen</span></button>
+<button id="software-bttn-start" class="bttn" data-bind="click: start"><span class="icon icon-restart"></span><span class="bttn-icon-text remove-630px">Start</span></button>
+
+<div id="ict-form-container" class="list-table software" style="display: none;">
+    <button class="bttn bttn-icon bttn-close" data-bind="click: toggleMenu"><span class="icon icon-cancel"></span></button>
+
+    <?php echo $this->Form->create('IndexCardTrainer', array('url' => '/IndexCardTrainer/')); ?>
+
+    <ul>
+        <li>Reihenfolge:</li>
+        <li>
+            <input type="hidden" value="" id="IndexCardTrainerOrder_" name="data[IndexCardTrainer][order]">
+            <input type="radio" value="random" data-bind="checked: order" id="IndexCardTrainerOrderRandom" name="data[IndexCardTrainer][order]">
+            <label for="IndexCardTrainerOrderRandom" data-bind="css : {radioChecked : $root.order() === 'random'}">Zufall</label>
+            <br>
+            <input type="radio" value="descending" data-bind="checked: order" id="IndexCardTrainerOrderDescending" name="data[IndexCardTrainer][order]">
+            <label for="IndexCardTrainerOrderDescending" data-bind="css : {radioChecked : $root.order() === 'descending'}">Neuste</label>
+            <br>
+            <input type="radio" value="ascending" data-bind="checked: order" id="IndexCardTrainerOrderAscending" name="data[IndexCardTrainer][order]">
+            <label for="IndexCardTrainerOrderAscending" data-bind="css : {radioChecked : $root.order() === 'ascending'}">Älteste</label>
+        </li>
+    </ul>
+
+    <ul>
+        <li>Zeige auch bereits gelernte Karteikarten (3 grüne Daumen) an:</li>
+        <li><?php echo $this->Form->input('known', array('type' => 'checkbox', 'data-bind' => 'checked: known', 'label' => array('text' => '', 'data-bind' => 'css : {checkboxChecked : known}'))); ?></li>
+    </ul>
+
+    <?php echo $this->Form->end(); ?>
+</div>
