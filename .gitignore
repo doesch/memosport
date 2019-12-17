@@ -2,3 +2,4 @@ node_modules/
 Memosport/obj
 Memosport/bin
 .vs
+Memosport/package-lock.json
