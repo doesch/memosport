@@ -1,0 +1,21 @@
+{
+
+  "compileOnSave": true,
+
+  "compilerOptions": {
+
+    "module": "amd",
+
+    "removeComments": true,
+
+    "sourceMap": true
+
+  },
+
+  "include": [
+
+    "./**/*"
+
+  ]
+
+}
