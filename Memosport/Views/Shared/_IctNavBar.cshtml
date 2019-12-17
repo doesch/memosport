@@ -1,0 +1,70 @@
+﻿<button data-bind="click: function(){ $root.searchBttnClick();};" class="bttn"><span class="icon icon-search"></span><span class="bttn-icon-text remove-630px">Suche</span></button>
+
+<button id="ict-boxes-dropdown-bttn" class="bttn" data-bind="click: boxesToggleShowDropdown">
+    <span class="icon icon-arrow-down" style="float: right; margin-top: 8px;"></span>
+    <span data-bind="text: $root.box().name"></span>
+    <div class="clearfix"></div>
+</button>
+<button class="bttn" data-bind="click: function(){$root.NewIndexCard();}"><span class="icon icon-add"></span><span class="bttn-icon-text remove-630px">Neu</span></button>
+
+<!-- ko if: boxesShowDropdown -->
+<div id="ict-boxes-dropdown-list-container">
+    <div id="ict-boxes-dropdown-listitem-new-box" class="ict-boxes-dropdown-listitem">
+        <a class="bttn" href="/IndexCardBox/add"><span class="icon icon-add"></span>&nbsp;Neuer Karteikasten</a>
+    </div>
+    <div id="ict-boxes-dropdown-scroll-container">
+        <!-- ko foreach: boxes -->
+        <div class="ict-boxes-dropdown-listitem">
+            <div class="ict-boxes-dropdown-listitem-col-2"><a class="bttn" href="" title="edit" data-bind="attr: {href: '/IndexCardBox/edit/' + $data.id}"><span class="icon icon-edit"></span></a></div>
+            <div class="ict-boxes-dropdown-listitem-col-1" data-bind="click: $root.BoxSelected"><span data-bind="text: $data.name"></span></div>
+        </div>
+        <!-- /ko -->
+    </div>
+
+</div>
+<!-- /ko -->
+<!-- ko if: $root.displaySearchWindow() -->
+<div id="ict-search-window">
+
+    <button class="bttn bttn-icon bttn-close" data-bind="click: function(){ $root.toggleSearchWindow();};"><span class="icon icon-cancel"></span></button>
+    <form style="text-align: center; margin: 1%;">
+        <input id="ict-search-txt" type="text" />
+        <button id="ict-bttn-search-idc" data-bind="click: function(){ $root.searchIndexCard();};" class="bttn"><span class="icon icon-search"></span><span class="bttn-icon-text remove-630px">Suche</span></button>
+    </form>
+
+    <!-- ko if: $root.searchShowHourGlass() -->
+    <div style="text-align: center;">
+        <img src="/img/hour_glass.gif" alt="Loading..." style="text-align: center;" />
+    </div>
+    <!-- /ko -->
+    <!-- ko if: $root.searchResult().length > 0 -->
+    <table id="ict-search-result-table">
+        <thead>
+            <tr>
+                <th class="th col-1">Frage</th>
+                <th class="th col-2">Karteikasten</th>
+                <th class="th col-3">Gewusst</th>
+            </tr>
+        </thead>
+        <tbody class="tbody" data-bind="foreach: searchResult">
+            <tr class="tr" data-bind="click: function() { $root.searchEditIndexCardClick($data.IndexCard);}">
+                <td class="td col-1"><span data-bind="text: $data.IndexCard.question"></span></td>
+                <td class="td col-2"><span data-bind="text: $data.IndexCardBox.name"></span></td>
+                <td class="td col-3">
+                    <!-- ko if: $data.IndexCard.known < 3 -->
+                    <span class="icon icon-thumb-down-red"></span>
+                    <!-- /ko -->
+                    <!-- ko if: $data.IndexCard.known >= 3 -->
+                    <span class="icon icon-thumb-up-green"></span>
+                    <!-- /ko -->
+                    <span data-bind="text: $data.IndexCard.known"></span>
+
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- /ko -->
+
+</div>
+<!-- /ko -->

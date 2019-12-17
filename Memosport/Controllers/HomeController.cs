@@ -10,6 +10,9 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace Memosport.Controllers
 {
+    /// was indexcardtrainer controller in php-app
+    /// <summary> A controller for handling homes. </summary>
+    /// <remarks> Doetsch, 17.12.19. </remarks>
     [Authorize]
     public class HomeController : Controller
     {
@@ -21,11 +24,6 @@ namespace Memosport.Controllers
         }
 
         public IActionResult Index()
-        {
-            return View();
-        }
-
-        public IActionResult Privacy()
         {
             return View();
         }

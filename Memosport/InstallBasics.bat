@@ -1,7 +1,7 @@
 ::create Gulpfile.js
 call npm init
 ::install libraries for taskrunners
-call npm install --save-dev gulp --save-dev gulp-less --save-dev gulp-clean-css --save-dev gulp-concat
+call npm install gulp --save-dev gulp-less --save-dev gulp-clean-css --save-dev gulp-concat --save-dev
 ::link to local gulp in project
 call npm link gulp
 ::install standard js-libraries
