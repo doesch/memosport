@@ -479,7 +479,7 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox"], func
                 delete lIndexCard.id;
 
                 // when id is null then it is a new index card. Assign selected box id
-                lIndexCard.index_card_box_id = self.box().id;
+                lIndexCard.indexCardBoxId = self.box().id;
             }
 
             // create post payload for form
@@ -524,7 +524,7 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox"], func
                     }
 
                     // when it is a new index card and the same box, then push it into the stack to the current position
-                    if (i === len && self.box().id === lXhrIndexCard.index_card_box_id) {
+                    if (i === len && self.box().id === lXhrIndexCard.indexCardBoxId) {
                         // it´s new
                         self.dataset().splice(self.i(), 0, lXhrIndexCard);
                     }
@@ -628,14 +628,14 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox"], func
          */
         self.QuestionImageChanged = function (pHtmlElement) {
 
-            self.editIndexCard().question_image_file(pHtmlElement.files[0]);
+            self.editIndexCard().questionImageFile(pHtmlElement.files[0]);
             // re-render
             self.editIndexCard(self.editIndexCard());
         };
 
         self.AnswerImageChanged = function (pHtmlElement) {
 
-            self.editIndexCard().answer_image_file(pHtmlElement.files[0]);
+            self.editIndexCard().answerImageFile(pHtmlElement.files[0]);
             // re-render
             self.editIndexCard(self.editIndexCard());
         };
@@ -645,14 +645,14 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox"], func
          */
         self.QuestionAudioChanged = function (pHtmlElement) {
 
-            self.editIndexCard().question_audio_file(pHtmlElement.files[0]);
+            self.editIndexCard().questionAudioFile(pHtmlElement.files[0]);
             // re-render
             self.editIndexCard(self.editIndexCard());
         };
 
         self.AnswerAudioChanged = function (pHtmlElement) {
 
-            self.editIndexCard().answer_audio_file(pHtmlElement.files[0]);
+            self.editIndexCard().answerAudioFile(pHtmlElement.files[0]);
             // re-render
             self.editIndexCard(self.editIndexCard());
         };
@@ -664,9 +664,9 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox"], func
         self.DeleteQuestionImage = function () {
 
             var lIndexCard = self.editIndexCard();
-            lIndexCard.question_image_url = null;
-            lIndexCard.question_image_file(null);
-            lIndexCard.delete_question_image = true; // set marker for server
+            lIndexCard.questionImageUrl = null;
+            lIndexCard.questionImageFile(null);
+            lIndexCard.deleteQuestionImage = true; // set marker for server
             self.editIndexCard(lIndexCard);
         };
 
@@ -676,9 +676,9 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox"], func
         self.DeleteAnswerImage = function () {
 
             var lIndexCard = self.editIndexCard();
-            lIndexCard.answer_image_url = null;
-            lIndexCard.answer_image_file(null);
-            lIndexCard.delete_answer_image = true; // set marker for server
+            lIndexCard.answerImageUrl = null;
+            lIndexCard.answerImageFile(null);
+            lIndexCard.deleteAnswerImage = true; // set marker for server
             self.editIndexCard(lIndexCard);
         };
 
@@ -688,9 +688,9 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox"], func
         self.DeleteQuestionAudio = function () {
 
             var lIndexCard = self.editIndexCard();
-            lIndexCard.question_audio_url = null;
-            lIndexCard.question_audio_file(null);
-            lIndexCard.delete_question_audio = true; // set marker for server
+            lIndexCard.questionAudioUrl = null;
+            lIndexCard.questionAudioFile(null);
+            lIndexCard.deleteQuestionAudio = true; // set marker for server
             self.editIndexCard(lIndexCard);
         };
 
@@ -700,9 +700,9 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox"], func
         self.DeleteAnswerAudio = function () {
 
             var lIndexCard = self.editIndexCard();
-            lIndexCard.answer_audio_url = null;
-            lIndexCard.answer_audio_file(null);
-            lIndexCard.delete_answer_audio = true; // set marker for server
+            lIndexCard.answerAudioUrl = null;
+            lIndexCard.answerAudioFile(null);
+            lIndexCard.deleteAnswerAudio = true; // set marker for server
             self.editIndexCard(lIndexCard);
         };
 
@@ -846,16 +846,16 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox"], func
             // cache the file
             switch (lHtmlElement.id) {
                 case "ict-question-image-box":
-                    self.editIndexCard().question_image_file(lPastedFile);
+                    self.editIndexCard().questionImageFile(lPastedFile);
                     break;
                 case "ict-answer-image-box":
-                    self.editIndexCard().answer_image_file(lPastedFile);
+                    self.editIndexCard().answerImageFile(lPastedFile);
                     break;
                 case "ict-question-audio-box":
-                    self.editIndexCard().question_audio_file(lPastedFile);
+                    self.editIndexCard().questionAudioFile(lPastedFile);
                     break;
                 case "ict-answer-audio-box":
-                    self.editIndexCard().question_audio_file(lPastedFile);
+                    self.editIndexCard().questionAudioFile(lPastedFile);
                     break;
                 default:
                     throw new error("invalid element id");

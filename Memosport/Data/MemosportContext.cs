@@ -17,5 +17,7 @@ namespace Memosport.Data
         }
 
         public DbSet<Memosport.Models.User> Users { get; set; }
+        public DbSet<Memosport.Models.IndexCardBox> IndexCardBoxes { get; set; }
+        public DbSet<Memosport.Models.IndexCard> IndexCards { get; set; }
     }
 }

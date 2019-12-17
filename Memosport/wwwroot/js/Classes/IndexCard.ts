@@ -7,25 +7,25 @@ import tsLib = require("../lib/tsLib/tsLib");
 export class IndexCard extends tsLib.HelperBase
 {
     id: number = null;
-    index_card_box_id: number = null;
+    indexCardBoxId: number = null;
     question: string = null;
-    question_image_url: string = null;
-    question_image_file: KnockoutObservable<any> = ko.observable(null);
-    question_audio_url: string = null;
-    question_audio_file: KnockoutObservable<any> = ko.observable(null);
+    questionImageUrl: string = null;
+    questionImageFile: KnockoutObservable<any> = ko.observable(null);
+    questionAudioUrl: string = null;
+    questionAudioFile: KnockoutObservable<any> = ko.observable(null);
     jingle: string = null;
     answer: string = null;
-    answer_image_url: string = null;
-    answer_image_file: KnockoutObservable<any> = ko.observable(null);
-    answer_audio_url: string = null;
-    answer_audio_file: KnockoutObservable<any> = ko.observable(null);
+    answerImageUrl: string = null;
+    answerImageFile: KnockoutObservable<any> = ko.observable(null);
+    answerAudioUrl: string = null;
+    answerAudioFile: KnockoutObservable<any> = ko.observable(null);
     source: string = null;
     known: number = null;
 
     // marker to delete images or audio
-    delete_question_image: boolean = false;
-    delete_answer_image: boolean = false;
-    delete_question_audio: boolean = false;
+    deleteQuestionImage: boolean = false;
+    deleteAnswerImage: boolean = false;
+    deleteQuestionAudio: boolean = false;
     delete_answer_audio: boolean = false;
 
     public constructor(pArgs: any) {
