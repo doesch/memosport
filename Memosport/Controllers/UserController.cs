@@ -38,11 +38,12 @@ namespace Memosport.Controllers
         /// <summary> (An Action that handles HTTP POST requests) login. </summary>
         /// <remarks> Doetsch, 13.12.19. </remarks>
         /// <exception cref="AuthenticationException"> Thrown when an Authentication error condition occurs. </exception>
-        /// <param name="email">    The name. </param>
-        /// <param name="password"> The password. </param>
+        /// <param name="email">      The name. </param>
+        /// <param name="password">   The password. </param>
+        /// <param name="remindUser"> (Optional) Checkbox True to remind user. </param>
         /// <returns> An IActionResult. </returns>
         [HttpPost]
-        public async Task<IActionResult> Login(string email, string password)
+        public async Task<IActionResult> Login(string email, string password, bool remindUser = false)
         {
             // query user by email and password from database
             var lUser = _context.Users.SingleOrDefault(x => x.Email == email);
@@ -59,7 +60,7 @@ namespace Memosport.Controllers
             var lClaims = new List<Claim>
             {
                 new Claim(ClaimTypes.Email, lUser.Email),
-                new Claim(ClaimTypes.NameIdentifier, lUser.Id.ToString()),
+                new Claim(ClaimTypes.NameIdentifier, lUser.Guid.ToString()),
                 new Claim(ClaimTypes.Role, lUser.Role.ToString()),
             };
 
@@ -68,7 +69,7 @@ namespace Memosport.Controllers
             await HttpContext.SignInAsync(
                 CookieAuthenticationDefaults.AuthenticationScheme,
                 new ClaimsPrincipal(lClaimsIdentity),
-                new AuthenticationProperties() { });
+                new AuthenticationProperties() { IsPersistent = remindUser });
 
             return RedirectToAction("Index", "Home");
         }

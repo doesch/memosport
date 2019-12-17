@@ -26,7 +26,7 @@ export class IndexCard extends tsLib.HelperBase
     deleteQuestionImage: boolean = false;
     deleteAnswerImage: boolean = false;
     deleteQuestionAudio: boolean = false;
-    delete_answer_audio: boolean = false;
+    deleteAnswerAudio: boolean = false;
 
     public constructor(pArgs: any) {
         super();

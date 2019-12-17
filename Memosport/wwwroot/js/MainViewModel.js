@@ -191,7 +191,7 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox"], func
 
             // get Index Card Boxes
             $.ajax({
-                url: '/IndexCardBox/GetAll',
+                url: '/IndexCardBoxApi',
                 type: 'get',
                 dataType: 'json',
                 success: function (data) {
@@ -199,7 +199,7 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox"], func
                     var lTmpArr = [];
 
                     for (var i = 0, len = data.length; i < len; i++) {
-                        lTmpArr.push(new indexCardBox.IndexCardBox(data[i]["IndexCardBox"]));
+                        lTmpArr.push(new indexCardBox.IndexCardBox(data[i]));
                     }
 
                     // add all boxes to dropdown
@@ -276,7 +276,7 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox"], func
                         // create objects
                         var lTmpArr = [];
                         for (var i = 0, len = data.length; i < len; i++) {
-                            lTmpArr.push(new IndexCard(data[i]["IndexCard"]));
+                            lTmpArr.push(new IndexCard(data[i]));
                         }
 
                         // order random if set (default)

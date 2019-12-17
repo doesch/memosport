@@ -36,7 +36,7 @@ define(["require", "exports", "../lib/tsLib/tsLib"], function (require, exports,
             _this.deleteQuestionImage = false;
             _this.deleteAnswerImage = false;
             _this.deleteQuestionAudio = false;
-            _this.delete_answer_audio = false;
+            _this.deleteAnswerAudio = false;
             _super.prototype.autoConstructor.call(_this, pArgs);
             if (_this.id === null) {
                 _this.known = 0;
