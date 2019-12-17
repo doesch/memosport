@@ -463,7 +463,7 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox"], func
          */
         self.editForm = function (pIndexCard) {
 
-            if (!(pIndexCard instanceof IndexCard)) {
+            if (!(pIndexCard instanceof indexCard.IndexCard)) {
                 throw new Error("Invalid Arguments. Expected type: IndexCard");
             }
 
@@ -823,9 +823,8 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox"], func
          * @param pIndexCard
          */
         self.searchEditIndexCardClick = function (pIndexCard) {
-            if (!(pIndexCard instanceof IndexCard)) {
-                throw "Invalid argument. Expected type IndexCard.";
-                return;
+            if (!(pIndexCard instanceof indexCard.IndexCard)) {
+                throw "Invalid argument. Expected type IndexCard.";                
             }
 
             // close search window
