@@ -76,6 +76,14 @@ namespace Memosport.Controllers
             return Json(lResult);
         }
 
+        [HttpPost]
+        public IActionResult Index(IndexCard indexcard)
+        {
+            // howto upload files: https://docs.microsoft.com/de-de/aspnet/core/mvc/models/file-uploads?view=aspnetcore-3.1
+
+            return NoContent();
+        }
+
         /// <summary> (An Action that handles HTTP PUT requests) indexes. </summary>
         /// <remarks> Doetsch, 17.12.19. </remarks>
         /// <param name="id">        The identifier. </param>
