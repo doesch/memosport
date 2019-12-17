@@ -258,15 +258,14 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox"], func
 
         self.loadData = function () {
             var lConfigData = {
-                trainer: 'ict',
-                box: self.box().id,
+                boxId: self.box().id,
                 known: self.known(),
                 order: self.order()
             };
 
             // ajax call
             $.ajax({
-                url: "/IndexCardTrainer/getdataset",
+                url: "/IndexCardApi/GetDataSet/" + self.box().id,
                 type: 'get',
                 data: lConfigData,
                 dataType: 'json',
@@ -282,7 +281,7 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox"], func
                         // order random if set (default)
 
                         if (self.order() == 'random') {
-                            lTmpArr = randomArr(lTmpArr);
+                            lTmpArr = self.randomArr(lTmpArr);
                         }
 
                         // bind all index cards to the view
@@ -318,6 +317,20 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox"], func
             });
         };
 
+        /// <summary> Random array. </summary>
+        /// <remarks> Doetsch, 17.12.19. </remarks>
+        /// <param name="pArr"> The array. </param>
+        /// <returns> . </returns>
+        self.randomArr = function (pArr) {
+
+            var lTmpArr = [];
+
+            while (pArr.length > 0) {
+                lTmpArr.push(pArr.splice(Math.floor(Math.random() * (pArr.length)), 1)[0]);
+            }
+
+            return lTmpArr;
+        };
 
         /*
          * 
