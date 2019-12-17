@@ -19,16 +19,6 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox"], func
         // init the app
         GLOBAL.MainViewModel.Init();
 
-        // when using back button (e.g. smartphone), warn user
-        window.onbeforeunload = function () { return "Möchten Sie den Trainier wirklich verlassen? Sie müssten beim nächsten mal von vorne beginnen."; };
-
-        // register paste event
-        window.addEventListener("paste", function (pEvent) {
-
-            GlobalIctViewModel.PastedFile(pEvent);
-
-        }, false);
-
     }());
 
     // my viewmodel
@@ -192,7 +182,46 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox"], func
          */
         self.Init = function () {
 
-            // get Index Card Boxes
+            // when using back button (e.g. smartphone), warn user
+            window.onbeforeunload = function () { return "Möchten Sie den Trainier wirklich verlassen? Sie müssten beim nächsten mal von vorne beginnen."; };
+
+            // register paste event
+            window.addEventListener("paste", function (pEvent) {
+
+                GlobalIctViewModel.PastedFile(pEvent);
+
+            }, false);
+
+            // user changes options → mark start - button
+            //document.querySelectorAll(".software form")[0].addEventListener("change", function () {
+            //    document.getElementById('software-bttn-start').className += " mark-start-button";
+            //});
+
+            // remove class on click
+            document.getElementById('software-bttn-start').addEventListener("click", function () {
+                tsLib.Style.removeClass(document.getElementById('software-bttn-start'), "mark-start-button");
+            });
+
+            // toggle menu
+            document.getElementById('bttn-menu').addEventListener("click", function (e) {
+
+                // close option menu if open
+                document.getElementById('ict-form-container').style.display = "none";
+
+                let lMenuElement = document.getElementById('menu');
+
+                // toggle menu item
+                lMenuElement.style.display = lMenuElement.style.display === "block" ? "none" : "block";
+
+            });
+
+            // get Index Card Boxes into dropdown
+            self.GetIndexCardBoxes();
+        };
+
+        /// Get all index card boxes from the server
+        self.GetIndexCardBoxes = function () {
+
             $.ajax({
                 url: '/IndexCardBoxApi',
                 type: 'get',
@@ -353,7 +382,7 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox"], func
             // ged id of current index card
             $.ajax({
                 type: 'put',
-                data: JSON.stringify(self.currentIndexCard() ),
+                data: JSON.stringify(self.currentIndexCard()),
                 url: "/IndexCardApi/" + self.currentIndexCard().id,
                 contentType: "application/json",
                 dataType: 'json',
