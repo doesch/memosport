@@ -350,14 +350,12 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox"], func
                 self.currentIndexCard().known = 0;
             }
 
-
             // ged id of current index card
             $.ajax({
                 type: 'put',
-                data: {
-                    indexcard: self.currentIndexCard()
-                },
-                url: "/IndexCardApi",
+                data: JSON.stringify(self.currentIndexCard() ),
+                url: "/IndexCardApi/" + self.currentIndexCard().id,
+                contentType: "application/json",
                 dataType: 'json',
                 success: function (data) {
 

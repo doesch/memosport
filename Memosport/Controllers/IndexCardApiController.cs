@@ -102,6 +102,10 @@ namespace Memosport.Controllers
                 return Forbid();
             }
 
+            // detach
+            _context.Entry(lIndexCard).State = EntityState.Detached;
+
+            // set save
             _context.Entry(indexcard).State = EntityState.Modified;
             _context.SaveChanges();
 
