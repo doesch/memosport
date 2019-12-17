@@ -99,7 +99,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (2,'3636a7e4-2dd6-4adc-ad42-db146dbc5753','skewer@gmx.de','dX3SeWDqwNlE8V/dszgYzPpQ1J+oFkhnDvMmeh12m9lkgk+e',0);
+INSERT INTO `users` VALUES (1,'3636a7e4-2dd6-4adc-ad42-db146dbc5753','skewer@gmx.de','dX3SeWDqwNlE8V/dszgYzPpQ1J+oFkhnDvMmeh12m9lkgk+e',0);
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -112,4 +112,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-12-16 21:06:24
+-- Dump completed on 2019-12-17 20:19:09
