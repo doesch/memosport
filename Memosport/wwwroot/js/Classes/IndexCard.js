@@ -45,5 +45,6 @@ define(["require", "exports", "../lib/tsLib/tsLib"], function (require, exports,
         }
         return IndexCard;
     }(tsLib.HelperBase));
+    exports.IndexCard = IndexCard;
 });
 //# sourceMappingURL=IndexCard.js.map

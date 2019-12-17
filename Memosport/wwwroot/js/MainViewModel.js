@@ -1,6 +1,6 @@
 ﻿var GLOBAL = {};
 
-requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox"], function (tsLib, IndexCard, IndexCardBox) {
+requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox"], function (tsLib, indexCard, indexCardBox) {
 
     // init knockout
     (function () {
@@ -36,16 +36,14 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox"], func
 
         self.dataset = ko.observableArray(); // contains dataset
 
-        var lCookie = GetCookiesByNamespace('ict'); // get all cookies
-
         // form data
         self.box = ko.observable({ name: "Bitte wählen..." }); /* manual, auto */
         self.boxes = ko.observableArray(); // all available boxes
-        self.known = ko.observable(lCookie.hasOwnProperty('known') && lCookie.known == 'true' ? true : false);
-        self.order = ko.observable(lCookie.hasOwnProperty('order') ? lCookie.order : 'random');
+        self.known = ko.observable(localStorage.getItem('known') && localStorage.getItem('known') === 'true' ? true : false);
+        self.order = ko.observable(localStorage.getItem('order') ? localStorage.getItem('order') : 'random');
         self.boxesShowDropdown = ko.observable(false); // if the dropdown is visible or not
         self.showQuestion = ko.observable(true); // toggles between question an answer
-        self.currentIndexCard = ko.observable(new IndexCard()); // current showing index card in trainer
+        self.currentIndexCard = ko.observable(new indexCard.IndexCard()); // current showing index card in trainer
         self.showProgressButtonBubble = ko.observable(false);
 
         self.i = ko.observable(-1);
@@ -135,10 +133,10 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox"], func
             }
         };
 
-        /**
-         * Play an audio file of question or answer (toggle)
-         * @param {filename} pFileName 
-         */
+        /// <summary> Play audio file. </summary>
+        /// <remarks> Doetsch, 17.12.19. </remarks>
+        /// <param name="pFileUrl"> URL of the file. </param>
+        /// <returns> . </returns>
         self.PlayAudioFile = function (pFileUrl) {
 
             var lFullFileUrl = Global.Uploads + pFileUrl;
@@ -201,7 +199,7 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox"], func
                     var lTmpArr = [];
 
                     for (var i = 0, len = data.length; i < len; i++) {
-                        lTmpArr.push(new IndexCardBox(data[i]["IndexCardBox"]));
+                        lTmpArr.push(new indexCardBox.IndexCardBox(data[i]["IndexCardBox"]));
                     }
 
                     // add all boxes to dropdown
@@ -229,7 +227,7 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox"], func
             self.boxesShowDropdown(false);
 
             // validate params
-            if (!(pIndexCardBox instanceof IndexCardBox)) {
+            if (!(pIndexCardBox instanceof indexCardBox.IndexCardBox)) {
                 throw "Invalid argument";
             }
 
@@ -415,7 +413,7 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox"], func
          */
         self.NewIndexCard = function () {
 
-            self.editForm(new IndexCard(), true);
+            self.editForm(new indexCard.IndexCard(), true);
         };
 
         /**
@@ -428,7 +426,7 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox"], func
             }
 
             // A box must be selected to relate the new card to an box
-            if (!(self.box() instanceof IndexCardBox)) {
+            if (!(self.box() instanceof indexCardBox.IndexCardBox)) {
                 alert("Bitte wähle einen Karteikasten aus.");
 
                 if (self.boxesShowDropdown() === false) {
@@ -582,7 +580,7 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox"], func
                         }
                         else {
                             // the deck is empty. show form for a new index card
-                            self.currentIndexCard(new IndexCard());
+                            self.currentIndexCard(new indexCard.IndexCard());
                         }
                     },
                     error: function () {
@@ -763,7 +761,7 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox"], func
                     for (var i = 0, len = data.length; i < len; i++) {
                         lTmpArr.push({
                             IndexCard: new IndexCard(data[i].IndexCard),
-                            IndexCardBox: new IndexCardBox(data[i].IndexCardBox)
+                            IndexCardBox: new indexCardBox.IndexCardBox(data[i].IndexCardBox)
                         });
                     }
 

@@ -27,5 +27,6 @@ define(["require", "exports", "../lib/tsLib/tsLib"], function (require, exports,
         }
         return IndexCardBox;
     }(tsLib.HelperBase));
+    exports.IndexCardBox = IndexCardBox;
 });
 //# sourceMappingURL=IndexCardBox.js.map
