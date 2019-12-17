@@ -206,7 +206,7 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox"], func
                     self.boxes(lTmpArr);
 
                     // select last selected box when in cookie
-                    var lId = tsLib.Cookie.Read("selected-icb");
+                    var lId = tsLib.Cookie.read("selected-icb");
                     if (lId != null) {
                         // find in list
                         for (var ii = 0, lenn = lTmpArr.length; ii < lenn; ii++) {
@@ -238,7 +238,7 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox"], func
             self.loadData();
 
             // remember selected box in cookie
-            tsLib.Cookie.Write("selected-icb", pIndexCardBox.id, 365);
+            tsLib.Cookie.write("selected-icb", pIndexCardBox.id, 365);
         };
 
         /*
@@ -275,7 +275,7 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox"], func
                         // create objects
                         var lTmpArr = [];
                         for (var i = 0, len = data.length; i < len; i++) {
-                            lTmpArr.push(new IndexCard(data[i]));
+                            lTmpArr.push(new indexCard.IndexCard(data[i]));
                         }
 
                         // order random if set (default)
