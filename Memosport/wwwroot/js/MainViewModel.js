@@ -1,4 +1,7 @@
 ﻿var GLOBAL = {};
+GLOBAL.Uploads = "/uploads/"; // upload path (e.g,. for images)
+GLOBAL.BlankImg = "data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs%3D"; // Blank Image
+GLOBAL.NoImg = "//:0"; // No image -> use alt text
 
 requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox"], function (tsLib, indexCard, indexCardBox) {
 
@@ -350,12 +353,11 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox"], func
 
             // ged id of current index card
             $.ajax({
-                type: 'post',
+                type: 'put',
                 data: {
-                    id: self.currentIndexCard().id, // current index card
-                    known: self.currentIndexCard().known
+                    indexcard: self.currentIndexCard()
                 },
-                url: "/IndexCard/setknown",
+                url: "/IndexCardApi",
                 dataType: 'json',
                 success: function (data) {
 

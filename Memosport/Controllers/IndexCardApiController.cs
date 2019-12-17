@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Memosport.Data;
+using Memosport.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -73,6 +74,38 @@ namespace Memosport.Controllers
             var lResult = await lQuery.ToListAsync();
 
             return Json(lResult);
+        }
+
+        /// <summary> (An Action that handles HTTP PUT requests) indexes. </summary>
+        /// <remarks> Doetsch, 17.12.19. </remarks>
+        /// <param name="id">        The identifier. </param>
+        /// <param name="indexcard"> The indexcard. </param>
+        /// <returns> An IActionResult. </returns>
+        [HttpPut("{id}")]
+        public IActionResult Index(int id, IndexCard indexcard)
+        {
+            // get current User
+            var lUser = base.GetCurrentUser(_context);
+
+            // check if indexcard belongs to user
+            var lIndexCard = _context.IndexCards.SingleOrDefault(x => x.Id == id);
+
+            if (id != indexcard.Id)
+            {
+                return BadRequest();
+            }
+
+            var lIndexCardBox = _context.IndexCardBoxes.SingleOrDefault(x => x.Id == lIndexCard.IndexCardBoxId);
+
+            if (lIndexCardBox == null || lIndexCardBox.UserId != lUser.Id)
+            {
+                return Forbid();
+            }
+
+            _context.Entry(indexcard).State = EntityState.Modified;
+            _context.SaveChanges();
+
+            return NoContent(); // returns 204, no content
         }
     }
 }
