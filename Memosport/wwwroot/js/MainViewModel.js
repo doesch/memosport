@@ -567,7 +567,7 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox"], func
                 dataType: "json",
                 success: function (data) {
 
-                    var lXhrIndexCard = new IndexCard(data.IndexCard);
+                    var lXhrIndexCard = new indexCard.IndexCard(data.IndexCard);
 
                     // replace (when update) or insert (when new) the response
                     let i = 0;
@@ -816,7 +816,7 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox"], func
                     var lTmpArr = [];
                     for (var i = 0, len = data.length; i < len; i++) {
                         lTmpArr.push({
-                            IndexCard: new IndexCard(data[i].IndexCard),
+                            IndexCard: new indexCard.IndexCard(data[i].IndexCard),
                             IndexCardBox: new indexCardBox.IndexCardBox(data[i].IndexCardBox)
                         });
                     }
@@ -913,7 +913,7 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox"], func
                     self.editIndexCard().questionAudioFile(lPastedFile);
                     break;
                 default:
-                    throw new error("invalid element id");
+                    throw new Error("invalid element id");
             }
         };
     }
