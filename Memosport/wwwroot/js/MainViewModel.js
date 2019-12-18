@@ -545,10 +545,18 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox"], func
                 }
             }
 
+            // post or put. When there is no id then it is a new one.
+            let lHttpVerb = typeof lIndexCard.id === "undefined" ? "POST" : "PUT";
+            let lUri = "/IndexCardApi";
+
+            if (lHttpVerb === "PUT") {
+                lUri += "/" + lIndexCard.id;
+            }
+
             $.ajax({
-                url: "/IndexCardApi",
+                url: lUri,
                 data: lFormData,
-                type: "POST",
+                type: lHttpVerb,
                 contentType: false,
                 processData: false,
                 dataType: "json",

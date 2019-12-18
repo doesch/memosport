@@ -121,29 +121,26 @@ namespace Memosport.Controllers
             }
 
             // save uploaded files
-            await SaveUploadedFiles(lIndexCard);
+            lIndexCard = await HandleUploadedFiles(lIndexCard);
 
             // save in database
             _context.IndexCards.Add(lIndexCard);
             await _context.SaveChangesAsync();
-            
-            // do not return files to the client
-            lIndexCard.QuestionImageFile = null;
-            lIndexCard.AnswerAudioFile = null;
-            lIndexCard.AnswerImageFile = null;
-            lIndexCard.QuestionAudioFile = null;
+
+            // cleanup the indexcard response object
+            lIndexCard = CleanupIndexCardResponse(lIndexCard);
 
             // return created indexcard
             return Json(lIndexCard);
         }
-        
+
         /// <summary> (An Action that handles HTTP PUT requests) indexes. </summary>
         /// <remarks> Doetsch, 17.12.19. </remarks>
         /// <param name="id">        The identifier. </param>
         /// <param name="indexcard"> The indexcard. </param>
         /// <returns> An IActionResult. </returns>
         [HttpPut("{id}")]
-        public async Task<IActionResult> Index(int id, IndexCard indexcard)
+        public async Task<IActionResult> Index(int id, [FromForm]IndexCard indexcard)
         {
             var lIndexCard = indexcard;
 
@@ -159,13 +156,16 @@ namespace Memosport.Controllers
             }
 
             // save uploaded files
-            await SaveUploadedFiles(lIndexCard);
+            lIndexCard = await HandleUploadedFiles(lIndexCard);
 
             // set save
             _context.Entry(lIndexCard).State = EntityState.Modified;
             _context.SaveChanges();
 
-            return NoContent(); // returns 204, no content
+            // cleanup the indexcard response object
+            lIndexCard = CleanupIndexCardResponse(lIndexCard);
+
+            return Json(lIndexCard);
         }
 
         /// <summary> Authenticated User is owner of index card. </summary>
@@ -227,44 +227,104 @@ namespace Memosport.Controllers
         /// <remarks> Doetsch, 18.12.19. </remarks>
         /// <param name="pIndexCard"> The index card. </param>
         /// <returns> An asynchronous result. </returns>
-        private async Task SaveUploadedFiles(IndexCard pIndexCard)
+        private async Task<IndexCard> HandleUploadedFiles(IndexCard pIndexCard)
         {
+            // get indexcard from database if exists (e.g. for put)
+            IndexCard lIndexCard = null;
+
+            if (pIndexCard.Id != null)
+            {
+                lIndexCard = _context.IndexCards.Single(x => x.Id == pIndexCard.Id);
+            }
+
             // save uploaded files
-            if (pIndexCard.QuestionImageFile != null)
+            if (pIndexCard.QuestionImageFile != null || pIndexCard.DeleteQuestionImage)
             {
                 // delete old file if exists
-                Upload.DeleteFile(pIndexCard.QuestionImageUrl, _env.WebRootPath);
+                if (lIndexCard != null)
+                {
+                    // delete from file system
+                    Upload.DeleteFile(lIndexCard.QuestionImageUrl, _env.WebRootPath);
+                }
 
-                // save new file
-                await Upload.SaveImageFile(pIndexCard.QuestionImageFile, _env.WebRootPath);
+                if (pIndexCard.QuestionImageFile != null)
+                {
+                    // save new file
+                    pIndexCard.QuestionImageUrl = await Upload.SaveImageFile(pIndexCard.QuestionImageFile, _env.WebRootPath);
+                }
             }
 
-            if (pIndexCard.AnswerImageFile != null)
+            if (pIndexCard.AnswerImageFile != null || pIndexCard.DeleteAnswerImage)
             {
                 // delete old file if exists
-                Upload.DeleteFile(pIndexCard.AnswerImageUrl, _env.WebRootPath);
+                if (lIndexCard != null)
+                {
+                    // delete from file system
+                    Upload.DeleteFile(lIndexCard.AnswerImageUrl, _env.WebRootPath);
+                }
 
-                // save new file
-                await Upload.SaveImageFile(pIndexCard.AnswerImageFile, _env.WebRootPath);
+                if (pIndexCard.AnswerImageFile != null)
+                {
+                    // save new file
+                    pIndexCard.AnswerImageUrl = await Upload.SaveImageFile(pIndexCard.AnswerImageFile, _env.WebRootPath);
+                }
             }
 
-            if (pIndexCard.QuestionAudioFile != null)
+            if (pIndexCard.QuestionAudioFile != null || pIndexCard.DeleteQuestionAudio)
             {
                 // delete old file if exists
-                Upload.DeleteFile(pIndexCard.QuestionAudioUrl, _env.WebRootPath);
+                if (lIndexCard != null)
+                {
+                    // delete from file system
+                    Upload.DeleteFile(lIndexCard.QuestionAudioUrl, _env.WebRootPath);
+                }
 
-                // save new file
-                await Upload.SaveAudioFile(pIndexCard.QuestionAudioFile, _env.WebRootPath);
+                if (pIndexCard.QuestionAudioFile != null)
+                {
+                    // save new file
+                    pIndexCard.QuestionAudioUrl = await Upload.SaveAudioFile(pIndexCard.QuestionAudioFile, _env.WebRootPath);
+                }
             }
 
-            if (pIndexCard.AnswerAudioFile != null)
+            if (pIndexCard.AnswerAudioFile != null || pIndexCard.DeleteAnswerAudio)
             {
                 // delete old file if exists
-                Upload.DeleteFile(pIndexCard.AnswerAudioUrl, _env.WebRootPath);
+                if (lIndexCard != null)
+                {
+                    // delete from file system
+                    Upload.DeleteFile(lIndexCard.AnswerAudioUrl, _env.WebRootPath);
+                }
 
                 // save new file
-                await Upload.SaveAudioFile(pIndexCard.AnswerAudioFile, _env.WebRootPath);
+                if (pIndexCard.AnswerAudioFile != null)
+                {
+                    pIndexCard.AnswerAudioUrl = await Upload.SaveAudioFile(pIndexCard.AnswerAudioFile, _env.WebRootPath);
+                }
             }
+
+            // detach
+            if (lIndexCard != null)
+            {
+                _context.Entry(lIndexCard).State = EntityState.Detached;
+            }
+            
+            return pIndexCard;
+        }
+
+
+        /// <summary> Cleanup index card response. </summary>
+        /// <remarks> Doetsch, 18.12.19. </remarks>
+        /// <param name="pIndexCard"> The index card. </param>
+        /// <returns> An IndexCard. </returns>
+        private IndexCard CleanupIndexCardResponse(IndexCard pIndexCard)
+        {
+            // do not return files to the client
+            pIndexCard.QuestionImageFile = null;
+            pIndexCard.AnswerAudioFile = null;
+            pIndexCard.AnswerImageFile = null;
+            pIndexCard.QuestionAudioFile = null;
+
+            return pIndexCard;
         }
     }
 }

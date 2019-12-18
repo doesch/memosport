@@ -30,21 +30,21 @@ namespace Memosport.Classes
         /// <param name="pImageFile">   The file. </param>
         /// <param name="pWebRootPath"> Full pathname of the web root file. </param>
         /// <returns> True if it succeeds, false if it fails. </returns>
-        public static async Task SaveImageFile(IFormFile pImageFile, string pWebRootPath)
+        public static async Task<string> SaveImageFile(IFormFile pImageFile, string pWebRootPath)
         {
-            if (pImageFile.Length > 0)
+            ValidateSize(pImageFile);
+            ValidateImageType(pImageFile);
+
+            // create filename
+            var lNewFilename = CreateFileName(pImageFile, pWebRootPath);
+            var lFullPath = Path.Combine(pWebRootPath, cUploadFolder, lNewFilename);
+
+            using (var lStream = System.IO.File.Create(lFullPath))
             {
-                ValidateSize(pImageFile);
-                ValidateImageType(pImageFile);
-
-                // create full path for file
-                var lFullPath = CreateFullPath(pImageFile, pWebRootPath);
-
-                using (var lStream = System.IO.File.Create(lFullPath))
-                {
-                    await pImageFile.CopyToAsync(lStream);
-                }
+                await pImageFile.CopyToAsync(lStream);
             }
+
+            return lNewFilename;
         }
 
         /// <summary> Saves an audio file. </summary>
@@ -52,21 +52,21 @@ namespace Memosport.Classes
         /// <param name="pAudioFile">   The audio file. </param>
         /// <param name="pWebRootPath"> Full pathname of the web root file. </param>
         /// <returns> An asynchronous result. </returns>
-        internal static async Task SaveAudioFile(IFormFile pAudioFile, string pWebRootPath)
+        internal static async Task<string> SaveAudioFile(IFormFile pAudioFile, string pWebRootPath)
         {
-            if (pAudioFile.Length > 0)
+            ValidateSize(pAudioFile);
+            ValidateAudioType(pAudioFile);
+
+            // create filename
+            var lNewFilename = CreateFileName(pAudioFile, pWebRootPath);
+            var lFullPath = Path.Combine(pWebRootPath, cUploadFolder, lNewFilename);
+
+            using (var lStream = System.IO.File.Create(lFullPath))
             {
-                ValidateSize(pAudioFile);
-                ValidateAudioType(pAudioFile);
-
-                // create full path for file
-                var lFullPath = CreateFullPath(pAudioFile, pWebRootPath);
-
-                using (var lStream = System.IO.File.Create(lFullPath))
-                {
-                    await pAudioFile.CopyToAsync(lStream);
-                }
+                await pAudioFile.CopyToAsync(lStream);
             }
+
+            return lNewFilename;
         }
         /// <summary> Deletes the file. </summary>
         /// <remarks> Doetsch, 18.12.19. </remarks>
@@ -105,7 +105,7 @@ namespace Memosport.Classes
         /// <param name="pFile">        The file. </param>
         /// <param name="pWebRootPath"> Full pathname of the web root file. </param>
         /// <returns> The new full path. </returns>
-        private static string CreateFullPath(IFormFile pFile, string pWebRootPath)
+        private static string CreateFileName(IFormFile pFile, string pWebRootPath)
         {
             // create guid for filename
             var lNewFilename = Guid.NewGuid().ToString().Replace("-", "");
@@ -114,7 +114,7 @@ namespace Memosport.Classes
             var lSuffix = Path.GetExtension(pFile.FileName).ToLowerInvariant();
             lNewFilename += lSuffix;
 
-            return Path.Combine(pWebRootPath, cUploadFolder, lNewFilename);
+            return lNewFilename;
         }
 
         /// <summary> Validates the image type described by pImageFile. </summary>

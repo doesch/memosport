@@ -6,7 +6,7 @@ namespace Memosport.Models
 {
     public class IndexCard
     {
-        public int Id { get; set; }
+        public int? Id { get; set; }
 
         public int IndexCardBoxId { get; set; }
 
