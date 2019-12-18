@@ -514,7 +514,7 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox"], func
             // show saving...
             self.editIndexCardIsLoading(true);
 
-            var lIndexCard = self.editIndexCard();
+            let lIndexCard = self.editIndexCard();
 
             if (lIndexCard.id === null) {
                 // remove id when not set (new)
@@ -525,27 +525,28 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox"], func
             }
 
             // create post payload for form
-            var lFormData = new FormData();
-            for (var lProp in lIndexCard) {
-                // do only send property they are not null
-                // check also in observable
-                if (lIndexCard[lProp] == null || (typeof lIndexCard[lProp] === "function" && lIndexCard[lProp]() === null)) {
-                    continue;
-                }
+            let lFormData = new FormData();
 
-                // assign data
-                // distinguish between observable and not observable
-                if ((typeof lIndexCard[lProp] === "function")) {
-                    // it´s an observable
-                    lFormData.append("data[IndexCard][" + lProp + "]", lIndexCard[lProp]());
-                }
-                else {
-                    lFormData.append("data[IndexCard][" + lProp + "]", lIndexCard[lProp]);
+            // add data to formdata payload
+            for (let lProp in lIndexCard) {
+
+                // check also in observable
+                if (lIndexCard.hasOwnProperty(lProp) === true) {
+
+                    // assign data
+                    // distinguish between observable and not observable
+                    if (typeof lIndexCard[lProp] === "function") {
+                        // it´s an observable
+                        lFormData.append(lProp, lIndexCard[lProp]());
+                    }
+                    else {
+                        lFormData.append(lProp, lIndexCard[lProp]);
+                    }
                 }
             }
 
             $.ajax({
-                url: "/IndexCard/add",
+                url: "/IndexCardApi",
                 data: lFormData,
                 type: "POST",
                 contentType: false,
@@ -556,8 +557,8 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox"], func
                     var lXhrIndexCard = new IndexCard(data.IndexCard);
 
                     // replace (when update) or insert (when new) the response
-                    var i = 0;
-                    var len = self.dataset().length;
+                    let i = 0;
+                    let len = self.dataset().length;
                     for (; i < len; i++) {
                         if (self.dataset()[i].id === lXhrIndexCard.id) {
                             self.dataset()[i] = lXhrIndexCard;

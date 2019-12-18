@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.AspNetCore.Http;
 
 namespace Memosport.Models
 {
@@ -14,12 +15,12 @@ namespace Memosport.Models
         public string QuestionImageUrl { get; set; }
 
         [NotMapped]
-        public string QuestionImageFile { get; set; }
+        public IFormFile QuestionImageFile { get; set; }
 
         public string QuestionAudioUrl { get; set; }
 
         [NotMapped]
-        public string QuestionAudioFile { get; set; }
+        public IFormFile QuestionAudioFile { get; set; }
 
         public string Jingle { get; set; }
 
@@ -28,12 +29,12 @@ namespace Memosport.Models
         public string AnswerImageUrl { get; set; }
 
         [NotMapped]
-        public string AnswerImageFile { get; set; }
+        public IFormFile AnswerImageFile { get; set; }
 
         public string AnswerAudioUrl { get; set; }
 
         [NotMapped]
-        public string AnswerAudioFile { get; set; }
+        public IFormFile AnswerAudioFile { get; set; }
 
         public string Source { get; set; }
 

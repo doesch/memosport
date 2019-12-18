@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Memosport.Classes;
 using Memosport.Data;
 using Memosport.Models;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -17,9 +20,33 @@ namespace Memosport.Controllers
         /// <summary> The database context. </summary>
         private MemosportContext _context;
 
-        public IndexCardApiController(MemosportContext context)
+        private IWebHostEnvironment _env;
+
+        public IndexCardApiController(MemosportContext context, IWebHostEnvironment env)
         {
             _context = context;
+            _env = env;
+        }
+
+        // select single row
+        // Example URI: /ToDos/1
+        [HttpGet("{id}")]
+        public IActionResult GetSingle(int id)
+        {
+            var lResult = _context.IndexCards.SingleOrDefault(x => x.Id == id);
+
+            if (lResult == null)
+            {
+                return NotFound(); // returns an 404 page not found
+            }
+
+            // ToDo: check if indexcard belongs to user
+            if (UserIsOwnerOfIndexCardBox(lResult) == false)
+            {
+                return Forbid();
+            }
+
+            return Json(lResult);
         }
 
         /// <summary> (An Action that handles HTTP GET requests) gets data set. </summary>
@@ -76,48 +103,168 @@ namespace Memosport.Controllers
             return Json(lResult);
         }
 
+        /// <summary> (An Action that handles HTTP PUT requests) indexes. </summary>
+        /// <remarks> Doetsch, 18.12.19. </remarks>
+        /// <param name="indexcard"> The indexcard. </param>
+        /// <returns> An IActionResult. </returns>
         [HttpPost]
-        public IActionResult Index(IndexCard indexcard)
+        public async Task<IActionResult> Index([FromForm]IndexCard indexcard)
         {
-            // howto upload files: https://docs.microsoft.com/de-de/aspnet/core/mvc/models/file-uploads?view=aspnetcore-3.1
+            var lIndexCard = indexcard;
 
-            return NoContent();
+            // howto upload files: https://docs.microsoft.com/en-us/aspnet/core/mvc/models/file-uploads?view=aspnetcore-3.1#upload-small-files-with-buffered-model-binding-to-physical-storage
+
+            // check if user is owner of the index card
+            if (UserIsOwnerOfIndexCardBox(indexcard) == false)
+            {
+                return Forbid();
+            }
+
+            // save uploaded files
+            await SaveUploadedFiles(lIndexCard);
+
+            // save in database
+            _context.IndexCards.Add(lIndexCard);
+            await _context.SaveChangesAsync();
+            
+            // do not return files to the client
+            lIndexCard.QuestionImageFile = null;
+            lIndexCard.AnswerAudioFile = null;
+            lIndexCard.AnswerImageFile = null;
+            lIndexCard.QuestionAudioFile = null;
+
+            // return created indexcard
+            return Json(lIndexCard);
         }
-
+        
         /// <summary> (An Action that handles HTTP PUT requests) indexes. </summary>
         /// <remarks> Doetsch, 17.12.19. </remarks>
         /// <param name="id">        The identifier. </param>
         /// <param name="indexcard"> The indexcard. </param>
         /// <returns> An IActionResult. </returns>
         [HttpPut("{id}")]
-        public IActionResult Index(int id, IndexCard indexcard)
+        public async Task<IActionResult> Index(int id, IndexCard indexcard)
         {
-            // get current User
-            var lUser = base.GetCurrentUser(_context);
+            var lIndexCard = indexcard;
 
-            // check if indexcard belongs to user
-            var lIndexCard = _context.IndexCards.SingleOrDefault(x => x.Id == id);
-
-            if (id != indexcard.Id)
+            if (id != lIndexCard.Id)
             {
                 return BadRequest();
             }
 
-            var lIndexCardBox = _context.IndexCardBoxes.SingleOrDefault(x => x.Id == lIndexCard.IndexCardBoxId);
-
-            if (lIndexCardBox == null || lIndexCardBox.UserId != lUser.Id)
+            // check if user is owner of the index card
+            if (UserIsOwnerOfIndexCard(lIndexCard) == false)
             {
                 return Forbid();
             }
 
-            // detach
-            _context.Entry(lIndexCard).State = EntityState.Detached;
+            // save uploaded files
+            await SaveUploadedFiles(lIndexCard);
 
             // set save
-            _context.Entry(indexcard).State = EntityState.Modified;
+            _context.Entry(lIndexCard).State = EntityState.Modified;
             _context.SaveChanges();
 
             return NoContent(); // returns 204, no content
+        }
+
+        /// <summary> Authenticated User is owner of index card. </summary>
+        /// <remarks> Doetsch, 18.12.19. </remarks>
+        /// <param name="pIndexCard"> The index card. </param>
+        /// <returns> True if it succeeds, false if it fails. </returns>
+        private bool UserIsOwnerOfIndexCard(IndexCard pIndexCard)
+        {
+            var lResult = true;
+
+            // check if indexcard belongs to user
+            var lIndexCard = _context.IndexCards.SingleOrDefault(x => x.Id == pIndexCard.Id);
+
+            if (lIndexCard == null)
+            {
+                lResult = false;
+            }
+            else
+            {
+                // request owner by indexcard box
+                lResult = UserIsOwnerOfIndexCardBox(lIndexCard);            
+                
+                // detach
+                _context.Entry(lIndexCard).State = EntityState.Detached;
+            }
+            
+            return lResult;
+        }
+
+        /// <summary> User is owner of index card box. </summary>
+        /// <remarks> Doetsch, 18.12.19. </remarks>
+        /// <param name="pIndexCard"> The index card. </param>
+        /// <returns> True if it succeeds, false if it fails. </returns>
+        private bool UserIsOwnerOfIndexCardBox(IndexCard pIndexCard)
+        {
+            var lResult = true;
+
+            // get current User
+            var lUser = base.GetCurrentUser(_context);
+
+            var lIndexCardBox = _context.IndexCardBoxes.SingleOrDefault(x => x.Id == pIndexCard.IndexCardBoxId);
+
+            if (lIndexCardBox == null)
+            {
+                lResult = false;
+            }
+            else
+            {
+                lResult = lIndexCardBox.UserId == lUser.Id;
+
+                // detach
+                _context.Entry(lIndexCardBox).State = EntityState.Detached;
+            }
+
+            return lResult;
+        }
+
+        /// <summary> Saves an uploaded files. </summary>
+        /// <remarks> Doetsch, 18.12.19. </remarks>
+        /// <param name="pIndexCard"> The index card. </param>
+        /// <returns> An asynchronous result. </returns>
+        private async Task SaveUploadedFiles(IndexCard pIndexCard)
+        {
+            // save uploaded files
+            if (pIndexCard.QuestionImageFile != null)
+            {
+                // delete old file if exists
+                Upload.DeleteFile(pIndexCard.QuestionImageUrl, _env.WebRootPath);
+
+                // save new file
+                await Upload.SaveImageFile(pIndexCard.QuestionImageFile, _env.WebRootPath);
+            }
+
+            if (pIndexCard.AnswerImageFile != null)
+            {
+                // delete old file if exists
+                Upload.DeleteFile(pIndexCard.AnswerImageUrl, _env.WebRootPath);
+
+                // save new file
+                await Upload.SaveImageFile(pIndexCard.AnswerImageFile, _env.WebRootPath);
+            }
+
+            if (pIndexCard.QuestionAudioFile != null)
+            {
+                // delete old file if exists
+                Upload.DeleteFile(pIndexCard.QuestionAudioUrl, _env.WebRootPath);
+
+                // save new file
+                await Upload.SaveAudioFile(pIndexCard.QuestionAudioFile, _env.WebRootPath);
+            }
+
+            if (pIndexCard.AnswerAudioFile != null)
+            {
+                // delete old file if exists
+                Upload.DeleteFile(pIndexCard.AnswerAudioUrl, _env.WebRootPath);
+
+                // save new file
+                await Upload.SaveAudioFile(pIndexCard.AnswerAudioFile, _env.WebRootPath);
+            }
         }
     }
 }
