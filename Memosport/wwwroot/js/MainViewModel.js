@@ -530,6 +530,11 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox"], func
             // add data to formdata payload
             for (let lProp in lIndexCard) {
 
+                // do not send properties which are null
+                if (lIndexCard[lProp] === null || typeof lIndexCard[lProp] === "function" && lIndexCard[lProp] === null) {
+                    continue;
+                }
+
                 // check also in observable
                 if (lIndexCard.hasOwnProperty(lProp) === true) {
 
