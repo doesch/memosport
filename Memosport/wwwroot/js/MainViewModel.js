@@ -916,6 +916,31 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox"], func
                     throw new Error("invalid element id");
             }
         };
-    }
 
+        // click on button to create a new index card box
+        self.createNewIndexCardBoxClick = function () {
+            console.log("click");
+
+
+            // show dialog
+
+            // create buttons
+            let lBttnSave = new tsLib.Button("Speichern", function() {
+
+                // ToDo -oDoetsch: Save the IndexCardBox and show hour glass till response
+                // ToDo -oDoetsch: Load index card into the dropdown, sort and show form for "create new indexcard"
+
+            });
+            let lBttnCancel = new tsLib.Button("Abbrechen", function() { });
+
+            // get template
+            var lTemplate = document.getElementById("index-card-box-form-template");
+            let lDialog = new tsLib.Dialog(lTemplate, null, [lBttnSave, lBttnCancel]);
+            lDialog.afterRenderCallback = function () { ko.applyBindings(GLOBAL.MainViewModel, this.mHtmlWindow); };
+            lDialog.show();
+
+            // set cursor into text field
+            // 
+        };
+    }
 });

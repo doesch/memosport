@@ -5,5 +5,6 @@
 *Checke ob umlaute richtig codiert.
 *Setze für manche felder, dass sie null sein dürfen.
 *entferne aus den Spaltennamen tiefstriche: '_'.
+*Checke ob Foreign Keys gesetzt sind
 *kopiere alle uploads
 *Überprüfe ob der folder 'uploads' beschreibbar indem eine Karteikarte mit Bildern anlegen.

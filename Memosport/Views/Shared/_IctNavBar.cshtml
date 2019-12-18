@@ -10,7 +10,7 @@
 <!-- ko if: boxesShowDropdown -->
 <div id="ict-boxes-dropdown-list-container">
     <div id="ict-boxes-dropdown-listitem-new-box" class="ict-boxes-dropdown-listitem">
-        <a class="bttn" href="/IndexCardBox/add"><span class="icon icon-add"></span>&nbsp;Neuer Karteikasten</a>
+        <a class="bttn" href="" data-bind="click: $root.createNewIndexCardBoxClick"><span class="icon icon-add"></span>&nbsp;Neuer Karteikasten</a>
     </div>
     <div id="ict-boxes-dropdown-scroll-container">
         <!-- ko foreach: boxes -->
