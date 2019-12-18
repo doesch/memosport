@@ -1,5 +1,6 @@
 node_modules/
 Memosport/obj
 Memosport/bin
+Memosport/wwwroot/uploads/
 .vs
 Memosport/package-lock.json
