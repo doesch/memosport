@@ -1,0 +1,9 @@
+*Erstelle ein Backup der php-app von der Datenbank
+*Erstelle ein Backup der php-app vom Dateisystem
+----------------------------------------------------------
+*Importiere Datenbank.
+*Checke ob umlaute richtig codiert.
+*Setze für manche felder, dass sie null sein dürfen.
+*entferne aus den Spaltennamen tiefstriche: '_'.
+*kopiere alle uploads
+*Überprüfe ob der folder 'uploads' beschreibbar indem eine Karteikarte mit Bildern anlegen.

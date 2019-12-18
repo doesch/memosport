@@ -565,9 +565,9 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox"], func
                 contentType: false,
                 processData: false,
                 dataType: "json",
-                success: function (data) {
+                success: function (xhr) {
 
-                    var lXhrIndexCard = new indexCard.IndexCard(data.IndexCard);
+                    var lXhrIndexCard = new indexCard.IndexCard(xhr);
 
                     // replace (when update) or insert (when new) the response
                     let i = 0;
