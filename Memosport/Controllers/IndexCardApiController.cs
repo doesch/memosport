@@ -123,6 +123,10 @@ namespace Memosport.Controllers
             // save uploaded files
             lIndexCard = await HandleUploadedFiles(lIndexCard);
 
+            // set date
+            lIndexCard.Created = DateTime.UtcNow;
+            lIndexCard.Modified = DateTime.UtcNow;
+
             // save in database
             _context.IndexCards.Add(lIndexCard);
             await _context.SaveChangesAsync();
@@ -157,6 +161,9 @@ namespace Memosport.Controllers
 
             // save uploaded files
             lIndexCard = await HandleUploadedFiles(lIndexCard);
+
+            // set modified date
+            lIndexCard.Modified = DateTime.UtcNow;
 
             // set save
             _context.Entry(lIndexCard).State = EntityState.Modified;
