@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations.Schema;
+using Memosport.Classes;
 using Microsoft.AspNetCore.Http;
 
 namespace Memosport.Models
@@ -55,5 +56,17 @@ namespace Memosport.Models
         public DateTime Created { get; set; }
 
         public DateTime Modified { get; set; }
+
+        /// <summary>
+        /// Remove all uploaded files
+        /// </summary>
+        /// <param name="indexCardBoxId"></param>
+        internal static void RemoveAllUploadedFiles(IndexCard pIndexCard, string pWebRootPath)
+        {
+            Upload.DeleteFile(pIndexCard.QuestionImageUrl, pWebRootPath);
+            Upload.DeleteFile(pIndexCard.AnswerImageUrl, pWebRootPath);
+            Upload.DeleteFile(pIndexCard.QuestionAudioUrl, pWebRootPath);
+            Upload.DeleteFile(pIndexCard.AnswerAudioUrl, pWebRootPath);
+        }
     }
 }

@@ -33,20 +33,20 @@ namespace Memosport.Controllers
         [HttpGet("{id}")]
         public IActionResult GetSingle(int id)
         {
-            var lResult = _context.IndexCards.SingleOrDefault(x => x.Id == id);
+            var lIndexCard = _context.IndexCards.SingleOrDefault(x => x.Id == id);
 
-            if (lResult == null)
+            if (lIndexCard == null)
             {
                 return NotFound(); // returns an 404 page not found
             }
 
             // ToDo: check if indexcard belongs to user
-            if (UserIsOwnerOfIndexCardBox(lResult) == false)
+            if (IndexCardBox.UserIsOwnerOfIndexCardBox(lIndexCard.IndexCardBoxId, base.GetCurrentUser(_context), _context) == false)
             {
                 return Forbid();
             }
 
-            return Json(lResult);
+            return Json(lIndexCard);
         }
 
         /// <summary> (An Action that handles HTTP GET requests) gets data set. </summary>
@@ -115,7 +115,7 @@ namespace Memosport.Controllers
             // howto upload files: https://docs.microsoft.com/en-us/aspnet/core/mvc/models/file-uploads?view=aspnetcore-3.1#upload-small-files-with-buffered-model-binding-to-physical-storage
 
             // check if user is owner of the index card
-            if (UserIsOwnerOfIndexCardBox(indexcard) == false)
+            if (IndexCardBox.UserIsOwnerOfIndexCardBox(indexcard.IndexCardBoxId, base.GetCurrentUser(_context), _context) == false)
             {
                 return Forbid();
             }
@@ -175,6 +175,33 @@ namespace Memosport.Controllers
             return Json(lIndexCard);
         }
 
+        // delete
+        [HttpDelete("{pId}")]
+        // Example URI for DELETE: todos/1
+        public IActionResult Index(int pId)
+        {
+            var lIndexCard = _context.IndexCards.Single(x => x.Id == pId);
+
+            if (lIndexCard == null)
+            {
+                return NotFound(); // returns an 404 page not found
+            }
+
+            // checkk if index card belongs to user
+            if (UserIsOwnerOfIndexCard(lIndexCard) == false)
+            {
+                return Forbid();
+            }
+
+            // ToDo -oDoetsch: remove uploaded files
+            IndexCard.RemoveAllUploadedFiles(lIndexCard, _env.WebRootPath);
+
+            _context.Remove(lIndexCard);
+            _context.SaveChanges();
+
+            return Json(lIndexCard);
+        }
+
         /// <summary> Authenticated User is owner of index card. </summary>
         /// <remarks> Doetsch, 18.12.19. </remarks>
         /// <param name="pIndexCard"> The index card. </param>
@@ -193,7 +220,8 @@ namespace Memosport.Controllers
             else
             {
                 // request owner by indexcard box
-                lResult = UserIsOwnerOfIndexCardBox(lIndexCard);            
+                var lUser = base.GetCurrentUser(_context);
+                lResult = IndexCardBox.UserIsOwnerOfIndexCardBox(lIndexCard.IndexCardBoxId, lUser, _context);            
                 
                 // detach
                 _context.Entry(lIndexCard).State = EntityState.Detached;
@@ -202,33 +230,7 @@ namespace Memosport.Controllers
             return lResult;
         }
 
-        /// <summary> User is owner of index card box. </summary>
-        /// <remarks> Doetsch, 18.12.19. </remarks>
-        /// <param name="pIndexCard"> The index card. </param>
-        /// <returns> True if it succeeds, false if it fails. </returns>
-        private bool UserIsOwnerOfIndexCardBox(IndexCard pIndexCard)
-        {
-            var lResult = true;
 
-            // get current User
-            var lUser = base.GetCurrentUser(_context);
-
-            var lIndexCardBox = _context.IndexCardBoxes.SingleOrDefault(x => x.Id == pIndexCard.IndexCardBoxId);
-
-            if (lIndexCardBox == null)
-            {
-                lResult = false;
-            }
-            else
-            {
-                lResult = lIndexCardBox.UserId == lUser.Id;
-
-                // detach
-                _context.Entry(lIndexCardBox).State = EntityState.Detached;
-            }
-
-            return lResult;
-        }
 
         /// <summary> Saves an uploaded files. </summary>
         /// <remarks> Doetsch, 18.12.19. </remarks>
@@ -317,7 +319,6 @@ namespace Memosport.Controllers
             
             return pIndexCard;
         }
-
 
         /// <summary> Cleanup index card response. </summary>
         /// <remarks> Doetsch, 18.12.19. </remarks>

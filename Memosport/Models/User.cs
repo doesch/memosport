@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Memosport.Classes;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
