@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace Memosport.Models
 {
-    public class IndexCardBox
+    public class IndexCardBox : IIndexCardBox
     {
         public int Id { get; set; }
 
@@ -29,7 +29,7 @@ namespace Memosport.Models
         /// <param name="pCurrentUser"></param>
         /// <param name="pContext"></param>
         /// <returns></returns>
-        public static bool UserIsOwnerOfIndexCardBox(int pIndexCardBoxId, User pCurrentUser, MemosportContext pContext)
+        public static bool UserIsOwnerOfIndexCardBox(int pIndexCardBoxId, IUser pCurrentUser, MemosportContext pContext)
         {
             var lResult = true;
             

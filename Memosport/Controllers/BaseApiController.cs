@@ -14,7 +14,7 @@ namespace Memosport.Controllers
     public class BaseApiController : Controller
     {
         // Get current logged in user
-        internal User GetCurrentUser(MemosportContext context)
+        internal IUser GetCurrentUser(MemosportContext context)
         {
             var lGuidString = HttpContext.User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value;
             var lGuid = Guid.Parse(lGuidString);

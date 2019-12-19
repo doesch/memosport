@@ -55,7 +55,7 @@ namespace Memosport.Controllers
             // ToDo: Validate data
 
             // add user id
-            User lUser = base.GetCurrentUser(_context);
+            IUser lUser = base.GetCurrentUser(_context);
             lIndexCardBox.UserId = lUser.Id;
 
             // set date

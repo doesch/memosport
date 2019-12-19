@@ -2,10 +2,11 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using Memosport.Classes;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace Memosport.Models
 {
-    public class IndexCard
+    public class IndexCard : IIndexCard
     {
         public int? Id { get; set; }
 
@@ -57,11 +58,11 @@ namespace Memosport.Models
 
         public DateTime Modified { get; set; }
 
-        /// <summary>
-        /// Remove all uploaded files
-        /// </summary>
-        /// <param name="indexCardBoxId"></param>
-        internal static void RemoveAllUploadedFiles(IndexCard pIndexCard, string pWebRootPath)
+        /// <summary> Remove all uploaded files. </summary>
+        /// <remarks> Doetsch, 19.12.19. </remarks>
+        /// <param name="pIndexCard">   . </param>
+        /// <param name="pWebRootPath"> Full pathname of the web root file. </param>
+        internal static void RemoveAllUploadedFiles(IIndexCard pIndexCard, string pWebRootPath)
         {
             Upload.DeleteFile(pIndexCard.QuestionImageUrl, pWebRootPath);
             Upload.DeleteFile(pIndexCard.AnswerImageUrl, pWebRootPath);

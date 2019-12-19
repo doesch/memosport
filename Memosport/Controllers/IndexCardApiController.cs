@@ -110,7 +110,7 @@ namespace Memosport.Controllers
         [HttpPost]
         public async Task<IActionResult> Index([FromForm]IndexCard indexcard)
         {
-            var lIndexCard = indexcard;
+            IIndexCard lIndexCard = indexcard;
 
             // howto upload files: https://docs.microsoft.com/en-us/aspnet/core/mvc/models/file-uploads?view=aspnetcore-3.1#upload-small-files-with-buffered-model-binding-to-physical-storage
 
@@ -128,7 +128,7 @@ namespace Memosport.Controllers
             lIndexCard.Modified = DateTime.UtcNow;
 
             // save in database
-            _context.IndexCards.Add(lIndexCard);
+            _context.IndexCards.Add((IndexCard)lIndexCard);
             await _context.SaveChangesAsync();
 
             // cleanup the indexcard response object
@@ -146,7 +146,7 @@ namespace Memosport.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> Index(int id, [FromForm]IndexCard indexcard)
         {
-            var lIndexCard = indexcard;
+            IIndexCard lIndexCard = indexcard;
 
             if (id != lIndexCard.Id)
             {
@@ -206,7 +206,7 @@ namespace Memosport.Controllers
         /// <remarks> Doetsch, 18.12.19. </remarks>
         /// <param name="pIndexCard"> The index card. </param>
         /// <returns> True if it succeeds, false if it fails. </returns>
-        private bool UserIsOwnerOfIndexCard(IndexCard pIndexCard)
+        private bool UserIsOwnerOfIndexCard(IIndexCard pIndexCard)
         {
             var lResult = true;
 
@@ -236,10 +236,10 @@ namespace Memosport.Controllers
         /// <remarks> Doetsch, 18.12.19. </remarks>
         /// <param name="pIndexCard"> The index card. </param>
         /// <returns> An asynchronous result. </returns>
-        private async Task<IndexCard> HandleUploadedFiles(IndexCard pIndexCard)
+        private async Task<IIndexCard> HandleUploadedFiles(IIndexCard pIndexCard)
         {
             // get indexcard from database if exists (e.g. for put)
-            IndexCard lIndexCard = null;
+            IIndexCard lIndexCard = null;
 
             if (pIndexCard.Id != null)
             {
@@ -324,7 +324,7 @@ namespace Memosport.Controllers
         /// <remarks> Doetsch, 18.12.19. </remarks>
         /// <param name="pIndexCard"> The index card. </param>
         /// <returns> An IndexCard. </returns>
-        private IndexCard CleanupIndexCardResponse(IndexCard pIndexCard)
+        private IIndexCard CleanupIndexCardResponse(IIndexCard pIndexCard)
         {
             // do not return files to the client
             pIndexCard.QuestionImageFile = null;

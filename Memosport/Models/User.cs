@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Memosport.Models
 {
-    public class User
+    public class User : IUser
     {
         // all possible roles
         public enum Roles { 

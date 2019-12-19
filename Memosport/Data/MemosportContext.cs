@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Memosport.Models;
 
 namespace Memosport.Data
 {
@@ -16,8 +17,8 @@ namespace Memosport.Data
 
         }
 
-        public DbSet<Memosport.Models.User> Users { get; set; }
-        public DbSet<Memosport.Models.IndexCardBox> IndexCardBoxes { get; set; }
-        public DbSet<Memosport.Models.IndexCard> IndexCards { get; set; }
+        public DbSet<User> Users { get; set; }
+        public DbSet<IndexCardBox> IndexCardBoxes { get; set; }
+        public DbSet<IndexCard> IndexCards { get; set; }
     }
 }
