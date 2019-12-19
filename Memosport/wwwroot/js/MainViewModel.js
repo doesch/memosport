@@ -30,7 +30,8 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox"], func
         self.dataset = ko.observableArray(); // contains dataset
 
         // form data
-        self.box = ko.observable({ name: "Bitte wählen..." }); /* manual, auto */
+        self.boxPlaceholder = { name: "Bitte wählen..." };
+        self.box = ko.observable(self.boxPlaceholder); /* manual, auto */
         self.boxes = ko.observableArray(); // all available boxes
         self.known = ko.observable(localStorage.getItem('known') && localStorage.getItem('known') === 'true' ? true : false);
         self.order = ko.observable(localStorage.getItem('order') ? localStorage.getItem('order') : 'random');
@@ -997,11 +998,67 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox"], func
                     });
             });
 
+            let lBttnDelete = new tsLib.Button("Löschen", function() {
+
+                // show hour glass
+                let lSandtimer = new tsLib.Sandtimer();
+
+                // send delete
+                $.ajax({
+                    url: "/IndexCardBoxApi/" + self.editIndexCardBox().id,
+                    type: "DELETE",
+                    dataType: "json",
+                    beforeSend: function() {
+                        lSandtimer.show();
+                    },
+                    success: function (xhr) {
+
+                        let lIndexCardBox = new indexCardBox.IndexCardBox(xhr);
+
+                        // remove from dropdown list
+                        let lArr = self.boxes();
+                        for (let i = 0, len = lArr.length; i < len; i++) {
+                            if (lArr[i].id === lIndexCardBox.id) {
+
+                                lArr.splice(i, 1);
+                                self.boxes(lArr);
+                                break;
+                            }
+                        }
+
+                        // when indexboxcard currently selected, then remove
+                        if (self.box().id === self.editIndexCardBox().id) {
+
+                            // leave edit mode
+                            self.editMode(false);
+                            self.box(self.boxPlaceholder);
+                            self.currentIndexCard(new indexCard.IndexCard());
+                        }
+
+                        self.editIndexCardBox(null);
+
+                    }, complete: function() {
+
+                        // remove hour glass
+                        lSandtimer.close();
+                    }
+                });
+
+            });
+
             let lBttnCancel = new tsLib.Button("Abbrechen", function() {});
+
+            // concat all buttons
+            let lButtons = [lBttnSave, lBttnCancel];
+
+            // add delete button when it is not a new indexcardbox
+            if (self.editIndexCardBox().id !== null) {
+                lButtons.push(lBttnDelete);
+            }
 
             // get template
             var lTemplate = document.getElementById("index-card-box-form-template");
-            let lDialog = new tsLib.Dialog(lTemplate, lTitle, [lBttnSave, lBttnCancel]);
+            let lDialog = new tsLib.Dialog(lTemplate, lTitle, lButtons);
             lDialog.afterRenderCallback = function() { ko.applyBindings(GLOBAL.MainViewModel, this.mHtmlWindow); };
             lDialog.show();
 
