@@ -20,8 +20,7 @@ define(["require", "exports", "../lib/tsLib/tsLib"], function (require, exports,
             var _this = _super.call(this) || this;
             _this.id = null;
             _this.name = null;
-            _this.dalyreminder = null;
-            _this.monthlyreminder = null;
+            _this.userId = null;
             _super.prototype.autoConstructor.call(_this, pArgs);
             return _this;
         }

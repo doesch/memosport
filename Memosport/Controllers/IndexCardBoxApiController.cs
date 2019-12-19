@@ -62,6 +62,9 @@ namespace Memosport.Controllers
             lIndexCardBox.Created = DateTime.UtcNow;
             lIndexCardBox.Modified = DateTime.UtcNow;
 
+            // add Owner
+            lIndexCardBox.UserId = lUser.Id;
+
             // save in database
             _context.IndexCardBoxes.Add(lIndexCardBox);
             await _context.SaveChangesAsync();

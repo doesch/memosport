@@ -7,9 +7,9 @@ namespace Memosport.Models
 {
     public interface IIndexCardBox
     {
-        int Id { get; set; }
+        int? Id { get; set; }
 
-        int UserId { get; set; }
+        int? UserId { get; set; }
 
         string Name { get; set; }
 

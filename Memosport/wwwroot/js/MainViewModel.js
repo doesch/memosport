@@ -50,10 +50,13 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox"], func
         self.displaySource = ko.observable(false);
         self.step = ko.observable(); //restart, learn
 
-        // edit mode
+        // IndexCard edit mode
         self.editMode = ko.observable(false);
         self.editIndexCard = ko.observable(); // current editing index card
         self.editIndexCardIsLoading = ko.observable(false); // current state of saving
+
+        // IndeCardBox edit form
+        self.editIndexCardBox = ko.observable(); // current editing index card box
 
         // search window
         self.displaySearchWindow = ko.observable(false);
@@ -230,9 +233,13 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox"], func
 
                     var lTmpArr = [];
 
+                    // convert response into instances
                     for (var i = 0, len = data.length; i < len; i++) {
                         lTmpArr.push(new indexCardBox.IndexCardBox(data[i]));
                     }
+
+                    // sort by name
+                    lTmpArr.sort((a, b) => (a.name.toUpperCase() > b.name.toUpperCase()) ? 1 : -1);
 
                     // add all boxes to dropdown
                     self.boxes(lTmpArr);
@@ -599,9 +606,6 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox"], func
                     self.editIndexCardIsLoading(false);
                 }
             });
-
-
-
         };
 
         // delete an index card (button-click-event in edit mode)
@@ -918,28 +922,92 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox"], func
 
         // click on button to create a new index card box
         self.createNewIndexCardBoxClick = function () {
-            console.log("click");
 
+            // fill form with new indexcardbox
+            self.editIndexCardBoxForm(new indexCardBox.IndexCardBox());
+
+        };
+
+        // show form to create or edit an indexcardbox
+        self.editIndexCardBoxForm = function(pIndexCardBox) {
+
+            // validate argument
+            if (pIndexCardBox instanceof indexCardBox.IndexCardBox === false) {
+                throw new Error("Invalid Argument. Expected: IndexCardBox.");
+            }
+
+            // fill form
+            self.editIndexCardBox(pIndexCardBox);
 
             // show dialog
+            let lTitle = self.editIndexCardBox().id === null ? "Neue Box anlegen" : "Box bearbeiten";
 
             // create buttons
             let lBttnSave = new tsLib.Button("Speichern", function() {
 
-                // ToDo -oDoetsch: Save the IndexCardBox and show hour glass till response
-                // ToDo -oDoetsch: Load index card into the dropdown, sort and show form for "create new indexcard"
+                    // edit or create (new)
+                    let lHttpVerb = self.editIndexCardBox().id === null ? "POST" : "PUT";
+                    let lUri = "/IndexCardBoxApi";
 
+                    if (lHttpVerb === "PUT") {
+                        lUri += "/" + self.editIndexCardBox().id;
+                    }
+
+                    $.ajax({
+                        url: lUri,
+                        data: JSON.stringify(self.editIndexCardBox()),
+                        type: lHttpVerb,
+                        contentType: "application/json",
+                        dataType: "json",
+                        success: function(xhr) {
+
+                            let lIndexCardBox = new indexCardBox.IndexCardBox(xhr);
+
+                            // when new, then put into the list
+                            // when update, then replace in list
+
+                            // find position in list
+                            let lArr = self.boxes();
+                            let lPos = null;
+
+                            for (let i = 0, len = lArr.length; i < len; i++) {
+                                if (lArr[i].id === lIndexCardBox.id) {
+                                    lPos = i;
+                                    break;
+                                }
+                            }
+
+                            if (lPos === null) {
+                                // add new
+                                lArr.push(lIndexCardBox);
+                            } else {
+                                // replace
+                                lArr[lPos] = lIndexCardBox;
+                            }
+
+                            // sort by name
+                            lArr.sort((a, b) => (a.name.toUpperCase() > b.name.toUpperCase()) ? 1 : -1);
+
+                            // update dropdownlist
+                            self.boxes(lArr);
+
+                            // Select new box
+                            self.BoxSelected(self.boxes()[self.boxes().indexOf(lIndexCardBox)]);
+                        }
+                    });
             });
-            let lBttnCancel = new tsLib.Button("Abbrechen", function() { });
+
+            let lBttnCancel = new tsLib.Button("Abbrechen", function() {});
 
             // get template
             var lTemplate = document.getElementById("index-card-box-form-template");
-            let lDialog = new tsLib.Dialog(lTemplate, null, [lBttnSave, lBttnCancel]);
-            lDialog.afterRenderCallback = function () { ko.applyBindings(GLOBAL.MainViewModel, this.mHtmlWindow); };
+            let lDialog = new tsLib.Dialog(lTemplate, lTitle, [lBttnSave, lBttnCancel]);
+            lDialog.afterRenderCallback = function() { ko.applyBindings(GLOBAL.MainViewModel, this.mHtmlWindow); };
             lDialog.show();
 
             // set cursor into text field
-            // 
+            document.querySelector("#index-card-box-form-container input[name='name']").focus();
+
         };
     }
 });

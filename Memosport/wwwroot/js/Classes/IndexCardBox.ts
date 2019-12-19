@@ -5,8 +5,7 @@ export class IndexCardBox extends tsLib.HelperBase
 {
     id: number = null; // the id in the database
     name: string = null;
-    dalyreminder: any = null;
-    monthlyreminder: any = null;
+    userId: number = null;
 
     public constructor(pArgs: any)
     {
