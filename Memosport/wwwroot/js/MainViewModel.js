@@ -239,7 +239,7 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox"], func
 
                     // select last selected box when in cookie
                     var lId = tsLib.Cookie.read("selected-icb");
-                    if (lId != null) {
+                    if (lId !== null) {
                         // find in list
                         for (var ii = 0, lenn = lTmpArr.length; ii < lenn; ii++) {
                             if (lTmpArr[ii].id === lId) {
@@ -312,7 +312,7 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox"], func
 
                         // order random if set (default)
 
-                        if (self.order() == 'random') {
+                        if (self.order() === 'random') {
                             lTmpArr = self.randomArr(lTmpArr);
                         }
 
@@ -444,7 +444,7 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox"], func
         self.cleanImages = function () {
 
             var lElement = document.querySelector("div.img-mini-container img");
-            if (lElement != null) {
+            if (lElement !== null && typeof lElement !== "undefined") {
                 lElement.src = "//:0";
             }
         };
@@ -458,9 +458,7 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox"], func
             self.editForm(new indexCard.IndexCard(), true);
         };
 
-        /**
-         * user clicked on a text box to edit the index card
-         */
+        /// user clicked on a text box to edit the index card
         self.editForm = function (pIndexCard) {
 
             if (!(pIndexCard instanceof indexCard.IndexCard)) {
@@ -677,11 +675,7 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox"], func
             }
         };
 
-        /**
-         * changed the question image element
-         * @param pHtmlElement
-         * @constructor
-         */
+        ///changed the question image element
         self.QuestionImageChanged = function (pHtmlElement) {
 
             self.editIndexCard().questionImageFile(pHtmlElement.files[0]);
@@ -696,9 +690,7 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox"], func
             self.editIndexCard(self.editIndexCard());
         };
 
-        /**
-         * Audio file of question changed
-         */
+        /// Audio file of question changed
         self.QuestionAudioChanged = function (pHtmlElement) {
 
             self.editIndexCard().questionAudioFile(pHtmlElement.files[0]);
@@ -832,10 +824,7 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox"], func
             });
         };
 
-        /**
-         * edit an index card in search result
-         * @param pIndexCard
-         */
+        // Search index Card click event
         self.searchEditIndexCardClick = function (pIndexCard) {
             if (!(pIndexCard instanceof indexCard.IndexCard)) {
                 throw "Invalid argument. Expected type IndexCard.";                
@@ -882,7 +871,7 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox"], func
             // get file from clipboard
             for (var i = 0; i < lClipboardData.items.length; i++) {
                 // Skip content if not image
-                if (lClipboardData.items[i].type.indexOf(lFileType) == -1) {
+                if (lClipboardData.items[i].type.indexOf(lFileType) === -1) {
                     continue;
                 }
 
@@ -910,7 +899,7 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox"], func
                     self.editIndexCard().questionAudioFile(lPastedFile);
                     break;
                 case "ict-answer-audio-box":
-                    self.editIndexCard().questionAudioFile(lPastedFile);
+                    self.editIndexCard().answerAudioFile(lPastedFile);
                     break;
                 default:
                     throw new Error("invalid element id");
