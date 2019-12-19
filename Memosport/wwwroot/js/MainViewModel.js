@@ -1000,51 +1000,61 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox"], func
 
             let lBttnDelete = new tsLib.Button("Löschen", function() {
 
-                // show hour glass
-                let lSandtimer = new tsLib.Sandtimer();
+                // show propt and ask user to delete
+                
+                let lBttnConfirmDelete = new tsLib.Button("Löschen", function () {
 
-                // send delete
-                $.ajax({
-                    url: "/IndexCardBoxApi/" + self.editIndexCardBox().id,
-                    type: "DELETE",
-                    dataType: "json",
-                    beforeSend: function() {
-                        lSandtimer.show();
-                    },
-                    success: function (xhr) {
+                    // show hour glass
+                    let lSandtimer = new tsLib.Sandtimer();
 
-                        let lIndexCardBox = new indexCardBox.IndexCardBox(xhr);
+                    // send delete
+                    $.ajax({
+                        url: "/IndexCardBoxApi/" + self.editIndexCardBox().id,
+                        type: "DELETE",
+                        dataType: "json",
+                        beforeSend: function () {
+                            lSandtimer.show();
+                        },
+                        success: function (xhr) {
 
-                        // remove from dropdown list
-                        let lArr = self.boxes();
-                        for (let i = 0, len = lArr.length; i < len; i++) {
-                            if (lArr[i].id === lIndexCardBox.id) {
+                            let lIndexCardBox = new indexCardBox.IndexCardBox(xhr);
 
-                                lArr.splice(i, 1);
-                                self.boxes(lArr);
-                                break;
+                            // remove from dropdown list
+                            let lArr = self.boxes();
+                            for (let i = 0, len = lArr.length; i < len; i++) {
+                                if (lArr[i].id === lIndexCardBox.id) {
+
+                                    lArr.splice(i, 1);
+                                    self.boxes(lArr);
+                                    break;
+                                }
                             }
+
+                            // when indexboxcard currently selected, then remove
+                            if (self.box().id === self.editIndexCardBox().id) {
+
+                                // leave edit mode
+                                self.editMode(false);
+                                self.box(self.boxPlaceholder);
+                                self.currentIndexCard(new indexCard.IndexCard());
+                            }
+
+                            self.editIndexCardBox(null);
+
+                        }, complete: function () {
+
+                            // remove hour glass
+                            lSandtimer.close();
                         }
-
-                        // when indexboxcard currently selected, then remove
-                        if (self.box().id === self.editIndexCardBox().id) {
-
-                            // leave edit mode
-                            self.editMode(false);
-                            self.box(self.boxPlaceholder);
-                            self.currentIndexCard(new indexCard.IndexCard());
-                        }
-
-                        self.editIndexCardBox(null);
-
-                    }, complete: function() {
-
-                        // remove hour glass
-                        lSandtimer.close();
-                    }
+                    });
                 });
 
-            });
+                let lBttnConfirmCancel = new tsLib.Button("Abbrechen", function () { });
+
+                // show prompt now
+                new tsLib.MessageBox("Möchten Sie die Box wirklich löschen? Es werden alle Karteikarten darin gelöscht.", null, [lBttnConfirmDelete, lBttnConfirmCancel]).show();
+
+            }, "float-left"); // position button left
 
             let lBttnCancel = new tsLib.Button("Abbrechen", function() {});
 
