@@ -193,7 +193,7 @@ namespace Memosport.Controllers
                 return Forbid();
             }
 
-            // ToDo -oDoetsch: remove uploaded files
+            // remove uploaded files
             IndexCard.RemoveAllUploadedFiles(lIndexCard, _env.WebRootPath);
 
             _context.Remove(lIndexCard);

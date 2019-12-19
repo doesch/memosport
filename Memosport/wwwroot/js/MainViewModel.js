@@ -604,17 +604,19 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox"], func
 
         };
 
+        // delete an index card (button-click-event in edit mode)
         self.editDelete = function () {
 
             // show prompt
-            if (confirm("Möchtest du diese Karteikarte löschen?")) {
+            let lBttnDelete = new tsLib.Button("Löschen", function() {
+
                 // show buttons again
                 self.editIndexCardIsLoading(true);
 
                 $.ajax({
-                    url: "/IndexCard/delete",
+                    url: "/IndexCardApi/" + self.editIndexCard().id,
                     data: { pId: self.editIndexCard().id },
-                    type: "POST",
+                    type: "DELETE",
                     dataType: "json",
                     success: function (data) {
 
@@ -628,7 +630,7 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox"], func
                                 self.i(self.i() - 1);
                             }
 
-                            self.currentIndexCard(self.dataset()[self.i()])
+                            self.currentIndexCard(self.dataset()[self.i()]);
                             self.editMode(false);
                             self.setProgress();
                         }
@@ -638,7 +640,7 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox"], func
                         }
                     },
                     error: function () {
-                        alert("Could not save this post. Please try again later.");
+                        new tsLib.MessageBox("Could not delete this post. Please try again later.").show();
                     },
                     complete: function () {
 
@@ -646,7 +648,15 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox"], func
                         self.editIndexCardIsLoading(false);
                     }
                 });
-            }
+
+            });
+
+            let lBttnCancel = new tsLib.Button("Abbrechen", function () {
+                return false;
+            });
+
+            let lDialog = new tsLib.Dialog("Möchten Sie diese Karteikarte löschen?", null, [lBttnDelete, lBttnCancel]);
+            lDialog.show();
         };
 
         /**
