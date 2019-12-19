@@ -187,7 +187,7 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox"], func
         self.Init = function () {
 
             // when using back button (e.g. smartphone), warn user
-            window.onbeforeunload = function () { return "Möchten Sie den Trainier wirklich verlassen? Sie müssten beim nächsten mal von vorne beginnen."; };
+            // window.onbeforeunload = function () { return "Möchten Sie den Trainier wirklich verlassen? Sie müssten beim nächsten mal von vorne beginnen."; };
 
             // register paste event
             window.addEventListener("paste", function (pEvent) {
