@@ -25,11 +25,10 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "Clas
     function MainViewModel() {
 
         let self = this;
-        self.MyObservable = ko.observable();
 
-        self.dataset = ko.observableArray(); // contains dataset
+        self.dataset = ko.observableArray(); // contains all index cards for the current training instance
 
-        // form data
+        // Dropdown for boxes
         self.boxPlaceholder = { name: "Bitte wählen..." };
         self.box = ko.observable(self.boxPlaceholder); /* manual, auto */
         self.boxes = ko.observableArray(); // all available boxes
@@ -91,22 +90,35 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "Clas
                 }
                 
                 // save options
-                localStorage.getItem('options', JSON.stringify(self.ictOptions()));
+                localStorage.setItem('ictOptions', JSON.stringify(self.ictOptions()));
 
-                // restart app
-                self.restart();
+                // restart app when any box selected
+                if (self.box() instanceof indexCardBox.IndexCardBox) {
+                    self.restart();
+                }
             });
 
             let lButtonCancel = new tsLib.Button("Abbrechen", function() {
 
                 // cancel settings and apply cached options
-                self.ictOptions(new ictOptions.IctOptions(JSON.parse(localStorage.getItem('options'))));
+                self.ictOptions(new ictOptions.IctOptions(JSON.parse(localStorage.getItem('ictOptions'))));
             });
 
             var lTemplate = document.getElementById("ict-options-dialog-template");
 
             // show dialog
-            new tsLib.Dialog(lTemplate, "Einstellungen", [lButtonApply, lButtonCancel]).show();
+            let lDialog = new tsLib.Dialog(lTemplate, "Einstellungen", [lButtonApply, lButtonCancel]);
+            lDialog.afterRenderCallback = function () { ko.applyBindings(GLOBAL.MainViewModel, this.mHtmlWindow); };
+            lDialog.show();
+        };
+
+        // click on radio box for order
+        self.ictOptionOrderChanged = function(pOrder) {
+
+            self.ictOptions().order = pOrder;
+            self.ictOptions(self.ictOptions()); // trigger re-render
+
+            return true;
         };
 
         self.toggleJingle = function () {

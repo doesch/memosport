@@ -346,14 +346,14 @@
         <ul>
             <li>Reihenfolge:</li>
             <li>
-                <input type="radio" value="random" data-bind="checked: order" id="IndexCardTrainerOrderRandom" name="data[IndexCardTrainer][order]">
-                <label for="IndexCardTrainerOrderRandom" data-bind="css : {radioChecked : $root.order() === 'random'}">Zufall</label>
+                <input id="IndexCardTrainerOrderRandom" type="radio" data-bind="value: 0, checked: $root.ictOptions().order">
+                <label for="IndexCardTrainerOrderRandom" data-bind="css : {radioChecked : $root.ictOptions().order === 0}, click: function(){ $root.ictOptionOrderChanged(0); }">Zufall</label>
                 <br>
-                <input type="radio" value="descending" data-bind="checked: order" id="IndexCardTrainerOrderDescending" name="data[IndexCardTrainer][order]">
-                <label for="IndexCardTrainerOrderDescending" data-bind="css : {radioChecked : $root.order() === 'descending'}">Neuste</label>
+                <input id="IndexCardTrainerOrderDescending" type="radio" data-bind="value: 1, checked: $root.ictOptions().order">
+                <label for="IndexCardTrainerOrderDescending" data-bind="css : {radioChecked : $root.ictOptions().order === 1}, click: function(){ $root.ictOptionOrderChanged(1); }">Neuste</label>
                 <br>
-                <input type="radio" value="ascending" data-bind="checked: order" id="IndexCardTrainerOrderAscending" name="data[IndexCardTrainer][order]">
-                <label for="IndexCardTrainerOrderAscending" data-bind="css : {radioChecked : $root.order() === 'ascending'}">Älteste</label>
+                <input id="IndexCardTrainerOrderAscending" type="radio" data-bind="value: 2, checked: $root.ictOptions().order">
+                <label for="IndexCardTrainerOrderAscending" data-bind="css : {radioChecked : $root.ictOptions().order === 2}, click: function(){ $root.ictOptionOrderChanged(2); }">Älteste</label>
             </li>
         </ul>
         <div class="clearfix"></div>
@@ -363,7 +363,7 @@
             </li>
             <li>
                 <div class="input checkbox">
-                    <input id="IndexCardTrainerKnown" type="checkbox" data-bind="checked: known, css : {checkboxChecked : known}" />
+                    <input id="IndexCardTrainerKnown" type="checkbox" data-bind="checked: $root.ictOptions().known, css : {checkboxChecked : $root.ictOptions().known}" />
                     <label for="IndexCardTrainerKnown"></label>
                 </div>
             </li>
