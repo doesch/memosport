@@ -37,10 +37,7 @@ $(document).ready(function() {
 	 */
         
         $('#bttn-menu').click(function(e) {
-           
-            // close option menus (software) if open
-            $('#ict-form-container, #msmt-form-container, #msvt-form-container').css({display: 'none'});
-           
+
            $('#menu').toggle(); 
         });
         

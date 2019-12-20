@@ -53,12 +53,13 @@ namespace Memosport.Controllers
 
         /// <summary> (An Action that handles HTTP GET requests) gets data set. </summary>
         /// <remarks> Doetsch, 17.12.19. </remarks>
-        /// <param name="box"> Identifier for the box. </param>
-        /// <param name="known"> (Optional) True to known. </param>
-        /// <param name="order"> (Optional) The order. </param>
+        /// <param name="boxId">      Identifier for the box. </param>
+        /// <param name="ictOptions"> True to known. </param>
         /// <returns> An asynchronous result that yields the data set. </returns>
+        ///
+        /// ### <param name="order"> (Optional) The order. </param>
         [HttpGet("GetDataSet/{boxId}")]
-        public async Task<IActionResult> GetDataSet(int boxId, bool known = false, string order = "desc")
+        public async Task<IActionResult> GetDataSet(int boxId, [FromQuery]IctOptions ictOptions)
         {
             // get current User
             var lUser = base.GetCurrentUser(_context);
@@ -83,14 +84,14 @@ namespace Memosport.Controllers
             var lQuery = _context.IndexCards.Select(x => x).Where(x => x.IndexCardBoxId == boxId);
 
             // filter data by options
-            if (known == false)
+            if (ictOptions.Known == false)
             {
                 // add condition
                 lQuery = lQuery.Where(x => x.Known < 3);
             }
 
             // get order
-            if (order == "desc")
+            if (ictOptions.Order == Order.Newest)
             {
                 lQuery = lQuery.OrderByDescending(x => x.Created);
             }

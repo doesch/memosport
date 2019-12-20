@@ -6,6 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="wwwroot\js\Classes\IctOptions.ts" />
     <Content Remove="wwwroot\js\Classes\IndexCard.ts" />
     <Content Remove="wwwroot\js\Classes\IndexCardBox.ts" />
   </ItemGroup>
@@ -24,6 +25,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <TypeScriptCompile Include="wwwroot\js\Classes\IctOptions.ts" />
     <TypeScriptCompile Include="wwwroot\js\Classes\IndexCard.ts" />
     <TypeScriptCompile Include="wwwroot\js\Classes\IndexCardBox.ts" />
   </ItemGroup>

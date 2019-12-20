@@ -3,7 +3,7 @@ GLOBAL.Uploads = "/uploads/"; // upload path (e.g,. for images)
 GLOBAL.BlankImg = "data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs%3D"; // Blank Image
 GLOBAL.NoImg = "//:0"; // No image -> use alt text
 
-requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox"], function (tsLib, indexCard, indexCardBox) {
+requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "Classes/IctOptions"], function (tsLib, indexCard, indexCardBox, ictOptions) {
 
     // init knockout
     (function () {
@@ -33,8 +33,15 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox"], func
         self.boxPlaceholder = { name: "Bitte wählen..." };
         self.box = ko.observable(self.boxPlaceholder); /* manual, auto */
         self.boxes = ko.observableArray(); // all available boxes
-        self.known = ko.observable(localStorage.getItem('known') && localStorage.getItem('known') === 'true' ? true : false);
-        self.order = ko.observable(localStorage.getItem('order') ? localStorage.getItem('order') : 'random');
+
+        // options
+        if (localStorage.getItem('ictOptions') === null) { // use default options when nothing cached
+            localStorage.setItem('ictOptions', JSON.stringify(new ictOptions.IctOptions()));
+        }
+
+        // self.ictOptions is dedicated for the form
+        self.ictOptions = ko.observable(new ictOptions.IctOptions(JSON.parse(localStorage.getItem('ictOptions')))); 
+
         self.boxesShowDropdown = ko.observable(false); // if the dropdown is visible or not
         self.showQuestion = ko.observable(true); // toggles between question an answer
         self.currentIndexCard = ko.observable(new indexCard.IndexCard()); // current showing index card in trainer
@@ -68,16 +75,38 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox"], func
         self.Audio = null;
         self.AudioIsPlaying = ko.observable(false); // if the audio is currently playing
 
-        /*
-        * Toggle functions for Menu, jingle, image ...
-        */
-
-        self.toggleMenu = function () {
+        // Show Options diaclog
+        self.showOptionsDialog = function () {
 
             // close main menu if open
-            $('#menu').css({ display: 'none' });
+            document.querySelector("#menu").style.display = "none";
 
-            $('#ict-form-container').toggle();
+            // create buttons
+            let lButtonApply = new tsLib.Button("Anwenden", function() {
+
+                // write settings into cache
+                // validate shema
+                if (self.ictOptions() instanceof options.Options === false) {
+                    throw new Error("Invalid data type. Expected type: 'Options'");
+                }
+                
+                // save options
+                localStorage.getItem('options', JSON.stringify(self.ictOptions()));
+
+                // init app
+                self.start();
+            });
+
+            let lButtonCancel = new tsLib.Button("Abbrechen", function() {
+
+                // cancel settings and apply cached options
+                self.ictOptions(new ictOptions.IctOptions(JSON.parse(localStorage.getItem('options'))));
+            });
+
+            var lTemplate = document.getElementById("ict-options-dialog-template");
+
+            // show dialog
+            new tsLib.Dialog(lTemplate, "Einstellungen", [lButtonApply, lButtonCancel]).show();
         };
 
         self.toggleJingle = function () {
@@ -287,9 +316,6 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox"], func
 
         self.start = function () {
 
-            // close form if open
-            $('#ict-form-container').css({ display: 'none' });
-
             // set index back
             self.i(-1);
 
@@ -297,17 +323,15 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox"], func
         };
 
         self.loadData = function () {
-            var lConfigData = {
-                boxId: self.box().id,
-                known: self.known(),
-                order: self.order()
-            };
+
+            // get options
+            let lPayload = JSON.parse(localStorage.getItem('ictOptions'));
 
             // ajax call
             $.ajax({
                 url: "/IndexCardApi/GetDataSet/" + self.box().id,
                 type: 'get',
-                data: lConfigData,
+                data: lPayload,
                 dataType: 'json',
                 success: function (data) {
 
@@ -318,9 +342,8 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox"], func
                             lTmpArr.push(new indexCard.IndexCard(data[i]));
                         }
 
-                        // order random if set (default)
-
-                        if (self.order() === 'random') {
+                        // order 'random' if set (default)
+                        if (self.ictOptions().order === 0) {
                             lTmpArr = self.randomArr(lTmpArr);
                         }
 
@@ -1074,7 +1097,6 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox"], func
 
             // set cursor into text field
             document.querySelector("#index-card-box-form-container input[name='name']").focus();
-
         };
     }
 });
