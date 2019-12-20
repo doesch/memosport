@@ -1072,6 +1072,7 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "Clas
                                 self.editMode(false);
                                 self.box(self.boxPlaceholder);
                                 self.currentIndexCard(new indexCard.IndexCard());
+                                self.dataset([]); // clear datasets
                             }
 
                             self.editIndexCardBox(null);
