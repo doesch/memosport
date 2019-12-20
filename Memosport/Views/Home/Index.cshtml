@@ -6,11 +6,9 @@
 
 <div id="navigation-bar">
     <div id="navbar-container">
-        <button id="bttn-menu" class="bttn"><span class="icon icon-menu"></span><span class="bttn-icon-text remove-630px">Menü</span></button>
-
         @Html.Partial("_MainMenu")
         @Html.Partial("_IctNavBar")
-
+        <button id="bttn-menu" class="bttn"><span class="icon icon-menu"></span><span class="bttn-icon-text remove-630px">Menü</span></button>
         <div class="clearfix"></div>
 
     </div>
@@ -271,25 +269,14 @@
                 <!-- /ko -->
                 <!-- /ko -->
                 <!-- ko if: $root.editMode() == true -->
+                <div id="ict-edit-mode-additions-bar">
+                    <input type="text" data-bind="textInput: editIndexCard().source" placeholder="Quelle" />
+                    <input type="text" data-bind="textInput: editIndexCard().jingle" placeholder="Eselsbrücke">
 
-                <fieldset id="form-misc">
-                    <legend>Quelle</legend>
-                    <input type="text" data-bind="textInput: editIndexCard().source">
-                </fieldset>
-
-                <fieldset id="form-misc">
-                    <legend>Eselsbrücke</legend>
-                    <input type="text" data-bind="textInput: editIndexCard().jingle">
-                </fieldset>
-
-                <fieldset id="ict-fieldset-stats" class="text-align-center">
-                    <legend>Statistik</legend>
                     <span class="icon" data-bind="css: {'icon-thumb-up-green': editIndexCard().known > 2, 'icon-thumb-down-red': editIndexCard().known < 3}"></span>
                     <span data-bind="text: editIndexCard().known"></span>
-                </fieldset>
-
-                <hr />
-
+                </div>
+                
                 <div id="ict-edit-mode-bttn-footer">
                     <!-- ko if: $root.editIndexCardIsLoading() == false -->
                     <div style="float: right;">

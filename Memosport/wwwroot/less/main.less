@@ -9,7 +9,6 @@
 html {
 
     background-attachment: fixed;
-    background-color: #eee;
     /* background-image: repeating-linear-gradient(45deg, transparent, transparent 35px, rgba(255, 255, 255, 0.5) 35px, rgba(255, 255, 255, 0.5) 70px); */
     font-family: @GlobalFontFamily;
     color: #444;
@@ -221,7 +220,7 @@ td
 #page-container {
     margin: 0 auto;
     max-width: @PageContainerWidth;
-    padding: 0 @GlobalVMargin / 3;
+    margin: 0 @GlobalMargin / 3;
 }
 
 #login-bttn
@@ -377,8 +376,7 @@ td
     display: block;
     position: relative;   
     max-width: 100%;
-    box-shadow: 1px 1px 2px #777;
-    background-color: #F9F9F9;
+    margin: 0px @GlobalMargin / 3;
 }
 
 #navbar-container
@@ -389,7 +387,6 @@ td
     margin: 0px auto;
     position: relative;
     z-index: 5;
-    padding: 0 1%;
 }
 
 #menu
@@ -1682,9 +1679,7 @@ MajorSystem edit.ctp
 
 .software-container {
     position: relative;
-    box-shadow: 0 0 2px #777;
     background-color: white;
-    padding: @GlobalMargin;
 
     .ict-media-container {
         width: 100%;
@@ -1738,8 +1733,17 @@ MajorSystem edit.ctp
     }
 }
 
-#msvt-menu,
-#msmt-menu,
+#ict-edit-mode-additions-bar {
+    margin: @GlobalMargin 0px;
+
+    input[type="text"] {
+        margin-top: @GlobalMargin / 3 * 2;
+        width: 100%;
+        box-sizing: border-box;
+        padding: @GlobalMargin;
+    }
+}
+
 #ict-menu {
     width: 410px;
     margin: 0 auto;
@@ -1774,7 +1778,7 @@ MajorSystem edit.ctp
 }
 
 #ict-content {
-    margin: @GlobalMargin / 3 auto 0px auto;
+    margin: 0px auto 0px auto;
     max-width: 410px;
     position: relative;
     z-index: 3;
@@ -1798,11 +1802,6 @@ MajorSystem edit.ctp
 }
 
 
-.msmt-question-container {
-    display: none;
-}
-
-.msvt-result-container,
 .ict-result-container {
     background-color: white;
     height: 160px;
@@ -1815,21 +1814,11 @@ MajorSystem edit.ctp
     border: solid 1px #ccc;
 }
 
-.msvt-question-container,
-.msmt-question-container,
-.msvt-result-container,
-.msvt-result-container {
-    height: 50px;
-    line-height: 50px;
-}
-
-.msvt-question-container .question,
 .ict-question-container .question {
     font-size: 36px;
     color: #454545;
 }
 
-#msvt-bttn-pointer,
 #ict-bttn-pointer {
     position: absolute;
     z-index: 2;
@@ -1876,6 +1865,7 @@ textarea.ict-question-answer-text {
 }
 
 #main-bttn-outer-container {
+    margin-top: @GlobalMargin / 3 * 2;
     display: block;
     width: 100%;
     text-align: center;
@@ -2155,9 +2145,9 @@ textarea.ict-question-answer-text {
 
 #ict-boxes-dropdown-bttn {
     width: 150px;
-    border: solid 1px #777777 !important;
+    border: @GlobalBorderControls !important;
+    border-radius: @GlobalBorderRadius;
     background-color: white !important;
-    border-radius: 0px;
     box-shadow: none;
     overflow: hidden;
     color: @GlobalFontColor !important;

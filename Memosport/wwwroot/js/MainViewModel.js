@@ -251,11 +251,13 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "Clas
             document.getElementById('bttn-menu').addEventListener("click", function (e) {
 
                 // close option menu if open
-                document.getElementById('ict-form-container').style.display = "none";
-
-                let lMenuElement = document.getElementById('menu');
+                let lElement = document.getElementById('ict-form-container')
+                if ( lElement !== null) {
+                    lElement.style.display = "none";
+                }
 
                 // toggle menu item
+                let lMenuElement = document.getElementById('menu');
                 lMenuElement.style.display = lMenuElement.style.display === "block" ? "none" : "block";
 
             });
