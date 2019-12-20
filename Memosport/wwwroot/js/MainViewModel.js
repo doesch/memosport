@@ -86,15 +86,15 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "Clas
 
                 // write settings into cache
                 // validate shema
-                if (self.ictOptions() instanceof options.Options === false) {
+                if (self.ictOptions() instanceof ictOptions.IctOptions === false) {
                     throw new Error("Invalid data type. Expected type: 'Options'");
                 }
                 
                 // save options
                 localStorage.getItem('options', JSON.stringify(self.ictOptions()));
 
-                // init app
-                self.start();
+                // restart app
+                self.restart();
             });
 
             let lButtonCancel = new tsLib.Button("Abbrechen", function() {

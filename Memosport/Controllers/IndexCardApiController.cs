@@ -56,8 +56,6 @@ namespace Memosport.Controllers
         /// <param name="boxId">      Identifier for the box. </param>
         /// <param name="ictOptions"> True to known. </param>
         /// <returns> An asynchronous result that yields the data set. </returns>
-        ///
-        /// ### <param name="order"> (Optional) The order. </param>
         [HttpGet("GetDataSet/{boxId}")]
         public async Task<IActionResult> GetDataSet(int boxId, [FromQuery]IctOptions ictOptions)
         {
