@@ -578,7 +578,7 @@ input[type="submit"] {
     margin: 0 0 @GlobalVMargin / 3 0;
     padding: 0px 10px;
     text-align: center;
-    background-color: #777777;
+    background-color: @GlobalButtonBgColor;
     color: white !important;
     text-decoration: none;
     /*
@@ -603,10 +603,13 @@ button, input[type="submit"]
 }
 
 .bttn:hover,
-input[type="submit"]:hover
-{
+input[type="submit"]:hover {
+    &:not(#ict-bttn-unknown, #ict-bttn-known)
+    {
+        background-color: @GlobalButtonBgColorHover !important;
+    }
+
     cursor: pointer;
-    background-color: #555555 !important;
 }
 
 button:disabled,
