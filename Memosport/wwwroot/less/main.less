@@ -218,8 +218,7 @@ td
 }
 
 #page-container {
-    margin: 0 auto;
-    max-width: @PageContainerWidth;
+    max-width: 100%;
     margin: 0 @GlobalMargin / 3;
 }
 
@@ -233,10 +232,10 @@ td
 
 
 #content,
-#startpage-content-container
-{
+#startpage-content-container {
     padding: 0;
     margin: 0px auto;
+    max-width: @PageContainerWidth;
 }
 
 #content
@@ -1778,7 +1777,6 @@ MajorSystem edit.ctp
 }
 
 #ict-content {
-    margin: 0px auto 0px auto;
     max-width: 410px;
     position: relative;
     z-index: 3;
