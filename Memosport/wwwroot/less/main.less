@@ -119,19 +119,18 @@ label:hover
     cursor: pointer;
 }
 
-textarea, input
-{
+textarea, input {
     font-family: Arial;
     font-size: @GlobalFontSize;
     /* border: none; */
+    border-radius: @GlobalBorderRadius;
 }
 
-textarea
-{
+input[type="text"],
+textarea {
     resize: none;
-    border: none;
-    border: 1px solid #999999;
-    padding: @GlobalFontSize / 2;
+    padding: @GlobalMargin / 3;
+    border: @GlobalBorderControls;
 }
 
 table
@@ -1847,6 +1846,7 @@ textarea.ict-question-answer-text {
     -moz-box-sizing: border-box;
     box-sizing: border-box;
     height: 220px;
+    border-radius: @GlobalBorderRadius;
 }
 
 .bttn-jingle,
@@ -2247,7 +2247,7 @@ textarea.ict-question-answer-text {
         line-height: normal;
         text-align: left;
         font-size: 13px;
-        height: 98%; /* 100% - padding*/
+        height: 100%;
         text-align: left;
 
         .ict-text-container {
@@ -2282,7 +2282,8 @@ textarea.ict-question-answer-text {
             width: 100px;
             height: 100px !important;
             line-height: 99px;
-            border: solid 1px #999999;
+            border: @GlobalBorderControls;
+            border-style: dashed;
             text-align: center;
             overflow: hidden;
             background-color: white;
