@@ -12,6 +12,7 @@
 @GlobalBorderRadius: 3px;
 @GlobalBarHeight: 45px; // height of the top bar in software
 @GlobalHoverBgColor: #ccc;
+@GlobalSelectedBorderColor: #ccc - #222;
 @GlobalBorderColor: #ccc;
 @GlobalButtonBgColor: #777;
 @GlobalButtonBgColorHover: #555;
@@ -21,7 +22,7 @@
 {
   position: absolute;
   top: @GlobalBarHeight;
-  width: @GlobalDropDownWidth;
+  min-width: @GlobalDropDownWidth;
   left: 1%;
   margin: 0;
   border-top:  solid 1px @GlobalBorderColor;

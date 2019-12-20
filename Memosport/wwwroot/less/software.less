@@ -659,42 +659,41 @@ textarea.ict-question-answer-text
     white-space: nowrap;
 }
 
-#ict-boxes-dropdown-list-container
-{
+#ict-boxes-dropdown-list-container {
     .dropdown-menu;
 
-    #ict-boxes-dropdown-scroll-container
-    {
+    .selected-box {
+        border-left: solid 5px @GlobalSelectedBorderColor;
+        background-color: #f0f0f0;
+    }
+
+    #ict-boxes-dropdown-scroll-container {
         overflow-y: scroll;
     }
 
-    .ict-boxes-dropdown-listitem
-    {
+    .ict-boxes-dropdown-listitem {
         @PaddingY: 5px;
-        @Height : @GlobalButtonHeight + @PaddingY + @PaddingY;
+        @Height: @GlobalButtonHeight + @PaddingY + @PaddingY;
 
         line-height: @Height;
         height: @Height;
         border-bottom: 1px solid @GlobalBorderColor;
         padding: 0px @PaddingY;
 
-        &:hover
-        {
+        &:hover {
             cursor: pointer;
             background-color: @GlobalHoverBgColor;
         }
 
         @ButtonWidth: 35px;
 
-        .ict-boxes-dropdown-listitem-col-1
-        {
+        .ict-boxes-dropdown-listitem-col-1 {
             float: left;
-            width: @GlobalDropDownWidth - @ButtonWidth - 30px;
+            min-width: @GlobalDropDownWidth - @ButtonWidth - 30px;
             text-overflow: ellipsis;
         }
 
-        .ict-boxes-dropdown-listitem-col-2
-        {
+        .ict-boxes-dropdown-listitem-col-2 {
             float: right;
         }
     }
