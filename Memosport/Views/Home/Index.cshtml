@@ -31,7 +31,7 @@
 
                 <!-- ko if: $root.step() == 'restart' -->
                 <div id="mvmt-no-data-container" style="text-align: center;">
-                    <p>Herzlichen Glückwunsch. <br /> Sie haben all <strong data-bind="text: $root.dataset().length"></strong> Karteikarten durchgearbeitet.</p>
+                    <p>Herzlichen Glückwunsch. <br /> Sie haben alle <strong data-bind="text: $root.dataset().length"></strong> Karteikarten durchgearbeitet.</p>
                     <button class="bttn" data-bind="click: restart"><span class="icon icon-restart"></span><span class="bttn-icon-text">Neustart</span></button>
                 </div>
                 <!-- /ko -->
@@ -331,7 +331,7 @@
 <script id="ict-options-dialog-template" type="text/html">
     <div id="ict-options-dialog-container" class="list-table software">
         <ul>
-            <li>Reihenfolge:</li>
+            <li class="col-1">Reihenfolge:</li>
             <li>
                 <input id="IndexCardTrainerOrderRandom" type="radio" data-bind="value: 0, checked: $root.ictOptions().order">
                 <label for="IndexCardTrainerOrderRandom" data-bind="css : {radioChecked : $root.ictOptions().order === 0}, click: function(){ $root.ictOptionOrderChanged(0); }">Zufall</label>
@@ -345,8 +345,8 @@
         </ul>
         <div class="clearfix"></div>
         <ul>
-            <li>
-                <label for="IndexCardTrainerKnown">Zeige zusätzlich gelernte Karteikarten (3 grüne Daumen) an.</label>
+            <li class="col-1">
+                <label for="IndexCardTrainerKnown">Zeige gelernte Karteikarten an (3 grüne Daumen).</label>
             </li>
             <li>
                 <div class="input checkbox">

@@ -477,7 +477,7 @@ td
             
             &:hover
             {
-                background-color: #ccc !important;
+                background-color: @GlobalHoverBgColor !important;
             }  
         }
     }
@@ -603,8 +603,8 @@ button, input[type="submit"]
 }
 
 .bttn:hover,
+.dialog-window button:hover,
 input[type="submit"]:hover {
-
     background-color: @GlobalButtonBgColorHover !important;
     cursor: pointer;
 }
@@ -2417,6 +2417,21 @@ textarea.ict-question-answer-text {
                     text-align: right;
                 }
             }
+        }
+    }
+}
+
+#ict-options-dialog-container {
+
+    ul {
+        margin: @GlobalMargin 0px 0px 0px;
+
+        li {
+            margin: 0px @GlobalMargin 0px 0px;
+        }
+
+        li.col-1 {
+            width: 150px;
         }
     }
 }
