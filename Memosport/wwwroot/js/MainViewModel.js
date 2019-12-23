@@ -51,10 +51,6 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "Clas
 
         // save the actual answer
         self.answer = ko.observable('');
-        self.displayJingle = ko.observable(false);
-        self.displayQuestionImage = ko.observable(false);
-        self.displayAnswerImage = ko.observable(false);
-        self.displaySource = ko.observable(false);
         self.step = ko.observable(); //restart, learn
 
         // IndexCard edit mode
@@ -122,19 +118,37 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "Clas
         };
 
         self.toggleJingle = function () {
-            self.displayJingle(self.displayJingle() ? false : true);
+            let lTemplate = document.getElementById("ict-dialog-jingle-template");
+            let lDialog = new tsLib.Dialog(lTemplate, "Eselsbrücke");
+
+            lDialog.afterRenderCallback = function () { ko.applyBindings(GLOBAL.MainViewModel, this.mHtmlWindow); };
+            lDialog.show();
         };
 
         self.toggleQuestionImage = function () {
-            self.displayQuestionImage(self.displayQuestionImage() ? false : true);
+            let lTemplate = document.getElementById("ict-dialog-question-image");
+            let lDialog = new tsLib.Dialog(lTemplate, "Bild zur Frage");
+
+            lDialog.afterRenderCallback = function () { ko.applyBindings(GLOBAL.MainViewModel, this.mHtmlWindow); };
+            lDialog.show();
         };
 
         self.toggleAnswerImage = function () {
-            self.displayAnswerImage(self.displayAnswerImage() ? false : true);
+            let lTemplate = document.getElementById("ict-dialog-answer-image");
+            let lDialog = new tsLib.Dialog(lTemplate, "Bild zur Antwort");
+
+            lDialog.afterRenderCallback = function () { ko.applyBindings(GLOBAL.MainViewModel, this.mHtmlWindow); };
+            lDialog.show();
         };
 
+        // show the source of the index card
         self.toggleShowSource = function () {
-            self.displaySource(self.displaySource() ? false : true);
+
+            let lTemplate = document.getElementById("ict-dialog-source-template");
+            let lDialog = new tsLib.Dialog(lTemplate, "Quelle");
+
+            lDialog.afterRenderCallback = function () { ko.applyBindings(GLOBAL.MainViewModel, this.mHtmlWindow); };
+            lDialog.show();
         };
 
         self.boxesToggleShowDropdown = function () {

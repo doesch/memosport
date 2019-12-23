@@ -2,21 +2,18 @@
     ViewData["Title"] = "Indexcard Trainer";
 }
 
-<!-- navigation -->
 
-<div id="navigation-bar">
-    <div id="navbar-container">
-        @Html.Partial("_MainMenu")
-        @Html.Partial("_IctNavBar")
-        <button id="bttn-menu" class="bttn"><span class="icon icon-menu"></span><span class="bttn-icon-text remove-630px">Menü</span></button>
-        <div class="clearfix"></div>
-
-    </div>
-</div>
-
-<!-- /navigation -->
 
 <div id="page-container">
+    <div id="navigation-bar">
+        <div id="navbar-container">
+            @Html.Partial("_MainMenu")
+            @Html.Partial("_IctNavBar")
+            <button id="bttn-menu" class="bttn"><span class="icon icon-menu"></span><span class="bttn-icon-text remove-630px">Menü</span></button>
+            <div class="clearfix"></div>
+
+        </div>
+    </div>
     <div id="content">
 
         @*show flash messages here*@
@@ -63,43 +60,6 @@
                             </div>
                         </div>
                         <!-- /ko -->
-                        <!-- ko if: $root.displayJingle() && $root.editMode() == false -->
-                        <div class="jingle-container">
-                            <button class="bttn bttn-icon bttn-close" data-bind="click: toggleJingle"><span class="icon icon-cancel"></span></button>
-                            <h2>Eselsbrücke</h2>
-                            <div class="jingle-content" data-bind="text: $root.currentIndexCard().jingle"></div>
-                        </div>
-                        <!-- /ko -->
-                        <!-- ko if: $root.displayQuestionImage() && $root.editMode() == false -->
-                        <div class="question-image-container">
-                            <button class="bttn bttn-icon bttn-close" data-bind="click: toggleQuestionImage"><span class="icon icon-cancel"></span></button>
-                            <h2>Bild zur Frage:</h2>
-                            <div class="question-image-content">
-                                <!-- ko if: $root.currentIndexCard().questionImageUrl != null -->
-                                <img alt="Lade Bild..." data-bind="attr : {src: GLOBAL.Uploads + $root.currentIndexCard().questionImageUrl}" />
-                                <!-- /ko -->
-
-                            </div>
-                        </div>
-                        <!-- /ko -->
-                        <!-- ko if: $root.displayAnswerImage() && $root.editMode() == false -->
-                        <div class="answer-image-container">
-                            <button class="bttn bttn-icon bttn-close" data-bind="click: toggleAnswerImage"><span class="icon icon-cancel"></span></button>
-                            <h2>Bild zur Antwort:</h2>
-                            <!-- ko if: $root.currentIndexCard().answerImageUrl != null -->
-                            <img alt="Lade Bild..." data-bind="attr : {src: GLOBAL.Uploads + $root.currentIndexCard().answerImageUrl}" />
-                            <!-- /ko -->
-
-                        </div>
-                        <!-- /ko -->
-                        <!-- ko if: $root.displaySource() && $root.editMode() == false -->
-                        <div class="ict-source-container">
-                            <button class="bttn bttn-icon bttn-close" data-bind="click: toggleShowSource"><span class="icon icon-cancel"></span></button>
-                            <h2>Quelle:</h2>
-                            <span data-bind="text: $root.currentIndexCard().source"></span>
-                        </div>
-                        <!-- /ko -->
-
                         <div class="question-answer-container">
                             <div class="ict-question-container" data-bind="css: {'z-index-1' : $root.showQuestion()}">
 
@@ -278,7 +238,7 @@
                     <span class="icon" data-bind="css: {'icon-thumb-up-green': editIndexCard().known > 2, 'icon-thumb-down-red': editIndexCard().known < 3}"></span>
                     <span data-bind="text: editIndexCard().known"></span>
                 </div>
-                
+
                 <div id="ict-edit-mode-bttn-footer">
                     <!-- ko if: $root.editIndexCardIsLoading() == false -->
                     <div style="float: right;">
@@ -360,6 +320,37 @@
     </div>
 </script>
 
+<script id="ict-dialog-question-image" type="text/html">
+    <div class="ict-question-image-dialog">
+        <div class="question-image-content">
+            <!-- ko if: $root.currentIndexCard().questionImageUrl != null -->
+            <img alt="Lade Bild..." data-bind="attr : {src: GLOBAL.Uploads + $root.currentIndexCard().questionImageUrl}" />
+            <!-- /ko -->
+        </div>
+    </div>
+</script>
+
+<script id="ict-dialog-answer-image" type="text/html">
+    <div class="ict-answer-image-dialog">
+        <div class="answer-image-content">
+            <!-- ko if: $root.currentIndexCard().answerImageUrl != null -->
+            <img alt="Lade Bild..." data-bind="attr : {src: GLOBAL.Uploads + $root.currentIndexCard().answerImageUrl}" />
+            <!-- /ko -->
+        </div>
+    </div>
+</script>
+
+<script id="ict-dialog-source-template" type="text/html">
+    <div id="ict-dialog-source">
+        <span data-bind="text: $root.currentIndexCard().source"></span>
+    </div>
+</script>
+
+<script id="ict-dialog-jingle-template" type="text/html">
+    <div id="ict-dialog-jingle">@*  *@
+        <span data-bind="text: $root.currentIndexCard().jingle"></span>
+    </div>
+</script>
 
 <script type="text/javascript" src="@Url.Content("~/js/lib/jquery.js")"></script>
 <script type="text/javascript" src="@Url.Content("~/js/lib/knockout.js")"></script>
