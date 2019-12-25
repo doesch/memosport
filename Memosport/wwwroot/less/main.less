@@ -378,14 +378,29 @@ td
     margin: 0px;
 }
 
-#navbar-container
-{
+#navbar-container {
     height: @GlobalBarHeight;
     line-height: @GlobalBarHeight;
     width: 100%;
     margin: 0px auto;
     position: relative;
     z-index: 5;
+
+    #ict-progress-menu-container {
+        position: absolute;
+        left: 0;
+        top: 0;
+        background-color: white;
+        width: 100%;
+        height: 100%;
+        z-index: 1;
+
+        #ict-progress-menu {
+            position: absolute;
+            left: 0;
+            margin-left: (@IctMaxImagWidth / 2) - @GlobalButtonHeight * 2;
+        }
+    }
 }
 
 #menu
@@ -2051,23 +2066,6 @@ textarea.ict-question-answer-text {
         &:hover {
             cursor: pointer;
         }
-
-        #ict-progress-bttn-bubble-container {
-            position: absolute;
-            left: 50%;
-            bottom: 1px;
-            z-index: 1;
-
-            #ict-progress-bttn-bubble {
-                position: relative;
-                left: -50%;
-                background-color: white;
-                border: solid 1px @GlobalBorderColor;
-                border-radius: @GlobalBorderRadius;
-                box-shadow: @GlobalBoxShadow;
-                padding: 2px 2px 0px 2px;
-            }
-        }
     }
 
     #ict-known-info-container {
@@ -2081,13 +2079,7 @@ textarea.ict-question-answer-text {
     }
 }
 
-// do only show on auto mode
-#msmt-sandclock-container,
-#msvt-sandclock-container {
-    display: none;
-}
-
-#msmt-sandclock, #msvt-sandclock, #ict-progress {
+#ict-progress {
     width: 0%;
     height: 100%;
     background-color: #777777;

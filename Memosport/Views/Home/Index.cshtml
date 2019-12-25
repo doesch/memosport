@@ -11,7 +11,15 @@
             @Html.Partial("_IctNavBar")
             <button id="bttn-menu" class="bttn"><span class="icon icon-menu"></span><span class="bttn-icon-text remove-630px">Menü</span></button>
             <div class="clearfix"></div>
-
+            <!-- ko if: $root.showProgressButtonBubble() -->
+            <div id="ict-progress-menu-container">
+                <div id="ict-progress-menu">
+                    <button class="bttn" data-bind="click: MoveBackward, clickBubble: false;"><span class="icon icon-arrow-left"></span></button>
+                    <button class="bttn" data-bind="click: MoveForward, clickBubble: false;"><span class="icon icon-arrow-right"></span></button>
+                    <button class="bttn" data-bind="click: function() { $root.showProgressButtonBubble(false); }, clickBubble: false;"><span class="icon icon-cancel"></span></button>
+                </div>
+            </div>
+            <!-- /ko -->
         </div>
     </div>
     <div id="content">
@@ -43,17 +51,6 @@
                                 <div id="ict-progress">
                                     <span class="text" data-bind="text: ($root.i() + 1) + '&#47;' + $root.dataset().length"></span>
                                 </div>
-
-                                <!-- ko if: $root.showProgressButtonBubble() -->
-                                <div id="ict-progress-bttn-bubble-container">
-                                    <div id="ict-progress-bttn-bubble">
-                                        <button class="bttn" data-bind="click: MoveBackward, clickBubble: false;"><span class="icon icon-arrow-left"></span></button>
-                                        <button class="bttn" data-bind="click: MoveForward, clickBubble: false;"><span class="icon icon-arrow-right"></span></button>
-                                        <button class="bttn" data-bind="click: function() { $root.showProgressButtonBubble(false); }, clickBubble: false;"><span class="icon icon-cancel"></span></button>
-                                    </div>
-                                </div>
-                                <!-- /ko -->
-
                             </div>
                             <div id="ict-known-info-container">
                                 <span data-bind="text: $root.currentIndexCard().known"></span>
