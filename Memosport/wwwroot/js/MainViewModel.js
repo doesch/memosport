@@ -205,7 +205,7 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "Clas
 
                     // assign events
                     self.Audio.onerror = function () {
-                        alert("Could not play the Audio File. Please try again later.");
+                        new tsLib.MessageBox("Das Audio-File konnte nicht abgespielt werden. Bitte versuchen Sie es später erneut.").show();
                     };
 
                     // the pause event triggered
@@ -403,7 +403,7 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "Clas
                     }
                 },
                 error: function (data) {
-                    alert('Fehler beim Laden des Lernsatzes');
+                    new tsLib.MessageBox("Unbekannter Fehler beim Laden des Lernsatzes").show();
                 }
             });
         };
@@ -526,7 +526,8 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "Clas
 
             // A box must be selected to relate the new card to an box
             if (!(self.box() instanceof indexCardBox.IndexCardBox)) {
-                alert("Bitte wähle einen Karteikasten aus.");
+
+                new tsLib.MessageBox("Bitte wählen Sie einen Karteikasten aus.").show();
 
                 if (self.boxesShowDropdown() === false) {
                     self.boxesToggleShowDropdown();
@@ -650,7 +651,7 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "Clas
                     self.setProgress();
                 },
                 error: function () {
-                    alert("Could not save this post. Please try again later.");
+                    new tsLib.MessageBox("Der Post konnte nicht gespeichert werden. Bitte versuchen Sie es später erneut.").show();
                 },
                 complete: function () {
 
