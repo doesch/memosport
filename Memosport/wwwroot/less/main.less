@@ -588,7 +588,7 @@ input[type="submit"] {
     position: relative;
     line-height: @GlobalButtonHeight;
     height: @GlobalButtonHeight;
-    margin: 0 0 @GlobalVMargin / 3 0;
+    margin: 0;
     padding: 0px 10px;
     text-align: center;
     background-color: @GlobalButtonBgColor;
@@ -1911,10 +1911,8 @@ textarea.ict-question-answer-text {
 }
 
 .jingle-container,
-#msvt-content .image-container,
 .question-image-container,
 .answer-image-container,
-#ict-search-window,
 .ict-source-container {
     display: none;
     position: absolute;
@@ -1937,11 +1935,6 @@ textarea.ict-question-answer-text {
         display: block;
     }
 }
-
-#ict-search-window {
-    display: block;
-}
-
 
 .jingle-container h2,
 #msvt-content .image-container h2,
@@ -2336,9 +2329,7 @@ textarea.ict-question-answer-text {
 }
 
 #ict-search-window {
-    top: 100%;
     min-height: 640px;
-    box-shadow: @GlobalBoxShadowDropDown;
 
     #ict-search-result-table {
         border-collapse: collapse;

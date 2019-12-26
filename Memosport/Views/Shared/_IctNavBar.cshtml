@@ -31,50 +31,5 @@
 </ul>
 <!-- /ko -->
 
-<!-- ko if: $root.displaySearchWindow() -->
-<div id="ict-search-window">
-
-    <button class="bttn bttn-icon bttn-close" data-bind="click: function(){ $root.toggleSearchWindow();};"><span class="icon icon-cancel"></span></button>
-    <form style="text-align: center; margin: 1%;">
-        <input id="ict-search-txt" type="text" />
-        <button id="ict-bttn-search-idc" data-bind="click: function(){ $root.searchIndexCard();};" class="bttn"><span class="icon icon-search"></span><span class="bttn-icon-text remove-630px">Suche</span></button>
-    </form>
-
-    <!-- ko if: $root.searchShowHourGlass() -->
-    <div style="text-align: center;">
-        <img src="/img/hour_glass.gif" alt="Loading..." style="text-align: center;" />
-    </div>
-    <!-- /ko -->
-    <!-- ko if: $root.searchResult().length > 0 -->
-    <table id="ict-search-result-table">
-        <thead>
-            <tr>
-                <th class="th col-1">Frage</th>
-                <th class="th col-2">Karteikasten</th>
-                <th class="th col-3">Gewusst</th>
-            </tr>
-        </thead>
-        <tbody class="tbody" data-bind="foreach: searchResult">
-            <tr class="tr" data-bind="click: function() { $root.searchEditIndexCardClick($data.IndexCard);}">
-                <td class="td col-1"><span data-bind="text: $data.IndexCard.question"></span></td>
-                <td class="td col-2"><span data-bind="text: $data.IndexCardBox.name"></span></td>
-                <td class="td col-3">
-                    <!-- ko if: $data.IndexCard.known < 3 -->
-                    <span class="icon icon-thumb-down-red"></span>
-                    <!-- /ko -->
-                    <!-- ko if: $data.IndexCard.known >= 3 -->
-                    <span class="icon icon-thumb-up-green"></span>
-                    <!-- /ko -->
-                    <span data-bind="text: $data.IndexCard.known"></span>
-
-                </td>
-            </tr>
-        </tbody>
-    </table>
-
-    <!-- /ko -->
-
-</div>
-<!-- /ko -->
 <button id="software-bttn-config" class="bttn" data-bind="click: showOptionsDialog"><span class="icon icon-options"></span><span class="bttn-icon-text remove-630px">Einstellungen</span></button>
 <button id="software-bttn-start" class="bttn" data-bind="click: start"><span class="icon icon-restart"></span><span class="bttn-icon-text remove-630px">Start</span></button>

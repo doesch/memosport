@@ -63,7 +63,6 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "Clas
         self.editIndexCardBox = ko.observable(); // current editing index card box
 
         // search window
-        self.displaySearchWindow = ko.observable(false);
         self.searchShowHourGlass = ko.observable(false);
         self.searchResult = ko.observableArray();
 
@@ -825,8 +824,10 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "Clas
          */
         self.searchBttnClick = function () {
 
-            // show window
-            self.displaySearchWindow(true);
+            let lTemplate = document.getElementById("ict-search-dialog");
+            let lDialog = new tsLib.Dialog(lTemplate); //pass callback that binds the knockout viewmodel it´s template
+            lDialog.afterRenderCallback = function () { ko.applyBindings(GLOBAL.MainViewModel, this.mHtmlWindow); };
+            lDialog.show();
 
             // set cursor into the field
             document.getElementById("ict-search-txt").focus();
@@ -1119,7 +1120,6 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "Clas
 
             // toggle menu
             self.mainMenuShowDropdown(!self.mainMenuShowDropdown());
-            console.log(self.mainMenuShowDropdown());
             // when show(), then align on x-axis
             if (self.mainMenuShowDropdown())
             {
@@ -1129,7 +1129,6 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "Clas
                 // calculate position for the menu
                 let lButtonOffsetRight = lButton.offsetLeft + lButton.offsetWidth;
                 let lTargetPosition = lButtonOffsetRight - lDropdownElement.clientWidth;
-                console.log(lDropdownElement.clientWidth);
                 lDropdownElement.style.left = lTargetPosition + "px";
             }
         };
