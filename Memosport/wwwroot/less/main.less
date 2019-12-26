@@ -126,6 +126,7 @@ textarea, input {
 }
 
 input[type="text"],
+input[type="password"],
 textarea {
     resize: none;
     padding: @GlobalMargin / 3;
@@ -2428,6 +2429,22 @@ textarea.ict-question-answer-text {
 
         li.col-1 {
             width: 150px;
+        }
+    }
+}
+
+#login-page-container {
+    max-width: 300px;
+    margin: 0px auto;
+
+    #login-form-container {
+        form {
+            input {
+                width: 100%;
+                box-sizing: border-box;
+                margin-top: @GlobalMargin / 3;
+                height: @GlobalButtonHeight;
+            }
         }
     }
 }

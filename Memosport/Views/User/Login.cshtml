@@ -3,11 +3,29 @@
     ViewData["Title"] = "Login";
 }
 
-<h1>Login</h1>
+<div id="login-page-container">
+    <h1>Login</h1>
 
-<form method="post" action="@Url.Action("Login", "User")">
-    <input type="text" name="email" />
-    <input type="password" name="password" />
-    <input type="submit" value="Login"/>
-</form>
+    <div id="login-form-container">
+
+        <form method="post" action="@Url.Action("Login", "User")">
+            <input id="login-input-email" type="text" name="email" placeholder="E-Mail"/><br />
+            <input id="login-input-password" type="password" name="password" placeholder="Passwort"/><br />
+            <input type="submit" value="LOGIN" />
+        </form>
+
+    </div>
+</div>
+
+<script>
+    (function () {
+
+        // set focus
+        document.getElementById("login-input-email").focus();
+
+    })();
+</script>
+
+
+
 
