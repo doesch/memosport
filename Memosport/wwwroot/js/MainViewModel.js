@@ -42,6 +42,7 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "Clas
         self.ictOptions = ko.observable(new ictOptions.IctOptions(JSON.parse(localStorage.getItem('ictOptions')))); 
 
         self.boxesShowDropdown = ko.observable(false); // if the dropdown is visible or not
+        self.mainMenuShowDropdown = ko.observable(false); // toggle dropdown of the main menu
         self.showQuestion = ko.observable(true); // toggles between question an answer
         self.currentIndexCard = ko.observable(new indexCard.IndexCard()); // current showing index card in trainer
         self.showProgressButtonBubble = ko.observable(false);
@@ -73,8 +74,7 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "Clas
         // Show Options diaclog
         self.showOptionsDialog = function () {
 
-            // close main menu if open
-            document.querySelector("#menu").style.display = "none";
+            // ToDo -oDoetsch: close main menu if open
 
             // create buttons
             let lButtonApply = new tsLib.Button("Anwenden", function() {
@@ -157,12 +157,12 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "Clas
 
             // when showing, then align the dropdown
             if (self.boxesShowDropdown()) {
-                var lNavbarContainerElement = document.getElementById("navbar-container");
-                var lControlElement = document.getElementById("ict-boxes-dropdown-bttn");
-                var lDropDownElement = document.getElementById("ict-boxes-dropdown-list-container");
-                var lDropDownScrollContainerElement = document.getElementById("ict-boxes-dropdown-scroll-container");
-                var lDropDownListElementNewBox = document.getElementById("ict-boxes-dropdown-listitem-new-box");
-                var lDropDownElementPositionLeft = 0; // the position of the dropdown element
+                let lNavbarContainerElement = document.getElementById("navbar-container");
+                let lControlElement = document.getElementById("ict-boxes-dropdown-bttn");
+                let lDropDownElement = document.getElementById("ict-boxes-dropdown-list-container");
+                let lDropDownScrollContainerElement = document.getElementById("ict-boxes-dropdown-scroll-container");
+                let lDropDownListElementNewBox = document.getElementById("ict-boxes-dropdown-listitem-new-box");
+                let lDropDownElementPositionLeft = 0; // the position of the dropdown element
 
                 lDropDownScrollContainerElement.style.height = "auto";
 
@@ -259,21 +259,6 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "Clas
             // remove class on click
             document.getElementById('software-bttn-start').addEventListener("click", function () {
                 tsLib.Style.removeClass(document.getElementById('software-bttn-start'), "mark-start-button");
-            });
-
-            // toggle menu
-            document.getElementById('bttn-menu').addEventListener("click", function (e) {
-
-                // close option menu if open
-                let lElement = document.getElementById('ict-form-container')
-                if ( lElement !== null) {
-                    lElement.style.display = "none";
-                }
-
-                // toggle menu item
-                let lMenuElement = document.getElementById('menu');
-                lMenuElement.style.display = lMenuElement.style.display === "block" ? "none" : "block";
-
             });
 
             // get Index Card Boxes into dropdown
@@ -1127,6 +1112,26 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "Clas
 
             // set cursor into text field
             document.querySelector("#index-card-box-form-container input[name='name']").focus();
+        };
+
+        /// click on menu button
+        self.menuBttnClick = function () {
+
+            // toggle menu
+            self.mainMenuShowDropdown(!self.mainMenuShowDropdown());
+            console.log(self.mainMenuShowDropdown());
+            // when show(), then align on x-axis
+            if (self.mainMenuShowDropdown())
+            {
+                let lDropdownElement = document.getElementById("menu");
+                let lButton = document.getElementById("bttn-menu");
+
+                // calculate position for the menu
+                let lButtonOffsetRight = lButton.offsetLeft + lButton.offsetWidth;
+                let lTargetPosition = lButtonOffsetRight - lDropdownElement.clientWidth;
+                console.log(lDropdownElement.clientWidth);
+                lDropdownElement.style.left = lTargetPosition + "px";
+            }
         };
     }
 });

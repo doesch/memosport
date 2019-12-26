@@ -7,9 +7,8 @@
 <div id="page-container">
     <div id="navigation-bar">
         <div id="navbar-container">
-            @Html.Partial("_MainMenu")
             @Html.Partial("_IctNavBar")
-            <button id="bttn-menu" class="bttn"><span class="icon icon-menu"></span><span class="bttn-icon-text remove-630px">Menü</span></button>
+            <button id="bttn-menu" class="bttn" data-bind="click: function() { $root.menuBttnClick();}"><span class="icon icon-menu"></span><span class="bttn-icon-text remove-630px">Menü</span></button>
             <div class="clearfix"></div>
             <!-- ko if: $root.showProgressButtonBubble() -->
             <div id="ict-progress-menu-container">
@@ -230,8 +229,7 @@
                 <!-- ko if: $root.editMode() == true -->
                 <div id="ict-edit-mode-additions-bar">
                     <input type="text" data-bind="textInput: editIndexCard().source" placeholder="Quelle" />
-                    <span class="icon" data-bind="css: {'icon-thumb-up-green': editIndexCard().known > 2, 'icon-thumb-down-red': editIndexCard().known < 3}"></span>
-                    <span data-bind="text: editIndexCard().known"></span>
+                    <input type="text" data-bind="textInput: editIndexCard().jingle" placeholder="Eselsbrücke">
                 </div>
 
                 <div id="ict-edit-mode-bttn-footer">
