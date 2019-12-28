@@ -11,6 +11,11 @@
     <WebStackScaffolding_ViewDialogWidth>600</WebStackScaffolding_ViewDialogWidth>
   </PropertyGroup>
   <ItemGroup>
+    <TypeScriptCompile Update="wwwroot\js\Classes\SearchResult.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+  </ItemGroup>
+  <ItemGroup>
     <TypeScriptCompile Update="wwwroot\js\Classes\IctOptions.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>

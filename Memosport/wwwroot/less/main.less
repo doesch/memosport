@@ -381,7 +381,7 @@ td
     height: @GlobalBarHeight;
     line-height: @GlobalBarHeight;
     width: 100%;
-    margin: 0px auto;
+    margin: 0px @GlobalMargin / 3;
     position: relative;
     z-index: 5;
 
@@ -1690,6 +1690,7 @@ MajorSystem edit.ctp
 }
 
 .software-container {
+    margin: 0px @GlobalMargin / 3;
     position: relative;
     background-color: white;
 
@@ -2438,4 +2439,11 @@ textarea.ict-question-answer-text {
             }
         }
     }
+}
+
+// the 'search' dialog
+div.ict-search-dialog-container
+{
+    width: 960px;
+    margin: @GlobalMargin / 3;
 }

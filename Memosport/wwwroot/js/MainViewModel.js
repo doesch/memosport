@@ -3,7 +3,7 @@ GLOBAL.Uploads = "/uploads/"; // upload path (e.g,. for images)
 GLOBAL.BlankImg = "data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs%3D"; // Blank Image
 GLOBAL.NoImg = "//:0"; // No image -> use alt text
 
-requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "Classes/IctOptions"], function (tsLib, indexCard, indexCardBox, ictOptions) {
+requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "Classes/IctOptions", "Classes/SearchResult"], function (tsLib, indexCard, indexCardBox, ictOptions, searchResult) {
 
     // init knockout
     (function () {
@@ -63,6 +63,7 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "Clas
         self.editIndexCardBox = ko.observable(); // current editing index card box
 
         // search window
+        self.searchDialog = null; // the search-dialog instance
         self.searchShowHourGlass = ko.observable(false);
         self.searchResult = ko.observableArray();
 
@@ -806,28 +807,14 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "Clas
         };
 
         /**
-         * toggle the search dialog window
-         */
-        self.toggleSearchWindow = function () {
-
-            self.displaySearchWindow(!self.displaySearchWindow());
-
-            // set cursor into search field
-            if (self.displaySearchWindow()) {
-                document.getElementById("ict-search-txt").focus();
-            }
-
-        };
-
-        /**
          * seachbttn clicked
          */
         self.searchBttnClick = function () {
 
             let lTemplate = document.getElementById("ict-search-dialog");
-            let lDialog = new tsLib.Dialog(lTemplate); //pass callback that binds the knockout viewmodel it´s template
-            lDialog.afterRenderCallback = function () { ko.applyBindings(GLOBAL.MainViewModel, this.mHtmlWindow); };
-            lDialog.show();
+            self.searchDialog = new tsLib.Dialog(lTemplate, null, null, "ict-search-dialog-container"); //pass callback that binds the knockout viewmodel it´s template
+            self.searchDialog.afterRenderCallback = function () { ko.applyBindings(GLOBAL.MainViewModel, this.mHtmlWindow); };
+            self.searchDialog.show();
 
             // set cursor into the field
             document.getElementById("ict-search-txt").focus();
@@ -851,8 +838,8 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "Clas
             self.searchShowHourGlass(true);
 
             $.ajax({
-                url: "/IndexCard/getlist",
-                data: { pBoxId: 0, pSearchstring: lSearchString },
+                url: "/IndexCardApi/search",
+                data: { pSearchstring: lSearchString },
                 type: "GET",
                 dataType: "json",
                 success: function (data) {
@@ -860,10 +847,7 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "Clas
                     // parse data
                     var lTmpArr = [];
                     for (var i = 0, len = data.length; i < len; i++) {
-                        lTmpArr.push({
-                            IndexCard: new indexCard.IndexCard(data[i].IndexCard),
-                            IndexCardBox: new indexCardBox.IndexCardBox(data[i].IndexCardBox)
-                        });
+                        lTmpArr.push(new searchResult.SearchResult(data[i]));
                     }
 
                     // render search
@@ -879,16 +863,18 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "Clas
 
         // Search index Card click event
         self.searchEditIndexCardClick = function (pIndexCard) {
+
             if (!(pIndexCard instanceof indexCard.IndexCard)) {
                 throw "Invalid argument. Expected type IndexCard.";                
             }
 
             // close search window
-            self.displaySearchWindow(false);
+            if (self.searchDialog !== null) {
+                self.searchDialog.close();
+            }
 
             // show in ict
             self.currentIndexCard(pIndexCard);
-
         };
 
         /*

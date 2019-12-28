@@ -9,6 +9,7 @@
     <Content Remove="wwwroot\js\Classes\IctOptions.ts" />
     <Content Remove="wwwroot\js\Classes\IndexCard.ts" />
     <Content Remove="wwwroot\js\Classes\IndexCardBox.ts" />
+    <Content Remove="wwwroot\js\Classes\SearchResult.ts" />
   </ItemGroup>
 
   <ItemGroup>
@@ -28,6 +29,7 @@
     <TypeScriptCompile Include="wwwroot\js\Classes\IctOptions.ts" />
     <TypeScriptCompile Include="wwwroot\js\Classes\IndexCard.ts" />
     <TypeScriptCompile Include="wwwroot\js\Classes\IndexCardBox.ts" />
+    <TypeScriptCompile Include="wwwroot\js\Classes\SearchResult.ts" />
   </ItemGroup>
 
   <ItemGroup>

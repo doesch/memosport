@@ -104,6 +104,48 @@ namespace Memosport.Controllers
             return Json(lResult);
         }
 
+        /// <summary>
+        /// Search index cards
+        /// </summary>
+        /// <param name="pSearchString"></param>
+        /// <returns></returns>
+        [HttpGet("search")]
+        public async Task<IActionResult> Index(string pSearchString)
+        {
+            // get current user
+            var lCurrentUser = GetCurrentUser(_context);
+
+            // prepare query
+            // we need to join index cards and boxes. The joined Record will be converted into an 'SearchResult' object.
+            var lQuery = _context.IndexCards
+                .Join(
+                    _context.IndexCardBoxes,
+                    IndexCard => IndexCard.IndexCardBoxId,
+                    IndexCardBox => IndexCardBox.Id,
+                    (IndexCard, IndexCardBox) => new SearchResult
+                    {
+                        IndexCard = IndexCard,
+                        IndexCardBox = IndexCardBox
+                    }
+                )
+                .OrderBy(x => x.IndexCard.Created)
+                .Where(x => x.IndexCardBox.UserId == lCurrentUser.Id) // filter out by current userid
+                .Select(x => x)
+                // now filter out by searchstring
+                .Where(
+                    x => x.IndexCard.Question.ToLower().Contains(pSearchString.ToLower()) ||
+                    x.IndexCard.Answer.ToLower().Contains(pSearchString.ToLower()) ||
+                    x.IndexCard.Jingle.ToLower().Contains(pSearchString.ToLower()) ||
+                    x.IndexCard.Source.ToLower().Contains(pSearchString.ToLower())
+                );
+
+            // execute query
+            var lSearchResult = await lQuery.ToListAsync();
+
+            // return created indexcard
+            return Json(lSearchResult);
+        }
+
         /// <summary> (An Action that handles HTTP PUT requests) indexes. </summary>
         /// <remarks> Doetsch, 18.12.19. </remarks>
         /// <param name="indexcard"> The indexcard. </param>
