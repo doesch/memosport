@@ -85,55 +85,55 @@ namespace Memosport.Controllers
             return RedirectToAction(nameof(Login));
         }
 
-        /// <summary> (An Action that handles HTTP POST requests) registers this instance. </summary>
-        /// <remarks> Doetsch, 16.12.19. </remarks>
-        /// <returns> An IActionResult. </returns>
-        [HttpGet]
-        public IActionResult Register()
-        {
-            return View();
-        }
+        ///// <summary> (An Action that handles HTTP POST requests) registers this instance. </summary>
+        ///// <remarks> Doetsch, 16.12.19. </remarks>
+        ///// <returns> An IActionResult. </returns>
+        //[HttpGet]
+        //public IActionResult Register()
+        //{
+        //    return View();
+        //}
 
-        [HttpPost]
-        public async Task<IActionResult> Register(string email, string password, string passwordConfirmation)
-        {
-            var lEmail = email.Trim();
-            var lPassword = password.Trim();
-            var lPasswordConfirmation = passwordConfirmation.Trim();
+        //[HttpPost]
+        //public async Task<IActionResult> Register(string email, string password, string passwordConfirmation)
+        //{
+        //    var lEmail = email.Trim();
+        //    var lPassword = password.Trim();
+        //    var lPasswordConfirmation = passwordConfirmation.Trim();
 
-            // ToDo: check format of email address
+        //    // ToDo: check format of email address
 
-            // ToDo: check if email address exists
-            if (_context.Users.SingleOrDefault(x => x.Email == lEmail) != null)
-            {
-                throw new Exception("Email already exists");
-            }
+        //    // ToDo: check if email address exists
+        //    if (_context.Users.SingleOrDefault(x => x.Email == lEmail) != null)
+        //    {
+        //        throw new Exception("Email already exists");
+        //    }
 
-            // ToDo: check password confirmation
-            if (lPassword != lPasswordConfirmation)
-            {
-                throw new Exception("Your password confirmation does not match!");
-            }
+        //    // ToDo: check password confirmation
+        //    if (lPassword != lPasswordConfirmation)
+        //    {
+        //        throw new Exception("Your password confirmation does not match!");
+        //    }
 
-            // ToDo: send email confirmation
+        //    // ToDo: send email confirmation
 
-            // create user
-            var lUser = new User();
-            lUser.Email = lEmail;
+        //    // create user
+        //    var lUser = new User();
+        //    lUser.Email = lEmail;
 
-            // create guid
-            var lGuid = Guid.NewGuid();
-            lUser.Guid = lGuid;
+        //    // create guid
+        //    var lGuid = Guid.NewGuid();
+        //    lUser.Guid = lGuid;
 
-            // hash password
-            lUser.Password = Helper.HashPassword(lPassword);
+        //    // hash password
+        //    lUser.Password = Helper.HashPassword(lPassword);
 
-            // save user
-            _context.Users.Add(lUser);
-            await _context.SaveChangesAsync();
+        //    // save user
+        //    _context.Users.Add(lUser);
+        //    await _context.SaveChangesAsync();
 
-            // show view
-            return View();
-        }
+        //    // show view
+        //    return View();
+        //}
     }
 }
