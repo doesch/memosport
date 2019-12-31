@@ -423,15 +423,22 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "Clas
                 self.currentIndexCard().known = 0;
             }
 
+            // convert into payload (formdata)
+            lFormData = self.indexCardToFormData(self.currentIndexCard());
+
             // ged id of current index card
             $.ajax({
                 type: 'put',
-                data: JSON.stringify(self.currentIndexCard()),
+                data: lFormData,
                 url: "/IndexCardApi/" + self.currentIndexCard().id,
-                contentType: "application/json",
+                contentType: false,
+                processData: false,
                 dataType: 'json',
                 success: function (data) {
 
+                },
+                error: function () {
+                    new tsLib.MessageBox("Das Setzen von 'gewusst' hat für diese Karteikarte leider nicht funktioniert. Bitte versuchen Sie es später erneut.").show();
                 }
             });
 
@@ -567,31 +574,8 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "Clas
                 lIndexCard.indexCardBoxId = self.box().id;
             }
 
-            // create post payload for form
-            let lFormData = new FormData();
-
-            // add data to formdata payload
-            for (let lProp in lIndexCard) {
-
-                // do not send properties which are null
-                if (lIndexCard[lProp] === null || typeof lIndexCard[lProp] === "function" && lIndexCard[lProp] === null) {
-                    continue;
-                }
-
-                // check also in observable
-                if (lIndexCard.hasOwnProperty(lProp) === true) {
-
-                    // assign data
-                    // distinguish between observable and not observable
-                    if (typeof lIndexCard[lProp] === "function") {
-                        // it´s an observable
-                        lFormData.append(lProp, lIndexCard[lProp]());
-                    }
-                    else {
-                        lFormData.append(lProp, lIndexCard[lProp]);
-                    }
-                }
-            }
+            // convert indexcard to payload
+            lFormData = self.indexCardToFormData(lIndexCard);
 
             // post or put. When there is no id then it is a new one.
             let lHttpVerb = typeof lIndexCard.id === "undefined" ? "POST" : "PUT";
@@ -644,6 +628,39 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "Clas
                     self.editIndexCardIsLoading(false);
                 }
             });
+        };
+
+        /// convert an indexcard to an FormData-payload
+        self.indexCardToFormData = function (pIndexCard) {
+
+            // create post payload for form
+            let lFormData = new FormData();
+
+            // add data to formdata payload
+            for (let lProp in pIndexCard) {
+
+                // do not send properties which are null
+                if (pIndexCard[lProp] === null || typeof pIndexCard[lProp] === "function" && pIndexCard[lProp] === null) {
+                    continue;
+                }
+
+                // check also in observable
+                if (pIndexCard.hasOwnProperty(lProp) === true) {
+
+                    // assign data
+                    // distinguish between observable and not observable
+                    if (typeof pIndexCard[lProp] === "function") {
+                        // it´s an observable
+                        lFormData.append(lProp, pIndexCard[lProp]());
+                    }
+                    else {
+                        lFormData.append(lProp, pIndexCard[lProp]);
+                    }
+                }
+            }
+
+            return lFormData;
+
         };
 
         // delete an index card (button-click-event in edit mode)
