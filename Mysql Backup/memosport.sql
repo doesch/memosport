@@ -31,7 +31,7 @@ CREATE TABLE `indexcardboxes` (
   PRIMARY KEY (`id`),
   KEY `FK_icb_users` (`userid`),
   CONSTRAINT `FK_icb_users` FOREIGN KEY (`userid`) REFERENCES `users` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -54,21 +54,21 @@ DROP TABLE IF EXISTS `indexcards`;
 CREATE TABLE `indexcards` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `indexcardboxid` int(11) NOT NULL,
-  `question` varchar(500) NOT NULL,
+  `question` varchar(500) DEFAULT NULL,
   `questionimageurl` varchar(256) DEFAULT NULL,
   `questionaudiourl` varchar(256) DEFAULT NULL,
-  `answer` varchar(500) NOT NULL,
+  `answer` varchar(500) DEFAULT NULL,
   `answerimageurl` varchar(256) DEFAULT NULL,
   `answeraudiourl` varchar(256) DEFAULT NULL,
-  `jingle` varchar(50) NOT NULL,
-  `source` varchar(128) NOT NULL,
+  `jingle` varchar(50) DEFAULT NULL,
+  `source` varchar(128) DEFAULT NULL,
   `known` int(9) NOT NULL DEFAULT '0',
   `created` datetime NOT NULL,
   `modified` datetime NOT NULL,
   PRIMARY KEY (`id`),
   KEY `FK_indexcard_indexcardbox` (`indexcardboxid`),
   CONSTRAINT `FK_indexcard_indexcardbox` FOREIGN KEY (`indexcardboxid`) REFERENCES `indexcardboxes` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=809 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=812 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -93,7 +93,7 @@ CREATE TABLE `users` (
   `guid` varchar(128) NOT NULL,
   `email` varchar(64) NOT NULL,
   `password` varchar(255) NOT NULL,
-  `role` varchar(20) NOT NULL DEFAULT 'regular',
+  `role` int(1) NOT NULL,
   `modified` datetime NOT NULL,
   `created` datetime NOT NULL,
   PRIMARY KEY (`id`)
@@ -106,7 +106,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (1,'','skewer@gmx.de','3522ec9347b6ee28dd4ea93561c54cf2b34d5d97','admin','0000-00-00 00:00:00','0000-00-00 00:00:00');
+INSERT INTO `users` VALUES (1,'3636a7e4-2dd6-4adc-ad42-db146dbc5753','skewer@gmx.de','dX3SeWDqwNlE8V/dszgYzPpQ1J+oFkhnDvMmeh12m9lkgk+e',0,'0000-00-00 00:00:00','0000-00-00 00:00:00');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -119,4 +119,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-12-31 10:49:39
+-- Dump completed on 2019-12-31 12:01:01
