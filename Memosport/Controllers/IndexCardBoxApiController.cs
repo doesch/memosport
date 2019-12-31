@@ -112,7 +112,7 @@ namespace Memosport.Controllers
         // delete
         [HttpDelete("{pId}")]
         // Example URI for DELETE: todos/1
-        public IActionResult Index(int pId)
+        public async Task<IActionResult> Index(int pId)
         {
             var lIndexCardBox = _context.IndexCardBoxes.Single(x => x.Id == pId);
             
@@ -131,13 +131,20 @@ namespace Memosport.Controllers
 
             // delete all index cards and uploads
             // loop all indexcards
-            var lIndexCards = _context.IndexCards.Select(x => x).Where(x => x.IndexCardBoxId == pId).ToList<IIndexCard>();
-            foreach (IIndexCard lIndexCard in lIndexCards)
+            var lIndexCards = _context.IndexCards.Select(x => x).Where(x => x.IndexCardBoxId == pId);
+            var lIndexCardsAsList = lIndexCards.ToList<IIndexCard>();
+            foreach (IIndexCard lIndexCard in lIndexCardsAsList)
             {
+                // removed dependen uploaded files
                 IndexCard.RemoveAllUploadedFiles(lIndexCard, _env.WebRootPath);
             }
-            
-            _context.Remove(lIndexCardBox);
+
+            // remove all indexcards
+            _context.IndexCards.RemoveRange(lIndexCards);
+            _context.SaveChanges();
+
+            // remove box
+            _context.IndexCardBoxes.Remove(lIndexCardBox);
             _context.SaveChanges();
 
             return Json(lIndexCardBox);
