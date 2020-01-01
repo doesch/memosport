@@ -55,7 +55,7 @@
                         </div>
                         <!-- /ko -->
                         <div class="question-answer-container">
-                            <div class="ict-question-container" data-bind="css: {'z-index-1' : $root.showQuestion()}">
+                            <div class="ict-question-container" data-bind="css: {'z-index-1 display-block' : $root.showQuestion()}">
 
                                 <!-- ko if: $root.editMode() == false -->
                                 <div class="ict-text-container" title="Bearbeiten" data-bind="click: function() { $root.editForm($root.currentIndexCard());}">
@@ -125,7 +125,7 @@
                                 <!-- /ko -->
                             </div>
 
-                            <div class="ict-result-container" data-bind="css: {'z-index-1' : !$root.showQuestion()}">
+                            <div class="ict-result-container" data-bind="css: {'z-index-1 display-block' : !$root.showQuestion()}">
 
                                 <!-- ko if: $root.editMode() == false -->
                                 <div class="ict-text-container" title="Bearbeiten" data-bind="click: function() { $root.editForm($root.currentIndexCard());}">
