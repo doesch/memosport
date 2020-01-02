@@ -247,7 +247,7 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "Clas
             // register paste event
             window.addEventListener("paste", function (pEvent) {
 
-                GlobalIctViewModel.PastedFile(pEvent);
+                GLOBAL.MainViewModel.PastedFile(pEvent);
 
             }, false);
 
