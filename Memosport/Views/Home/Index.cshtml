@@ -298,26 +298,6 @@
     </div>
 </script>
 
-<script id="ict-dialog-question-image" type="text/html">
-    <div class="ict-question-image-dialog">
-        <div class="question-image-content">
-            <!-- ko if: $root.currentIndexCard().questionImageUrl != null -->
-            <img alt="Lade Bild..." data-bind="attr : {src: GLOBAL.Uploads + $root.currentIndexCard().questionImageUrl}" />
-            <!-- /ko -->
-        </div>
-    </div>
-</script>
-
-<script id="ict-dialog-answer-image" type="text/html">
-    <div class="ict-answer-image-dialog">
-        <div class="answer-image-content">
-            <!-- ko if: $root.currentIndexCard().answerImageUrl != null -->
-            <img alt="Lade Bild..." data-bind="attr : {src: GLOBAL.Uploads + $root.currentIndexCard().answerImageUrl}" />
-            <!-- /ko -->
-        </div>
-    </div>
-</script>
-
 <script id="ict-dialog-source-template" type="text/html">
     <div id="ict-dialog-source">
         <span data-bind="text: $root.currentIndexCard().source"></span>

@@ -126,19 +126,50 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "Clas
         };
 
         self.toggleQuestionImage = function () {
-            let lTemplate = document.getElementById("ict-dialog-question-image");
-            let lDialog = new tsLib.Dialog(lTemplate, "Bild zur Frage");
-
-            lDialog.afterRenderCallback = function () { ko.applyBindings(GLOBAL.MainViewModel, this.mHtmlWindow); };
-            lDialog.show();
+            self.showImage("question");
         };
 
         self.toggleAnswerImage = function () {
-            let lTemplate = document.getElementById("ict-dialog-answer-image");
-            let lDialog = new tsLib.Dialog(lTemplate, "Bild zur Antwort");
+            self.showImage("answer");
+        };
 
-            lDialog.afterRenderCallback = function () { ko.applyBindings(GLOBAL.MainViewModel, this.mHtmlWindow); };
-            lDialog.show();
+        // show the question/answer image
+        self.showImage = function (pType) {
+            
+            // validate type
+            if (pType !== "question" && pType !== "answer") {
+                throw new Error("Invalid type. Expected: 'answer' or 'question'.");
+            }
+
+            // create image element
+            let lImage = new Image();
+
+            // add "load" event
+            lImage.addEventListener("load", function (a, b) {
+
+                // create html-template
+                let lContainer = document.createElement("div");
+                lContainer.setAttribute("class", "ict-" + pType + "-image-dialog");
+
+                let lInnerContainer = document.createElement("div");
+                lInnerContainer.setAttribute("class", pType + "-image-content");
+
+                // add the <img>
+                lInnerContainer.appendChild(lImage);
+
+                // add the template + loaded image to the dialog
+                let lDialog = new tsLib.Dialog(lInnerContainer, "Bild zur Frage");
+
+                // add callbacks
+                lDialog.afterRenderCallback = function () { ko.applyBindings(GLOBAL.MainViewModel, this.mHtmlWindow); };
+                lDialog.show();
+            });
+
+            // get url
+            let lUrl = pType === "question" ? self.currentIndexCard().questionImageUrl : self.currentIndexCard().answerImageUrl;
+
+            // load image from server now
+            lImage.src = GLOBAL.Uploads + lUrl;
         };
 
         // show the source of the index card
