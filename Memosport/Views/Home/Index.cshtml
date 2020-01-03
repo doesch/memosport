@@ -33,7 +33,7 @@
 
                 <!-- ko if: $root.step() == 'restart' -->
                 <div id="mvmt-no-data-container" style="text-align: center;">
-                    <p>Herzlichen Glückwunsch. <br /> Sie haben alle <strong data-bind="text: $root.dataset().length"></strong> Karteikarten durchgearbeitet.</p>
+                    <p>Herzlichen Glückwunsch. <br /> Sie haben alle Karteikarten durchgearbeitet.</p>
                     <button class="bttn" data-bind="click: restart"><span class="icon icon-restart"></span><span class="bttn-icon-text">Neustart</span></button>
                 </div>
                 <!-- /ko -->
@@ -226,7 +226,7 @@
                 <!-- /ko -->
                 <!-- ko if: $root.editMode() == true -->
                 <div id="ict-edit-mode-additions-bar">
-                    <input type="text" data-bind="textInput: editIndexCard().source" placeholder="Quelle" />
+                    <input id="ict-input-source" type="text" data-bind="textInput: editIndexCard().source, click: function() {$root.sourceInputClick()}, clickBubble: false" placeholder="Quelle" />
                     <input type="text" data-bind="textInput: editIndexCard().jingle" placeholder="Eselsbrücke">
                 </div>
 
@@ -325,32 +325,40 @@
         <!-- ko if: $root.searchResult().length > 0 -->
         <table id="ict-search-result-table">
             <thead>
-                <tr>
-                    <th class="th col-1">Frage</th>
-                    <th class="th col-2">Karteikasten</th>
-                    <th class="th col-3">Gewusst</th>
-                </tr>
+            <tr>
+                <th class="th col-1">Frage</th>
+                <th class="th col-2">Karteikasten</th>
+                <th class="th col-3">Gewusst</th>
+            </tr>
             </thead>
             <tbody class="tbody" data-bind="foreach: searchResult">
-                <tr class="tr" data-bind="click: function() { $root.searchEditIndexCardClick($data.IndexCard);}">
-                    <td class="td col-1"><span data-bind="text: $data.IndexCard.question"></span></td>
-                    <td class="td col-2"><span data-bind="text: $data.IndexCardBox.name"></span></td>
-                    <td class="td col-3">
-                        <!-- ko if: $data.IndexCard.known < 3 -->
-                        <span class="icon icon-thumb-down-red"></span>
-                        <!-- /ko -->
-                        <!-- ko if: $data.IndexCard.known >= 3 -->
-                        <span class="icon icon-thumb-up-green"></span>
-                        <!-- /ko -->
-                        <span data-bind="text: $data.IndexCard.known"></span>
+            <tr class="tr" data-bind="click: function() { $root.searchEditIndexCardClick($data.IndexCard);}">
+                <td class="td col-1"><span data-bind="text: $data.IndexCard.question"></span></td>
+                <td class="td col-2"><span data-bind="text: $data.IndexCardBox.name"></span></td>
+                <td class="td col-3">
+                    <!-- ko if: $data.IndexCard.known < 3 -->
+                    <span class="icon icon-thumb-down-red"></span>
+                    <!-- /ko -->
+                    <!-- ko if: $data.IndexCard.known >= 3 -->
+                    <span class="icon icon-thumb-up-green"></span>
+                    <!-- /ko -->
+                    <span data-bind="text: $data.IndexCard.known"></span>
 
-                    </td>
-                </tr>
+                </td>
+            </tr>
             </tbody>
         </table>
 
         <!-- /ko -->
     </div>
+</script>
+
+<script id="latest-sources-dropdown-template" type="text/html">
+    <!-- ko if: $root.latestSources().length > 0 -->
+    <div id="latest-sources-dropdown-list" data-bind="foreach: latestSources">
+        <div class="latest-sources-dropdown-list-item" data-bind="click: function(e){ $root.latestSourcesClick($data); }, clickBubble: false;"><span data-bind="text: $data"></span></div>
+    </div>
+    <!-- /ko -->
 </script>
 
 <script type="text/javascript" src="@Url.Content("~/js/lib/jquery.js")"></script>

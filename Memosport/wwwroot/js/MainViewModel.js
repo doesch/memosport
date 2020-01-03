@@ -46,6 +46,8 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "Clas
         self.showQuestion = ko.observable(true); // toggles between question an answer
         self.currentIndexCard = ko.observable(new indexCard.IndexCard()); // current showing index card in trainer
         self.showProgressButtonBubble = ko.observable(false);
+        self.latestSources = ko.observableArray();
+        self.latestSourcesDropdown = null;
 
         self.i = ko.observable(-1);
         self.pointerTraffic = true;
@@ -281,19 +283,26 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "Clas
                 GLOBAL.MainViewModel.PastedFile(pEvent);
 
             }, false);
-
-            // user changes options → mark start - button
-            //document.querySelectorAll(".software form")[0].addEventListener("change", function () {
-            //    document.getElementById('software-bttn-start').className += " mark-start-button";
-            //});
-
+            
             // remove class on click
             document.getElementById('software-bttn-start').addEventListener("click", function () {
                 tsLib.Style.removeClass(document.getElementById('software-bttn-start'), "mark-start-button");
             });
 
+            // close all context-menus and dropdowns when clicking in an free field
+            document.body.addEventListener("click", function (e) { GLOBAL.MainViewModel.closeAllMenus(e); }, true);
+
             // get Index Card Boxes into dropdown
             self.GetIndexCardBoxes();
+        };
+
+        // close all menus (click-event on body)
+        self.closeAllMenus = function(e) {
+
+            console.log("click");
+
+            // the dropdown for the latest sources of an indexcard.
+            self.latestSourcesDropdownHide();
         };
 
         /// Get all index card boxes from the server
@@ -1164,6 +1173,61 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "Clas
                 let lButtonOffsetRight = lButton.offsetLeft + lButton.offsetWidth;
                 let lTargetPosition = lButtonOffsetRight - lDropdownElement.clientWidth;
                 lDropdownElement.style.left = lTargetPosition + "px";
+            }
+        };
+
+        /// click on input field for indexcard-source
+        self.sourceInputClick = function() {
+
+            // when source is null or empty string, then do nothing
+            //if (self.editIndexCard().source) {
+            //    return;
+            //}
+
+            // clear observable
+            // self.latestSources([]);
+
+            // get latest sources from server
+            $.ajax({
+                url: "/IndexCardApi/GetLatestSources",
+                type: "GET",
+                dataType: "json",
+                success: function(xhr) {
+
+                    // add results to observable
+                    self.latestSources(xhr);
+
+                    // create an dropdown when not exists
+                    if (self.latestSourcesDropdown instanceof tsLib.DropdownTextfield === false) {
+                        // show results in an dropdown
+                        let lTemplate = document.getElementById("latest-sources-dropdown-template");
+                        self.latestSourcesDropdown = new tsLib.DropdownTextfield(lTemplate);
+                        // now bind the knockout
+                        self.latestSourcesDropdown.afterRenderCallback = function () { ko.applyBindings(GLOBAL.MainViewModel, this.mHtmlWindow); };
+                        self.latestSourcesDropdown.appendTo("ict-input-source");
+                    }
+
+                    // show the dropdown
+                    self.latestSourcesDropdown.show();
+                }
+            });
+        };
+
+        /// click on resource in dropdown
+        self.latestSourcesClick = function(pSource) {
+
+            // assign selected value
+            document.getElementById("ict-input-source").value = pSource;
+
+            // close dropdown
+            self.latestSourcesDropdownHide(); // close the dropdown
+        };
+
+        /// hide the dropdown
+        self.latestSourcesDropdownHide = function() {
+
+            if (self.latestSourcesDropdown instanceof tsLib.DropdownTextfield === true) {
+                self.latestSourcesDropdown.hide();
             }
         };
     }

@@ -1757,6 +1757,11 @@ MajorSystem edit.ctp
         box-sizing: border-box;
         padding: @GlobalMargin;
     }
+    
+    // dropdown for sources.
+    .dropdown-window {
+        min-width: inherit !important;
+    }
 }
 
 #ict-menu {
@@ -2426,4 +2431,16 @@ div.ict-search-dialog-container
 {
     width: 960px;
     margin: @GlobalMargin / 3;
+}
+
+#latest-sources-dropdown-list {
+    div.latest-sources-dropdown-list-item {
+        margin: 0;
+        padding: @GlobalMargin / 3;
+
+        &:hover {
+            background-color: @GlobalHoverBgColor;
+            cursor: pointer;
+        }
+    }
 }
