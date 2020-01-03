@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using Memosport.Classes;
 using Memosport.Data;
@@ -243,6 +245,42 @@ namespace Memosport.Controllers
             _context.SaveChanges();
 
             return Json(lIndexCard);
+        }
+
+        /// <summary> (An Action that handles HTTP GET requests) gets latest sources. </summary>
+        /// <remarks> Doetsch, 03.01.20. </remarks>
+        /// <returns> An asynchronous result that yields the latest sources. </returns>
+        [HttpGet("GetLatestSources")]
+        public async Task<IActionResult> GetLatestSources()
+        {
+            // "SELECT DISTINCT source, modified FROM `indexcards` where source is not null and source <> '' and indexcardboxid in (select id from indexcardboxes where userid = 1) order by modified desc"
+            IUser lCurrentUser = GetCurrentUser(_context);
+
+            // prepare query
+            var lQuery = _context.IndexCards
+                .Join(
+                    _context.IndexCardBoxes,
+                    IndexCard => IndexCard.IndexCardBoxId,
+                    IndexCardBox => IndexCardBox.Id,
+                    (IndexCard, IndexCardBox) => new SearchResult
+                    {
+                        IndexCard = IndexCard,
+                        IndexCardBox = IndexCardBox
+                    }
+                )
+                .Where(x => x.IndexCardBox.UserId == lCurrentUser.Id) // filter out by current userid
+                .Select(x => x)
+                // now filter out by searchstring
+                .Where(x => x.IndexCard.Source != null && x.IndexCard.Source != string.Empty)
+                .OrderByDescending(x => x.IndexCard.Modified)
+                .Select(x => x.IndexCard.Source)
+                .Take(3); // get newest 3 entries
+
+
+            // execute query
+            var lResult = await lQuery.ToListAsync();
+
+            return Json(lResult);
         }
 
         /// <summary> Authenticated User is owner of index card. </summary>
