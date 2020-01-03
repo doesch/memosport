@@ -571,7 +571,7 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "Clas
             }
             else {
                 // set either into question or answer dependent what is current active
-                lQueryElement = self.showQuestion() ? ".ict-question-container" : ".ict-result-container";
+                let lQueryElement = self.showQuestion() ? ".ict-question-container" : ".ict-result-container";
                 lQueryElement += " .ict-question-answer-text";
                 document.querySelector(lQueryElement).focus();
             }
@@ -606,7 +606,7 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "Clas
             }
 
             // convert indexcard to payload
-            lFormData = self.indexCardToFormData(lIndexCard);
+            let lFormData = self.indexCardToFormData(lIndexCard);
 
             // post or put. When there is no id then it is a new one.
             let lHttpVerb = typeof lIndexCard.id === "undefined" ? "POST" : "PUT";
@@ -671,7 +671,7 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "Clas
             for (let lProp in pIndexCard) {
 
                 // do not send properties which are null
-                if (pIndexCard[lProp] === null || typeof pIndexCard[lProp] === "function" && pIndexCard[lProp] === null) {
+                if (pIndexCard.hasOwnProperty(lProp) === false || pIndexCard[lProp] === null || typeof pIndexCard[lProp] === "function" && pIndexCard[lProp] === null) {
                     continue;
                 }
 
@@ -971,7 +971,7 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "Clas
              * No file in clipboard
              */
             if (lPastedFile === null) {
-                return;
+                return false;
             }
 
             // cache the file
