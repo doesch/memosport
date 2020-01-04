@@ -1,6 +1,6 @@
 ﻿<button data-bind="click: function(){ $root.searchBttnClick();};" class="bttn"><span class="icon icon-search"></span><span class="bttn-icon-text remove-630px">Suche</span></button>
 
-<button id="ict-boxes-dropdown-bttn" class="bttn" data-bind="click: boxesToggleShowDropdown">
+<button id="ict-boxes-dropdown-bttn" class="bttn" data-bind="click: function() { $root.boxesToggleShowDropdown(); return false; }, clickBubble: false">
     <span class="icon icon-arrow-down" style="float: right; margin-top: 8px;"></span>
     <span data-bind="text: $root.box().name"></span>
     <div class="clearfix"></div>

@@ -144,7 +144,7 @@
                                 </div>
                                 <!-- /ko -->
                                 <!-- ko if: $root.editMode() == true -->
-                                <textarea class="ict-question-answer-text" rows="50" maxlength="500" data-bind="textInput: editIndexCard().answer"  placeholder="Bitte geben Sie hier eine Antwort ein."></textarea>
+                                <textarea class="ict-question-answer-text" rows="50" maxlength="500" data-bind="textInput: editIndexCard().answer" placeholder="Bitte geben Sie hier eine Antwort ein."></textarea>
                                 <div class="ict-edit-img-container">
                                     <!-- ko if: editIndexCard().answerImageUrl == null -->
                                     <div id="ict-answer-image-box" class="ict-img-box" tabindex="2">
@@ -226,8 +226,8 @@
                 <!-- /ko -->
                 <!-- ko if: $root.editMode() == true -->
                 <div id="ict-edit-mode-additions-bar">
-                    <input id="ict-input-source" type="text" data-bind="textInput: editIndexCard().source, click: function() {$root.sourceInputClick()}, clickBubble: false" placeholder="Quelle" />
-                    <input type="text" data-bind="textInput: editIndexCard().jingle" placeholder="Eselsbrücke">
+                    <input id="ict-input-source" type="text" data-bind="click: function() { $root.sourceInputClick(); return false; }, clickBubble: false; textInput: editIndexCard().source" placeholder="Quelle" />
+                    <input type="text" data-bind="textInput: editIndexCard().jingle" placeholder="Eselsbrücke" />
                 </div>
 
                 <div id="ict-edit-mode-bttn-footer">

@@ -277,6 +277,9 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "Clas
             // when using back button (e.g. smartphone), warn user
             // window.onbeforeunload = function () { return "Möchten Sie den Trainier wirklich verlassen? Sie müssten beim nächsten mal von vorne beginnen."; };
 
+            // close all context-menus and dropdowns when clicking in an free field
+            document.body.addEventListener("click", function (e) { GLOBAL.MainViewModel.closeAllMenus(e); });
+
             // register paste event
             window.addEventListener("paste", function (pEvent) {
 
@@ -289,9 +292,6 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "Clas
                 tsLib.Style.removeClass(document.getElementById('software-bttn-start'), "mark-start-button");
             });
 
-            // close all context-menus and dropdowns when clicking in an free field
-            document.body.addEventListener("click", function (e) { GLOBAL.MainViewModel.closeAllMenus(e); }, true);
-
             // get Index Card Boxes into dropdown
             self.GetIndexCardBoxes();
         };
@@ -299,10 +299,12 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "Clas
         // close all menus (click-event on body)
         self.closeAllMenus = function(e) {
 
-            console.log("click");
+            console.log("body: click");
 
             // the dropdown for the latest sources of an indexcard.
             self.latestSourcesDropdownHide();
+            self.mainMenuShowDropdown(false);
+            self.boxesShowDropdown(false);
         };
 
         /// Get all index card boxes from the server
