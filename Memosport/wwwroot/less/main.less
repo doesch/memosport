@@ -597,7 +597,7 @@ input[type="submit"] {
     padding: 0px 10px;
     text-align: center;
     background-color: @GlobalButtonBgColor;
-    color: white !important;
+    color: @GlobalFontColor !important;
     text-decoration: none;
     /*
     border-left: 1px solid #888888;
@@ -644,8 +644,11 @@ input[type="submit"] /* overwrite */
 {
     background-color: #4c65bf !important;
 
-    &:hover
-    {
+    .bttn-icon-text {
+        color: white !important;
+    }
+
+    &:hover {
         background-color: #354786 !important;
     }
 }
@@ -729,174 +732,174 @@ button
     height: 16px;
     line-height: 100%;
     vertical-align: middle;
-    margin: 0 0 2px 0;
+    margin: 0 0 3px 0;
     background: transparent url('/img/sprite.png') 16px 16px scroll;
     
 }
 
 .bttn-icon-text {
-    margin-left: @GlobalVMargin / 3;
+    margin-left: @GlobalVMargin / 5;
 }
 
 .icon-delete
 {
-    background-position: 0 0;
+    background-position: 0 -96px;
 }
 
 .icon-cross
 {
-    background-position: 0 -32px;
+    background-position: 0 -128px;
 }
 
 .icon-edit
 {
-    background-position: 0 -64px;
+    background-position: 0 -160px;
 }
 
 .icon-save
 {
-    background-position: -32px 0;
+    background-position: -32px -96px;
+}
+
+.icon-save-white {
+    background-position: -32px -0px;
 }
 
 .icon-save-next
 {
-    background-position: -32px -32px;
+    background-position: -32px -128px;
 }
 
 .icon-add
 {
-    background-position: -32px -64px;
+    background-position: -32px -160px;
 }
 
 .icon-start {
-    background-position: -64px 0;
+    background-position: -64px -96px;
     margin: 0px 0px 0px @GlobalVMargin / 3 !important;
 }
 
 .icon-arrow-left
 {
-    background-position: -320px -32px;
+    background-position: -320px -128px;
 }
 
 .icon-arrow-right
 {
-    background-position: -64px -0px;
+    background-position: -64px -96px;
 }
 
 .icon-arrow-left-down
 {
-    background-position: -64px -64px;
+    background-position: -64px -160px;
 }
 
 .icon-image
 {
-    background-position: -96px 0;
+    background-position: -96px -96px;
 }
 
 .icon-indexcards
 {
-    background-position: -96px -32px;
+    background-position: -96px -128px;
 }
 
 .icon-indexcardbox
 {
-    background-position: -96px -64px;
+    background-position: -96px -224px;
 }
 
 .icon-search
 {
-    background-position: -128px 0;
+    background-position: -128px -96px;
 }
 
 .icon-lock
 {
-    background-position: -128px -32px;
+    background-position: -128px -128px;
 }
 
 .icon-profile
 {
-    background-position: -128px -64px;
+    background-position: -128px -160px;
 }
 
 .icon-menu
 {
-    background-position: -160px 0;
+    background-position: -160px -96px;
 }
 
 .icon-fill-all
 {
-    background-position: -160px -32px;
+    background-position: -160px -128px;
 }
 
 .icon-cancel
 {
-    background-position: -160px -64px;
+    background-position: -160px -160px;
 }
 
 .icon-home
 {
-    background-position: -192px 0;
+    background-position: -192px -96px;
 }
 
 .icon-mail
 {
-    background-position: -192px -32px;
+    background-position: -192px -128px;
 }
 
 .icon-start2 {
-    background-position: -192px -64px;
+    background-position: -192px -160px;
     margin: 0px 0px 0px @GlobalVMargin / 3 !important;
 }
 
 .icon-options
 {
-    background-position: -224px 0;
+    background-position: -224px -96px;
 }
 
 .icon-star-yellow
 {
-    background-position: -224px -32px;
+    background-position: -224px -128px;
 }
 
 .icon-star
 {
-    background-position: -224px -64px;
+    background-position: -224px -160px;
 }
 
 .icon-bridge
 {
-    background-position: -256px 0;
+    background-position: -256px -96px;
 }
 
 .icon-restart
 {
-    background-position: -256px -32px;
+    background-position: -256px -128px;
 }
 
 .icon-thumb-up
  {
-   background-position: -256px -64px;
+   background-position: -256px -160px;
  }
 
 .icon-thumb-down
 {
-  background-position: -288px -0px;
+  background-position: -288px -96px;
 }
 
 .icon-thumb-up-green
 {
-  background-position: -288px -32px;
+  background-position: -288px -128px;
 }
 
 .icon-thumb-down-red
 {
-  background-position: -288px -64px;
+  background-position: -288px -160px;
 }
 
-.icon-letter
-{
-    background-position: -320px -160px;
-}
 
 .icon-arrow-down
 {
@@ -910,13 +913,11 @@ button
 
 .icon-link
 {
-    background-position: -352px -0px;
+    background-position: -352px -96px;
 }
 
-.icon-learned 
-{
-    // ToDo -oDoetsch: Add icon to sprite.png
-    // background-position: -0px -0px;
+.icon-learned {
+    background-position: -352px 48px;
 }
 
 #bttn-start
@@ -2054,6 +2055,11 @@ textarea.ict-question-answer-text {
         height: @IctProgressBarHeight;
         line-height: @IctProgressBarHeight;
         box-sizing: border-box;
+
+        .icon
+        {
+            margin-bottom: 0px !important;
+        }
     }
 }
 

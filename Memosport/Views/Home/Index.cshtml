@@ -49,7 +49,7 @@
                                     <span class="text" data-bind="text: ($root.i() + 1) + '&#47;' + $root.dataset().length"></span>
                                 </div>
                             </div>
-                            <div id="ict-known-info-container">
+                            <div id="ict-known-info-container" data-bind="attr: {title: $root.currentIndexCard().known + ' mal gewusst.' }">
                                 <span class="icon icon-learned"></span><span data-bind="text: $root.currentIndexCard().known"></span>
                             </div>
                         </div>
@@ -233,7 +233,7 @@
                 <div id="ict-edit-mode-bttn-footer">
                     <!-- ko if: $root.editIndexCardIsLoading() == false -->
                     <div style="float: right;">
-                        <button class="bttn bttn-main" data-bind="click: function() { $root.editSave(); }"><span class="icon icon-save"></span><span class="bttn-icon-text">Speichern</span></button>
+                        <button class="bttn bttn-main" data-bind="click: function() { $root.editSave(); }"><span class="icon icon-save-white"></span><span class="bttn-icon-text">Speichern</span></button>
                         <button class="bttn" data-bind="click: function() { $root.editCancel(); }"><span class="icon icon-cancel"></span><span class="bttn-icon-text">Abbrechen</span></button>
                     </div>
                     <div style="float: left;">
