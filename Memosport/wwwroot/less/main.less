@@ -881,13 +881,21 @@ button
 }
 
 .icon-thumb-up
- {
-   background-position: -256px -160px;
- }
+{
+background-position: -256px -160px;
+}
+
+.icon-thumb-up-white {
+    background-position: -256px -64px;
+}
 
 .icon-thumb-down
 {
   background-position: -288px -96px;
+}
+
+.icon-thumb-down-white {
+    background-position: -288px 0px;
 }
 
 .icon-thumb-up-green
@@ -1878,17 +1886,37 @@ textarea.ict-question-answer-text {
         }
 
         #ict-bttn-known {
+
+            @BttnUnknownColor: rgb(0,183,183);
+
             margin-left: 0;
             border-top-left-radius: 0;
             border-bottom-left-radius: 0;
-            background-color: #3cb371;
+            background-color: @BttnUnknownColor;
+            color: white;
+
+            &:not([disabled]) {
+                &:hover {
+                    background-color: @BttnUnknownColor + #111111 !important;
+                }
+            }
         }
 
         #ict-bttn-unknown {
+
+            @BttnKnownColor: rgb(255,80,80);
+
             margin-right: 0;
             border-top-right-radius: 0;
             border-bottom-right-radius: 0;
-            background-color: #b03060;
+            background-color: @BttnKnownColor;
+            color: white;
+
+            &:not([disabled]) {
+                &:hover {
+                    background-color: @BttnKnownColor + #111111 !important;
+                }
+            }
         }
 
         .bttn {
