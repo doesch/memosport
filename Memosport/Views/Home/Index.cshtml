@@ -19,7 +19,7 @@
             <!-- /ko -->
         </div>
     </div>
-    <div id="content">
+    <div id="content" data-bind="style: {display: $root.anyBoxIsSelected() ? 'block' : 'none'}">
 
         @*show flash messages here*@
 
@@ -226,7 +226,7 @@
                 <!-- /ko -->
                 <!-- ko if: $root.editMode() == true -->
                 <div id="ict-edit-mode-additions-bar">
-                    <input id="ict-input-source" type="text" data-bind="click: function() { $root.sourceInputClick(); return false; }, clickBubble: false; textInput: editIndexCard().source" placeholder="Quelle" />
+                    <input id="ict-input-source" type="text" data-bind="click: function() { $root.sourceInputClick(); return false; }, clickBubble: false, textInput: editIndexCard().source" placeholder="Quelle" autocomplete="off" />
                     <input type="text" data-bind="textInput: editIndexCard().jingle" placeholder="Eselsbrücke" />
                 </div>
 

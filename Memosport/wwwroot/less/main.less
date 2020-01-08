@@ -246,6 +246,8 @@ td
 
 #content
 {    
+    display: none; // prevent jumping layout on init
+
     .white-box
     {       
         box-shadow: @GlobalBoxShadow;
@@ -410,6 +412,7 @@ td
 #menu
 {
     .dropdown-menu; // in shared.less
+    display: none;
     
     .menuGroup
     {
@@ -2167,7 +2170,9 @@ textarea.ict-question-answer-text {
 
 #ict-boxes-dropdown-list-container {
     .dropdown-menu;
-
+    display: none;
+    z-index: 1;
+    
     .selected-box {
         border-left: solid 5px @GlobalSelectedBorderColor;
         background-color: #f0f0f0;

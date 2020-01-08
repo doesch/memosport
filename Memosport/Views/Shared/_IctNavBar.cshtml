@@ -8,7 +8,7 @@
 <button class="bttn" data-bind="click: function(){$root.NewIndexCard();}"><span class="icon icon-add"></span><span class="bttn-icon-text remove-630px">Neu</span></button>
 
 <!-- ko if: boxesShowDropdown -->
-<div id="ict-boxes-dropdown-list-container">
+<div id="ict-boxes-dropdown-list-container" data-bind="style: {display: $root.boxesShowDropdown() === true ? 'block' : 'none'}">
     <div id="ict-boxes-dropdown-listitem-new-box" class="ict-boxes-dropdown-listitem">
         <a class="bttn" href="" data-bind="click: $root.createNewIndexCardBoxClick"><span class="icon icon-add"></span>&nbsp;Neuer Karteikasten</a>
     </div>
@@ -25,7 +25,7 @@
 <!-- /ko -->
 
 <!-- ko if: mainMenuShowDropdown -->
-<ul id="menu">
+<ul id="menu" data-bind="style: {display: $root.mainMenuShowDropdown() === true ? 'block' : 'none'}">
     <li><a href="/User/logout">Logout</a></li>
 </ul>
 <!-- /ko -->

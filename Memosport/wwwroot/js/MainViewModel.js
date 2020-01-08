@@ -110,6 +110,11 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "Clas
             lDialog.show();
         };
 
+        /// Check if any box is currently selected
+        self.anyBoxIsSelected = function() {
+            return self.box() instanceof indexCardBox.IndexCardBox;
+        };
+
         // click on radio box for order
         self.ictOptionOrderChanged = function(pOrder) {
 
@@ -298,8 +303,6 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "Clas
 
         // close all menus (click-event on body)
         self.closeAllMenus = function(e) {
-
-            console.log("body: click");
 
             // the dropdown for the latest sources of an indexcard.
             self.latestSourcesDropdownHide();
@@ -1220,6 +1223,7 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "Clas
 
             // assign selected value
             document.getElementById("ict-input-source").value = pSource;
+            self.editIndexCard().source = pSource;
 
             // close dropdown
             self.latestSourcesDropdownHide(); // close the dropdown
