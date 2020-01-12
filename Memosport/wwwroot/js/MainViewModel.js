@@ -33,6 +33,9 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "Clas
         self.box = ko.observable(self.boxPlaceholder); /* manual, auto */
         self.boxes = ko.observableArray(); // all available boxes
 
+        // move indexcard to box - dialog
+        self.boxMoveSelected = ko.observable(); // cache id of the selected box the current indexcard should be move to.
+
         // options
         if (localStorage.getItem('ictOptions') === null) { // use default options when nothing cached
             localStorage.setItem('ictOptions', JSON.stringify(new ictOptions.IctOptions()));
@@ -764,6 +767,98 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "Clas
         };
 
         /**
+         * Show dialog which provides functionality to move an index card into another box 
+         */
+        self.indexCardMoveClick = function () {
+
+            // validate param
+            if (self.currentIndexCard instanceof indexCard.IndexCard === true) {
+                throw new Error("Invalid argument. Expected type: 'IndexCard'.");
+            }
+
+            // cache old boxid
+            let lOldBoxId = self.currentIndexCard().indexCardBoxId;
+
+            // preselect target box with current box
+            self.boxMoveSelected(self.currentIndexCard().indexCardBoxId);
+
+            // create buttons
+            let lBttnCancel = new tsLib.Button("Abbrechen", function () {
+                self.boxMoveSelected(null);
+            });
+
+            let lBttnOk = new tsLib.Button("OK", function () {
+
+                // assign cached box-index
+                self.currentIndexCard().indexCardBoxId = self.boxMoveSelected();
+
+                // show sandtimer
+                let lSandtimer = new tsLib.Sandtimer("Änderungen werden gespeichert. Bitte warten...");
+
+                // convert payload into form data
+                let lFormData = self.indexCardToFormData(self.currentIndexCard());
+
+                // save changes
+                $.ajax({
+                    url: "/IndexCardApi/" + self.currentIndexCard().id,
+                    data: lFormData,
+                    type: "PUT",
+                    contentType: false,
+                    processData: false,
+                    dataType: "json",
+                    beforeSend: function () {
+                        lSandtimer.show();
+                    },
+                    success: function (xhr) {
+                        
+                        // toDo: Move indexcard on view to the new box
+                        // when indexcard belonged to current selected box, then remove
+                        if (lOldBoxId === self.box().id) {
+
+                            for (var i = 0, len = self.dataset().length; i < len; i++) {
+                                if (self.dataset()[i].id === self.currentIndexCard().id) {
+
+                                    self.dataset.remove(self.dataset()[i]);
+
+                                    // when in edit-mode, then switch to learn-mode
+                                    self.editMode(false);
+
+                                    // go to next indexcard
+                                    self.i(self.i() - 1); // we need to move one back before, because we have removed one from the stack
+                                    self.workflow();
+
+                                    break;
+                                }
+                            } 
+                        }
+
+                    }, complete: function () {
+                        // close hour glass
+                        lSandtimer.close();
+                    }
+                });
+            });
+
+            let lTemplate = document.getElementById("ict-move-indexcard-to-box-template");
+
+            // show dialog
+            let lDialog = new tsLib.Dialog(lTemplate, "Karteikarte in Box verschieben:", [lBttnOk, lBttnCancel]);
+            lDialog.afterRenderCallback = function () { ko.applyBindings(GLOBAL.MainViewModel, this.mHtmlWindow); };
+            lDialog.show();
+        };
+
+        // the user selects an differen box for the current indexcard via the dialog
+        self.indexCardMoveBoxSelectedClick = function (pIndexCardBox) {
+
+            if (pIndexCardBox instanceof indexCardBox.IndexCardBox === false) {
+                throw new Error("Invalid argument. Expected type: 'IndexCardBox'.");
+            }
+
+            // assign new box-id to cache
+            self.boxMoveSelected(pIndexCardBox.id);
+        };
+
+        /**
          * move forward to the next index card
          * @constructor
          */
@@ -1168,6 +1263,7 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "Clas
 
             // toggle menu
             self.mainMenuShowDropdown(!self.mainMenuShowDropdown());
+
             // when show(), then align on x-axis
             if (self.mainMenuShowDropdown())
             {

@@ -23,12 +23,22 @@
 
 </div>
 <!-- /ko -->
-
 <!-- ko if: mainMenuShowDropdown -->
 <ul id="menu" data-bind="style: {display: $root.mainMenuShowDropdown() === true ? 'block' : 'none'}">
     <li><a href="/User/logout">Logout</a></li>
+    <!-- ko if: $root.currentIndexCard() !== null && $root.currentIndexCard().id !== null -->
+    <li><a href="#" data-bind="click: function(){ $root.indexCardMoveClick(); }">Karteikarte verschieben</a></li>
+    <li><a href="#">Karteikarte duplizieren</a></li>
+    <!-- /ko -->
 </ul>
 <!-- /ko -->
 
 <button id="software-bttn-config" class="bttn" data-bind="click: showOptionsDialog"><span class="icon icon-options"></span><span class="bttn-icon-text remove-630px">Einstellungen</span></button>
 <button id="software-bttn-start" class="bttn" data-bind="click: start"><span class="icon icon-restart"></span><span class="bttn-icon-text remove-630px">Start</span></button>
+<button id="bttn-menu" class="bttn" data-bind="click: function() { $root.menuBttnClick(); return false; }, clickBubble: false"><span class="icon icon-menu"></span><span class="bttn-icon-text remove-630px">Menü</span></button>
+
+<script id="ict-move-indexcard-to-box-template" type="text/html">
+    <div id="ict-move-indexcard-to-box-container" data-bind="foreach: boxes">
+       <div class="ict-move-indexcard-to-box-item" data-bind="text: $data.name, css: { 'selected-box': $root.boxMoveSelected() === $data.id }, click: function() { $root.indexCardMoveBoxSelectedClick($data); }"></div> 
+    </div>
+</script>

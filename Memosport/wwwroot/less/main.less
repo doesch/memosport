@@ -413,6 +413,7 @@ td
 {
     .dropdown-menu; // in shared.less
     display: none;
+    z-index: 1;
     
     .menuGroup
     {
@@ -2168,15 +2169,15 @@ textarea.ict-question-answer-text {
     white-space: nowrap;
 }
 
+.selected-box {
+    border-left: solid 5px @GlobalSelectedBorderColor;
+    background-color: #f0f0f0;
+}
+
 #ict-boxes-dropdown-list-container {
     .dropdown-menu;
     display: none;
     z-index: 1;
-    
-    .selected-box {
-        border-left: solid 5px @GlobalSelectedBorderColor;
-        background-color: #f0f0f0;
-    }
 
     #ict-boxes-dropdown-scroll-container {
         overflow-y: scroll;
@@ -2213,6 +2214,22 @@ textarea.ict-question-answer-text {
 #ict-boxes-dropdown-listitem-new-box {
     &:hover {
         background-color: white !important;
+    }
+}
+
+#ict-move-indexcard-to-box-container {
+
+    .ict-move-indexcard-to-box-item {
+        
+        height: @GlobalButtonHeight;
+        line-height: @GlobalButtonHeight - 1px;
+        border-bottom: 1px solid @GlobalBorderColor;
+        padding-left: @GlobalMargin / 3;
+
+        &:hover{
+            background-color: @GlobalHoverBgColor;
+            cursor: pointer;
+        }
     }
 }
 
