@@ -811,7 +811,6 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "Clas
                     },
                     success: function (xhr) {
                         
-                        // toDo: Move indexcard on view to the new box
                         // when indexcard belonged to current selected box, then remove
                         if (lOldBoxId === self.box().id) {
 
