@@ -337,10 +337,10 @@
                 <td class="td col-2"><span data-bind="text: $data.IndexCardBox.name"></span></td>
                 <td class="td col-3">
                     <!-- ko if: $data.IndexCard.known < 3 -->
-                    <span class="icon icon-thumb-down-red"></span>
+                    <span></span>
                     <!-- /ko -->
                     <!-- ko if: $data.IndexCard.known >= 3 -->
-                    <span class="icon icon-thumb-up-green"></span>
+                    <span class="icon icon-learned"></span>
                     <!-- /ko -->
                     <span data-bind="text: $data.IndexCard.known"></span>
 
