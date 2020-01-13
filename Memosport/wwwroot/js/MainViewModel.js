@@ -76,6 +76,15 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "Clas
         self.Audio = null;
         self.AudioIsPlaying = ko.observable(false); // if the audio is currently playing
 
+        // sandtimer
+        self.sandtimerRunning = ko.observable(false);
+        self.sandtimerInterval = null;
+        self.sandtimerTotalSeconds = null; // caches the current time of the sandtimer in seconds
+        self.sandtimerDisplayValue = ko.observable("00:00:00"); // the formatted, displayed sandtimer
+        self.sandtimerHours = ko.observable(localStorage.getItem('sandtimerHours') !== null ? localStorage.getItem('sandtimerHours') : 0);
+        self.sandtimerMinutes = ko.observable(localStorage.getItem('sandtimerMinutes') !== null ? localStorage.getItem('sandtimerMinutes') : 30);
+        self.sandtimerSeconds = ko.observable(localStorage.getItem('sandtimerSeconds') !== null ? localStorage.getItem('sandtimerSeconds') : 0);
+
         // Show Options diaclog
         self.showOptionsDialog = function () {
 
@@ -1331,5 +1340,98 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "Clas
                 self.latestSourcesDropdown.hide();
             }
         };
+
+        // Region sandtimer
+
+        // show the sandtimer dialog
+        self.sandtimerDialog = function() {
+
+            let lTemplate = document.getElementById("sandtimer-dialog-template");
+            let lDialog = new tsLib.Dialog(lTemplate, "Sanduhr");
+            lDialog.afterRenderCallback = function () { ko.applyBindings(GLOBAL.MainViewModel, this.mHtmlWindow); };
+            lDialog.show();
+        };
+
+        // start the sandtimer
+        self.sandtimerStart = function () {
+
+            // clear old interval when exists
+            self.sandtimerStop();
+
+            // get seconds
+            self.sandtimerTotalSeconds = (Number(self.sandtimerHours()) * 3600) +
+                (Number(self.sandtimerMinutes()) * 60) +
+                Number(self.sandtimerSeconds());
+
+            // validate time (minimum 1 second)
+            if (self.sandtimerTotalSeconds <= 0) {
+                new tsLib.MessageBox("Bitte geben Sie eine gültige Zeit ein.").show();
+                return;
+            }
+
+            // save in cache
+            localStorage.setItem('sandtimerHours', self.sandtimerHours());
+            localStorage.setItem('sandtimerMinutes', self.sandtimerMinutes());
+            localStorage.setItem('sandtimerSeconds', self.sandtimerSeconds());
+
+            // switch layout
+            self.sandtimerRunning(true);
+
+            // start interval
+            self.sandtimerInterval = setInterval(function() {
+
+                // show dialog when time is over
+                if (self.sandtimerTotalSeconds <= 0) {
+
+                    // stop timer
+                    self.sandtimerStop();
+
+                    // reset values
+                    self.sandtimerReset();
+
+                    // show message
+                    let lBttnOk = new tsLib.Button("OK", function() {});
+                    let lTemplate = document.getElementById("sandtimer-elapsed-template");
+                    new tsLib.Dialog(lTemplate, null, [lBttnOk]).show();
+                    return;
+                }
+
+                // substract one second
+                self.sandtimerTotalSeconds = self.sandtimerTotalSeconds - 1;
+                
+                // fill input fields
+                self.sandtimerSeconds(Math.floor(self.sandtimerTotalSeconds) % 60);
+                self.sandtimerMinutes(Math.floor(self.sandtimerTotalSeconds / 60 % 60));
+                self.sandtimerHours(Math.floor(self.sandtimerTotalSeconds / 3600 % 24));
+
+                // display formatted value
+                let lHours = self.sandtimerHours() < 10 ? "0" + self.sandtimerHours() : self.sandtimerHours();
+                let lMinutes = self.sandtimerMinutes() < 10 ? "0" + self.sandtimerMinutes() : self.sandtimerMinutes();
+                let lSeconds = self.sandtimerSeconds() < 10 ? "0" + self.sandtimerSeconds() : self.sandtimerSeconds();
+
+                // render value
+                self.sandtimerDisplayValue(lHours + ":" + lMinutes + ":" + lSeconds);
+
+            }, 1000);
+        };
+
+        // stop the sandtimer
+        self.sandtimerStop = function () {
+
+            if (self.sandtimerInterval !== null) {
+                clearInterval(self.sandtimerInterval);
+            }
+            
+            self.sandtimerRunning(false);
+        };
+
+        // reset the sandtimer
+        self.sandtimerReset = function () {
+            self.sandtimerSeconds(0);
+            self.sandtimerMinutes(0);
+            self.sandtimerHours(0);
+        };
+
+        // EndRegion Sandtimer
     }
 });
