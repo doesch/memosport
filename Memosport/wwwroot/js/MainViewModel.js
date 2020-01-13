@@ -81,9 +81,7 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "Clas
         self.sandtimerInterval = null;
         self.sandtimerTotalSeconds = null; // caches the current time of the sandtimer in seconds
         self.sandtimerDisplayValue = ko.observable("00:00:00"); // the formatted, displayed sandtimer
-        self.sandtimerHours = ko.observable(localStorage.getItem('sandtimerHours') !== null ? localStorage.getItem('sandtimerHours') : 0);
-        self.sandtimerMinutes = ko.observable(localStorage.getItem('sandtimerMinutes') !== null ? localStorage.getItem('sandtimerMinutes') : 30);
-        self.sandtimerSeconds = ko.observable(localStorage.getItem('sandtimerSeconds') !== null ? localStorage.getItem('sandtimerSeconds') : 0);
+        self.sandtimerReset(); // preallocate the fields
 
         // Show Options diaclog
         self.showOptionsDialog = function () {
@@ -1427,9 +1425,9 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "Clas
 
         // reset the sandtimer
         self.sandtimerReset = function () {
-            self.sandtimerSeconds(0);
-            self.sandtimerMinutes(0);
-            self.sandtimerHours(0);
+            self.sandtimerHours = ko.observable(localStorage.getItem('sandtimerHours') !== null ? localStorage.getItem('sandtimerHours') : 0);
+            self.sandtimerMinutes = ko.observable(localStorage.getItem('sandtimerMinutes') !== null ? localStorage.getItem('sandtimerMinutes') : 30);
+            self.sandtimerSeconds = ko.observable(localStorage.getItem('sandtimerSeconds') !== null ? localStorage.getItem('sandtimerSeconds') : 0);
         };
 
         // EndRegion Sandtimer
