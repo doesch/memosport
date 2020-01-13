@@ -81,7 +81,10 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "Clas
         self.sandtimerInterval = null;
         self.sandtimerTotalSeconds = null; // caches the current time of the sandtimer in seconds
         self.sandtimerDisplayValue = ko.observable("00:00:00"); // the formatted, displayed sandtimer
-        self.sandtimerReset(); // preallocate the fields
+
+        self.sandtimerHours = ko.observable();
+        self.sandtimerMinutes = ko.observable();
+        self.sandtimerSeconds = ko.observable();
 
         // Show Options diaclog
         self.showOptionsDialog = function () {
@@ -1344,6 +1347,10 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "Clas
         // show the sandtimer dialog
         self.sandtimerDialog = function() {
 
+            // preallocate the fields
+            self.sandtimerReset(); 
+
+            // show the dialog
             let lTemplate = document.getElementById("sandtimer-dialog-template");
             let lDialog = new tsLib.Dialog(lTemplate, "Sanduhr");
             lDialog.afterRenderCallback = function () { ko.applyBindings(GLOBAL.MainViewModel, this.mHtmlWindow); };
@@ -1425,9 +1432,9 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "Clas
 
         // reset the sandtimer
         self.sandtimerReset = function () {
-            self.sandtimerHours = ko.observable(localStorage.getItem('sandtimerHours') !== null ? localStorage.getItem('sandtimerHours') : 0);
-            self.sandtimerMinutes = ko.observable(localStorage.getItem('sandtimerMinutes') !== null ? localStorage.getItem('sandtimerMinutes') : 30);
-            self.sandtimerSeconds = ko.observable(localStorage.getItem('sandtimerSeconds') !== null ? localStorage.getItem('sandtimerSeconds') : 0);
+            self.sandtimerHours(localStorage.getItem('sandtimerHours') !== null ? localStorage.getItem('sandtimerHours') : 0);
+            self.sandtimerMinutes(localStorage.getItem('sandtimerMinutes') !== null ? localStorage.getItem('sandtimerMinutes') : 30);
+            self.sandtimerSeconds(localStorage.getItem('sandtimerSeconds') !== null ? localStorage.getItem('sandtimerSeconds') : 0);
         };
 
         // EndRegion Sandtimer
