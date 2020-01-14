@@ -225,7 +225,7 @@
                 <!-- /ko -->
                 <!-- ko if: $root.editMode() == true -->
                 <div id="ict-edit-mode-additions-bar">
-                    <input id="ict-input-source" type="text" data-bind="click: function() { $root.sourceInputClick(); return false; }, clickBubble: false, textInput: editIndexCard().source" placeholder="Quelle" autocomplete="off" />
+                    <input id="ict-input-source" type="text" data-bind="click: function() { $root.sourceInputClick(); return false; }, clickBubble: false, textInput: editIndexCard().source, event : { 'keyup': sourceKeyUpEvent }" placeholder="Quelle" autocomplete="off" />
                     <input type="text" data-bind="textInput: editIndexCard().jingle" placeholder="Eselsbrücke" />
                 </div>
 

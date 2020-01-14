@@ -1287,22 +1287,59 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "Clas
         };
 
         /// click on input field for indexcard-source
-        self.sourceInputClick = function() {
+        self.sourceInputClick = function () {
 
-            // when source is null or empty string, then do nothing
-            //if (self.editIndexCard().source) {
-            //    return;
-            //}
+            // get sources from server
+            self.sourcesGetFromServer();
+        };
 
-            // clear observable
-            // self.latestSources([]);
+        // source input-field change event
+        self.sourceKeyUpEvent = function (e, t) {
+
+            // when input filled then hide the dropdown
+            if (self.sourceInputHasValue()) {
+                // user has entered an value
+                self.latestSourcesDropdownHide();
+            }
+            else
+            {
+                // when field empty, then show dropdown
+                self.sourcesGetFromServer();
+            }
+        };
+
+        // validate if the source input field has an value
+        self.sourceInputHasValue = function() {
+
+            let lInputElement = document.getElementById("ict-input-source");
+
+            if (typeof lInputElement === "undefined" || lInputElement === null) {
+                throw new Error("Cannot find input element id='ict-input-source'.");
+            }
+
+            // get value
+            let lValue = lInputElement.value;
+
+            // validate
+            if (lValue === null || typeof lValue === "undefined") {
+                return false;
+            }
+
+            if (lValue.trim() === "") {
+                return false;
+            }
+
+            return true;
+        };
+
+        self.sourcesGetFromServer = function() {
 
             // get latest sources from server
             $.ajax({
                 url: "/IndexCardApi/GetLatestSources",
                 type: "GET",
                 dataType: "json",
-                success: function(xhr) {
+                success: function (xhr) {
 
                     // add results to observable
                     self.latestSources(xhr);
@@ -1321,6 +1358,7 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "Clas
                     self.latestSourcesDropdown.show();
                 }
             });
+
         };
 
         /// click on resource in dropdown
