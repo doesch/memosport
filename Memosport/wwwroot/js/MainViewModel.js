@@ -748,7 +748,8 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "Clas
                             }
 
                             self.currentIndexCard(self.dataset()[self.i()]);
-                            self.editMode(false);
+                            self.editMode(false); // go back to learn-mode
+                            self.showQuestion(true); // go to question
                             self.setProgress();
                         }
                         else {
