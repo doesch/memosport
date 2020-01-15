@@ -124,10 +124,12 @@ label:hover
 }
 
 textarea, input {
-    font-family: Arial;
+    font-family: @GlobalFontFamily;
     font-size: @GlobalFontSize;
     /* border: none; */
     border-radius: @GlobalBorderRadius;
+    color: @GlobalFontColor;
+    font-size: @GlobalFontSize;
 }
 
 input[type="text"],
@@ -2222,7 +2224,7 @@ textarea.ict-question-answer-text {
     .ict-move-indexcard-to-box-item {
         
         height: @GlobalButtonHeight;
-        line-height: @GlobalButtonHeight - 1px;
+        line-height: @GlobalButtonHeight;
         border-bottom: 1px solid @GlobalBorderColor;
         padding-left: @GlobalMargin / 3;
 
@@ -2261,10 +2263,15 @@ textarea.ict-question-answer-text {
     position: relative;
     z-index: 0;
 
+    textarea {
+        line-height: @GlobalLineHeightQuestionAnswer;
+        font-size: @GlobalFontSize + 1;
+    }
+
     .ict-question-container,
     .ict-result-container {
         display: none; // show nothing inititally. Visibility will be handled by an observable.
-        line-height: 21px;
+        line-height: @GlobalLineHeightQuestionAnswer;
         text-align: left;
         font-size: 13px;
         min-height: @IctContainerHeight;
@@ -2285,7 +2292,7 @@ textarea.ict-question-answer-text {
     .ict-question-container .question,
     .ict-result-container .result {
         display: inline;
-        font-size: 14px;
+        font-size: @GlobalFontSize + 1;
         line-height: 14px;
         word-wrap: break-word;
     }

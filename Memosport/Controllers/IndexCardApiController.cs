@@ -183,6 +183,61 @@ namespace Memosport.Controllers
             return Json(lIndexCard);
         }
 
+        /// <summary> (An Action that handles HTTP POST requests) makes a deep copy of this instance. </summary>
+        /// <remarks> Doetsch, 15.01.20. </remarks>
+        /// <param name="indexcard"> The indexcard. </param>
+        /// <returns> An asynchronous result that yields a copy of this instance. </returns>
+        [HttpPost("duplicate")]
+        public async Task<IActionResult> Duplicate([FromForm]IndexCard indexcard)
+        {
+            // get indexcard from Server
+            IIndexCard lIndexCard = _context.IndexCards.SingleOrDefault(x => x.Id == indexcard.Id);
+
+            if (lIndexCard == null)
+            {
+                return NotFound(); // returns an 404 page not found
+            }
+
+            // check if user is owner of the index card
+            if (UserIsOwnerOfIndexCard(lIndexCard) == false)
+            {
+                return Forbid();
+            }
+            
+            // remove id to mark as a new indexcard
+            lIndexCard.Id = null;
+
+            // copy files
+            
+            if (lIndexCard.QuestionImageUrl != null)
+            {
+                lIndexCard.QuestionImageUrl = await Upload.CopyFile(lIndexCard.QuestionImageUrl, _env.WebRootPath);
+            }
+
+            if (lIndexCard.AnswerImageUrl != null)
+            {
+                lIndexCard.AnswerImageUrl = await Upload.CopyFile(lIndexCard.AnswerImageUrl, _env.WebRootPath);
+            }
+
+            if (lIndexCard.QuestionAudioUrl != null)
+            {
+                lIndexCard.QuestionAudioUrl = await Upload.CopyFile(lIndexCard.QuestionAudioUrl, _env.WebRootPath);
+            }
+
+            if (lIndexCard.AnswerAudioUrl != null)
+            {
+                lIndexCard.AnswerAudioUrl = await Upload.CopyFile(lIndexCard.AnswerAudioUrl, _env.WebRootPath);
+            }
+
+            // save in database
+            _context.IndexCards.Add((IndexCard)lIndexCard);
+            await _context.SaveChangesAsync();
+
+
+            // return created indexcard
+            return Json(lIndexCard);
+        }
+        
         /// <summary> (An Action that handles HTTP PUT requests) indexes. </summary>
         /// <remarks> Doetsch, 17.12.19. </remarks>
         /// <param name="id">        The identifier. </param>
@@ -342,6 +397,9 @@ namespace Memosport.Controllers
                     // save new file
                     pIndexCard.QuestionImageUrl = await Upload.SaveImageFile(pIndexCard.QuestionImageFile, _env.WebRootPath);
                 }
+
+                // reset flag to default
+                pIndexCard.DeleteQuestionImage = false;
             }
 
             if (pIndexCard.AnswerImageFile != null || pIndexCard.DeleteAnswerImage)
@@ -358,6 +416,9 @@ namespace Memosport.Controllers
                     // save new file
                     pIndexCard.AnswerImageUrl = await Upload.SaveImageFile(pIndexCard.AnswerImageFile, _env.WebRootPath);
                 }
+
+                // reset flag to default
+                pIndexCard.DeleteAnswerImage = false;
             }
 
             if (pIndexCard.QuestionAudioFile != null || pIndexCard.DeleteQuestionAudio)
@@ -374,6 +435,9 @@ namespace Memosport.Controllers
                     // save new file
                     pIndexCard.QuestionAudioUrl = await Upload.SaveAudioFile(pIndexCard.QuestionAudioFile, _env.WebRootPath);
                 }
+
+                // reset flag to default
+                pIndexCard.DeleteQuestionAudio = false;
             }
 
             if (pIndexCard.AnswerAudioFile != null || pIndexCard.DeleteAnswerAudio)
@@ -390,6 +454,9 @@ namespace Memosport.Controllers
                 {
                     pIndexCard.AnswerAudioUrl = await Upload.SaveAudioFile(pIndexCard.AnswerAudioFile, _env.WebRootPath);
                 }
+
+                // reset flag to default
+                pIndexCard.DeleteAnswerAudio = false;
             }
 
             // detach

@@ -36,13 +36,31 @@ namespace Memosport.Classes
             ValidateImageType(pImageFile);
 
             // create filename
-            var lNewFilename = CreateFileName(pImageFile, pWebRootPath);
+            var lNewFilename = CreateFileName(pImageFile.FileName, pWebRootPath);
             var lFullPath = Path.Combine(pWebRootPath, cUploadFolder, lNewFilename);
 
             using (var lStream = System.IO.File.Create(lFullPath))
             {
                 await pImageFile.CopyToAsync(lStream);
             }
+
+            return lNewFilename;
+        }
+
+        /// <summary> Copies the file. </summary>
+        /// <remarks> Doetsch, 15.01.20. </remarks>
+        /// <param name="pOriginalFilename"> The file. </param>
+        /// <param name="pWebRootPath">      Full pathname of the web root file. </param>
+        /// <returns> An asynchronous result that yields a string. </returns>
+        public static async Task<string> CopyFile(string pOriginalFilename, string pWebRootPath)
+        {
+            // create filename
+            var lNewFilename = CreateFileName(pOriginalFilename, pWebRootPath);
+            var lTargetFullPath = Path.Combine(pWebRootPath, cUploadFolder, lNewFilename);
+
+            var lOriginalFullPath = Path.Combine(pWebRootPath, cUploadFolder, pOriginalFilename);
+
+            File.Copy(lOriginalFullPath, lTargetFullPath);
 
             return lNewFilename;
         }
@@ -58,7 +76,7 @@ namespace Memosport.Classes
             ValidateAudioType(pAudioFile);
 
             // create filename
-            var lNewFilename = CreateFileName(pAudioFile, pWebRootPath);
+            var lNewFilename = CreateFileName(pAudioFile.FileName, pWebRootPath);
             var lFullPath = Path.Combine(pWebRootPath, cUploadFolder, lNewFilename);
 
             using (var lStream = System.IO.File.Create(lFullPath))
@@ -100,18 +118,24 @@ namespace Memosport.Classes
             }
         }
 
-        /// <summary> Creates full path with random filename </summary>
+        /// <summary> Creates full path with random filename. </summary>
         /// <remarks> Doetsch, 18.12.19. </remarks>
-        /// <param name="pFile">        The file. </param>
-        /// <param name="pWebRootPath"> Full pathname of the web root file. </param>
+        /// <param name="pOriginalFilename"> The file. </param>
+        /// <param name="pWebRootPath">      Full pathname of the web root file. </param>
         /// <returns> The new full path. </returns>
-        private static string CreateFileName(IFormFile pFile, string pWebRootPath)
+        private static string CreateFileName(string pOriginalFilename, string pWebRootPath)
         {
             // create guid for filename
             var lNewFilename = Guid.NewGuid().ToString().Replace("-", "");
 
             // append suffix
-            var lSuffix = Path.GetExtension(pFile.FileName).ToLowerInvariant();
+            var lSuffix = Path.GetExtension(pOriginalFilename).ToLowerInvariant();
+
+            if (lSuffix == null)
+            {
+                throw new ArgumentException("the argument 'pOriginalFilename' should have and suffix like '.jpg'.");
+            }
+
             lNewFilename += lSuffix;
 
             return lNewFilename;
