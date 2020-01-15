@@ -664,7 +664,7 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "Clas
                         }
                     }
 
-                    // when it is a new index card and the same box, then push it into the stack to the current position
+                    // when it is a new index card and the same box, then push it into the stack to the current next position
                     if (i === len && self.box().id === lXhrIndexCard.indexCardBoxId) {
                         // it´s new
                         self.dataset().splice(self.i(), 0, lXhrIndexCard);
@@ -738,7 +738,15 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "Clas
                     success: function (data) {
 
                         // remove item from deck
-                        self.dataset.splice(self.editIndexCard(), 1);
+                        let lArr = self.dataset();
+                        for (let i = 0, len = lArr.length; i < len; i++) {
+                            if (lArr[i].id === self.editIndexCard().id) {
+
+                                lArr.splice(i, 1);
+                                self.dataset(lArr);
+                                break;
+                            }
+                        }
 
                         // get show next or previous index card
                         if (self.dataset().length > 0) {
@@ -749,6 +757,7 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "Clas
 
                             self.currentIndexCard(self.dataset()[self.i()]);
                             self.editMode(false); // go back to learn-mode
+                            self.editIndexCard(null);
                             self.showQuestion(true); // go to question
                             self.setProgress();
                         }
@@ -866,6 +875,58 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "Clas
 
             // assign new box-id to cache
             self.boxMoveSelected(pIndexCardBox.id);
+        };
+
+        /// <summary> Index card duplicate click. </summary>
+        /// <remarks> Doetsch, 15.01.20. </remarks>
+        /// <returns> . </returns>
+        self.indexCardDuplicateClick = function() {
+
+            // duplicate an indexcard
+
+            // show sandtimer
+            let lSandtimer = new tsLib.Sandtimer("Eine Kopie der Karteikarte wird erstellt. Bitte warten...");
+
+            // convert into payload (formdata)
+            let lFormData = self.indexCardToFormData(self.currentIndexCard());
+
+            $.ajax({
+                url: "/IndexCardApi/duplicate",
+                data: lFormData,
+                type: "POST",
+                contentType: false,
+                processData: false,
+                dataType: "json",
+                beforeSend: function() {
+                    lSandtimer.show();
+                },
+                success: function (xhr) {
+
+                    // render indexcard
+                    let lIndexCard = new indexCard.IndexCard(xhr);
+
+                    // close sandtimer
+                    lSandtimer.close();
+
+                    // show message to the user
+                    new tsLib.MessageBox("Es wurde erfolgreich eine Kopie erstellt. Sie können die Kopie jetzt bearbeiten.").show();
+
+                    // add copy to current dataset
+                    self.dataset().splice(self.i(), 0, lIndexCard);
+                    self.setProgress();
+
+                        // updated view (show index card) (show also when it is a different selected box for verification)
+                    self.currentIndexCard(lIndexCard);
+
+                    // show in edit more
+                    self.showQuestion(true);
+                    self.editForm(lIndexCard);
+                },
+                complete: function () {
+                    lSandtimer.close();
+                }
+            });
+
         };
 
         /**
