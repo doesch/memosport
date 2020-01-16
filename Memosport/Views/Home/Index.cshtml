@@ -8,7 +8,7 @@
             @Html.Partial("_IctNavBar")
             <div class="clearfix"></div>
             <!-- ko if: $root.showProgressButtonBubble() -->
-            <div id="ict-progress-menu-container">
+            <div id="ict-progress-menu-container" data-bind="style:{ display: $root.showProgressButtonBubble() === true ? 'block' : 'none'}">
                 <div id="ict-progress-menu">
                     <button class="bttn" data-bind="click: MoveBackward, clickBubble: false;"><span class="icon icon-arrow-left"></span></button>
                     <button class="bttn" data-bind="click: MoveForward, clickBubble: false;"><span class="icon icon-arrow-right"></span></button>
