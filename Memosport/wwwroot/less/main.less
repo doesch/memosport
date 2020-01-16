@@ -2159,7 +2159,6 @@ textarea.ict-question-answer-text {
 }
 
 #ict-boxes-dropdown-bttn {
-    width: 150px;
     border: @GlobalBorderControls !important;
     border-radius: @GlobalBorderRadius;
     background-color: white !important;
@@ -2169,6 +2168,19 @@ textarea.ict-question-answer-text {
     text-overflow: ellipsis;
     text-align: left;
     white-space: nowrap;
+
+    .icon-arrow-down {
+        float: right;
+        margin-top: 8px;
+    }
+
+    #ict-boxes-dropdown-bttn-selected-name {
+        display: block;
+        width: 90px;
+        float: left;
+        text-overflow: ellipsis;
+        overflow: hidden;
+    }
 }
 
 .selected-box {
