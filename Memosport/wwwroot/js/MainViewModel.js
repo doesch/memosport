@@ -1442,6 +1442,29 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "Clas
             }
         };
 
+        /// When source is not an url, then convert the source-termin into an google-search
+        self.indexcardGetSourceUrl = function (pSource) {
+
+            let lSource = pSource.trim();
+
+            // validate param
+            if (lSource === null || typeof lSource === "undefined" || lSource === "") {
+                return;
+            }
+
+            // check if source begins with "http".
+            if (lSource.toLowerCase().lastIndexOf("http", 0) === 0)
+            {
+                // it is an url.
+                return lSource;
+            }
+            else
+            {
+                // it is not an url. put it into an google search
+                return "https://www.google.com/search?q=" + lSource;
+            }
+        };
+
         // Region sandtimer
 
         // show the sandtimer dialog

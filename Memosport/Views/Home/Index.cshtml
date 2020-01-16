@@ -299,12 +299,14 @@
 
 <script id="ict-dialog-source-template" type="text/html">
     <div id="ict-dialog-source">
-        <span data-bind="text: $root.currentIndexCard().source"></span>
+        <!-- ko if: $root.currentIndexCard().source !== null && $root.currentIndexCard().source !== '' -->
+        <a href="#" data-bind="text: $root.currentIndexCard().source, attr: {href: $root.indexcardGetSourceUrl($root.currentIndexCard().source)}" target="_blank"></a>
+        <!-- /ko -->
     </div>
 </script>
 
 <script id="ict-dialog-jingle-template" type="text/html">
-    <div id="ict-dialog-jingle">@*  *@
+    <div id="ict-dialog-jingle">
         <span data-bind="text: $root.currentIndexCard().jingle"></span>
     </div>
 </script>
