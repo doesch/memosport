@@ -6,6 +6,7 @@ export class IndexCardBox extends tsLib.HelperBase
     id: number = null; // the id in the database
     name: string = null;
     userId: number = null;
+    archived: boolean = null;
 
     public constructor(pArgs: any)
     {

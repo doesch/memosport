@@ -1549,5 +1549,61 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "Clas
         };
 
         // EndRegion Sandtimer
+
+        // Region ArchiveBox
+        self.archiveIndexCardBoxDialog = function () {
+
+            let lBttnOk = new tsLib.Button("OK", function () { });
+            let lTemplate = document.getElementById("ict-archive-template");
+            let lDialog = new tsLib.Dialog(lTemplate, "Archivierte Karteikästen", [lBttnOk]);
+            lDialog.afterRenderCallback = function () { ko.applyBindings(GLOBAL.MainViewModel, this.mHtmlWindow); };
+            lDialog.show();
+        };
+
+        self.indexCardBoxToggleArchived = function (pIndexCardBox) {
+
+            if (pIndexCardBox instanceof indexCardBox.IndexCardBox === false) {
+                throw new Error("Invalid argument. Expected type: 'IndexCardBox'.");
+            }
+
+            // toggle value
+            pIndexCardBox.archived = !pIndexCardBox.archived;
+
+            // save box
+            $.ajax({
+                url: "/IndexCardBoxApi/" + pIndexCardBox.id,
+                data: JSON.stringify(pIndexCardBox),
+                type: "PUT",
+                contentType: "application/json",
+                dataType: "json",
+                success: function (xhr) {
+
+                    let lIndexCardBox = new indexCardBox.IndexCardBox(xhr);
+                    let lArr = self.boxes();
+
+                    // replace box in list
+                    for (let i = 0, len = lArr.length; i < len; i++) {
+
+                        // found box. Replace now
+                        if (lArr[i].id === lIndexCardBox.id) {
+                            lArr[i] = lIndexCardBox;
+                            break; 
+                        }
+                    }
+
+                    // re-render boxes
+                    self.boxes(lArr);
+
+                    // when box is currently selected, then remove from selection and current index card
+                    if (self.anyBoxIsSelected() && self.box().id === lIndexCardBox.id) {
+                        self.box(self.boxPlaceholder);
+                        self.editMode(false);
+                        self.editIndexCard(null); // current editing index card
+                    }                    
+                }
+            });
+        };
+
+        // EndRegion ArchiveBox
     }
 });

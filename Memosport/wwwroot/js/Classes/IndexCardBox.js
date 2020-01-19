@@ -21,6 +21,7 @@ define(["require", "exports", "../lib/tsLib/tsLib"], function (require, exports,
             _this.id = null;
             _this.name = null;
             _this.userId = null;
+            _this.archived = null;
             _super.prototype.autoConstructor.call(_this, pArgs);
             return _this;
         }

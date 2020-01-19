@@ -13,6 +13,8 @@ namespace Memosport.Models
 
         string Name { get; set; }
 
+        bool Archived { get; set; }
+
         DateTime Created { get; set; }
 
         DateTime Modified { get; set; }

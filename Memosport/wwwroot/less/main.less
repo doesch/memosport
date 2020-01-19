@@ -2232,16 +2232,17 @@ textarea.ict-question-answer-text {
     }
 }
 
-#ict-move-indexcard-to-box-container {
+#ict-move-indexcard-to-box-container,
+#ict-archive-dialog-container {
 
-    .ict-move-indexcard-to-box-item {
-        
+    .ict-move-indexcard-to-box-item,
+    .ict-archived-box-listitem {
         height: @GlobalButtonHeight;
         line-height: @GlobalButtonHeight;
         border-bottom: 1px solid @GlobalBorderColor;
         padding-left: @GlobalMargin / 3;
 
-        &:hover{
+        &:hover {
             background-color: @GlobalHoverBgColor;
             cursor: pointer;
         }

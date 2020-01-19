@@ -14,10 +14,12 @@
     </div>
     <div id="ict-boxes-dropdown-scroll-container">
         <!-- ko foreach: boxes -->
-        <div class="ict-boxes-dropdown-listitem" data-bind="css: {'selected-box' : $data === $root.box()}">
-            <div class="ict-boxes-dropdown-listitem-col-2"><a class="bttn" href="#" title="edit" data-bind="click: function(){ $root.editIndexCardBoxForm($data); }"><span class="icon icon-edit"></span></a></div>
-            <div class="ict-boxes-dropdown-listitem-col-1" data-bind="click: $root.BoxSelected"><span data-bind="text: $data.name"></span></div>
-        </div>
+            <!-- ko if: $data.archived === false -->
+            <div class="ict-boxes-dropdown-listitem" data-bind="css: {'selected-box' : $data === $root.box()}">
+                <div class="ict-boxes-dropdown-listitem-col-2"><a class="bttn" href="#" title="edit" data-bind="click: function(){ $root.editIndexCardBoxForm($data); }"><span class="icon icon-edit"></span></a></div>
+                <div class="ict-boxes-dropdown-listitem-col-1" data-bind="click: $root.BoxSelected"><span data-bind="text: $data.name"></span></div>
+            </div>
+            <!-- /ko -->
         <!-- /ko -->
     </div>
 
@@ -30,6 +32,7 @@
     <li><a href="#" data-bind="click: function(){ $root.indexCardMoveClick(); }">Karteikarte verschieben</a></li>
     <li><a href="#" data-bind="click: function(){ $root.indexCardDuplicateClick(); }">Karteikarte duplizieren</a></li>
     <!-- /ko -->
+    <li><a href="#" data-bind="click: function(){ $root.archiveIndexCardBoxDialog(); }">Archiv</a></li>
     <li><a href="#" data-bind="click: function(){ $root.sandtimerDialog(); }">Sanduhr</a></li>
 </ul>
 <!-- /ko -->
@@ -41,5 +44,11 @@
 <script id="ict-move-indexcard-to-box-template" type="text/html">
     <div id="ict-move-indexcard-to-box-container" data-bind="foreach: boxes">
        <div class="ict-move-indexcard-to-box-item" data-bind="text: $data.name, css: { 'selected-box': $root.boxMoveSelected() === $data.id }, click: function() { $root.indexCardMoveBoxSelectedClick($data); }"></div> 
+    </div>
+</script>
+
+<script id="ict-archive-template" type="text/html">
+    <div id="ict-archive-dialog-container" data-bind="foreach: boxes">
+        <div class="ict-archived-box-listitem" data-bind="text: $data.name, css: { 'selected-box': $data.archived === true }, click: function() { $root.indexCardBoxToggleArchived($data); }"></div>
     </div>
 </script>
