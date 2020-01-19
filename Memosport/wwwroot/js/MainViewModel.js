@@ -1348,28 +1348,6 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "Clas
             }
         };
 
-        /// click on input field for indexcard-source
-        self.sourceInputClick = function () {
-
-            // get sources from server
-            self.sourcesGetFromServer();
-        };
-
-        // source input-field change event
-        self.sourceKeyUpEvent = function (e, t) {
-
-            // when input filled then hide the dropdown
-            if (self.sourceInputHasValue()) {
-                // user has entered an value
-                self.latestSourcesDropdownHide();
-            }
-            else
-            {
-                // when field empty, then show dropdown
-                self.sourcesGetFromServer();
-            }
-        };
-
         // validate if the source input field has an value
         self.sourceInputHasValue = function() {
 
@@ -1394,7 +1372,17 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "Clas
             return true;
         };
 
+        /// click or keypress on sources field
         self.sourcesGetFromServer = function() {
+
+            // when input filled then hide the dropdown and do not load source from server
+            if (self.sourceInputHasValue()) {
+                // user has entered an value
+                self.latestSourcesDropdownHide();
+                return;
+            }
+
+            // when field empty, then show dropdown
 
             // get latest sources from server
             $.ajax({
