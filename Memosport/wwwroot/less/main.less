@@ -2233,10 +2233,12 @@ textarea.ict-question-answer-text {
 }
 
 #ict-move-indexcard-to-box-container,
-#ict-archive-dialog-container {
+#ict-archive-dialog-container,
+#ict-boxstats-dialog-container {
 
     .ict-move-indexcard-to-box-item,
-    .ict-archived-box-listitem {
+    .ict-archived-box-listitem,
+    .ict-boxstats-listitem {
         height: @GlobalButtonHeight;
         line-height: @GlobalButtonHeight;
         border-bottom: 1px solid @GlobalBorderColor;
@@ -2248,6 +2250,30 @@ textarea.ict-question-answer-text {
         }
     }
 }
+
+#ict-boxstats-dialog-container {
+    .ict-boxstats-listitem {
+        .col-stats {
+            float: left;
+            margin: 0px @GlobalMargin / 2;
+            width: 40px;
+            text-align: right;
+            overflow: hidden;
+            white-space: nowrap;
+        }
+
+        .col-2{
+            width: 60px;
+        }
+        
+        .col-1 {
+            width: 80px;
+            text-overflow: ellipsis;
+            text-align: left;
+        }
+    }
+}
+
 
 .ict-label-activated {
     border-left: none !important;

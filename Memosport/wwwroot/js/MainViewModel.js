@@ -32,6 +32,7 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "Clas
         self.boxPlaceholder = { name: "Bitte wählen..." };
         self.box = ko.observable(self.boxPlaceholder); /* manual, auto */
         self.boxes = ko.observableArray(); // all available boxes
+        self.boxStats = ko.observableArray(); // box statistics
 
         // move indexcard to box - dialog
         self.boxMoveSelected = ko.observable(); // cache id of the selected box the current indexcard should be move to.
@@ -1605,5 +1606,39 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "Clas
         };
 
         // EndRegion ArchiveBox
+
+        // Region BoxStatistics
+
+        self.showBoxStatistics = function() {
+
+            // save box
+            $.ajax({
+                url: "/IndexCardBoxApi/GetStats",
+                type: "GET",
+                contentType: "application/json",
+                dataType: "json",
+                success: function (xhr) {
+
+                    // maps objects
+                    let lTmpArr = [];
+
+                    for (let i = 0, len = xhr.length; i < len; i++) {
+                        lTmpArr.push(new indexCardBox.IndexCardBox(xhr[i]));
+                    }
+
+                    // render stats
+                    self.boxStats(lTmpArr);
+
+                    // show dialog
+                    let lBttnOk = new tsLib.Button("OK", function () { });
+                    let lTemplate = document.getElementById("ict-boxstats-template");
+                    let lDialog = new tsLib.Dialog(lTemplate, "Statistik", [lBttnOk]);
+                    lDialog.afterRenderCallback = function () { ko.applyBindings(GLOBAL.MainViewModel, this.mHtmlWindow); };
+                    lDialog.show();
+                }
+            });
+        };
+
+        // EndRegion BoxStatistics
     }
 });

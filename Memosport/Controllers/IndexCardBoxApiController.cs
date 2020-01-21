@@ -149,5 +149,34 @@ namespace Memosport.Controllers
 
             return Json(lIndexCardBox);
         }
+
+        /// <summary> (An Action that handles HTTP GET requests) gets the statistics. </summary>
+        /// <remarks> Doetsch, 21.01.20. </remarks>
+        /// <returns> An asynchronous result that yields the statistics. </returns>
+        [HttpGet("getStats")]
+        public async Task<IActionResult> GetStats()
+        {
+            // get current User
+            var lUser = base.GetCurrentUser(_context);
+
+            // get indexcardboxes
+            var lQuery = _context.IndexCardBoxes.OrderBy(x => x.Name).Select(x => x).Where(x => x.UserId == lUser.Id);
+            List<IndexCardBox> lIndexCardBoxes = await lQuery.ToListAsync();
+
+            // now count the stats
+            foreach (var lIndexCardBox in lIndexCardBoxes)
+            {
+                IBoxStats lBoxStats = new BoxStats();
+
+                // count total indexcards
+                lBoxStats.TotalCount = _context.IndexCards.Select(x => x).Count(x => x.IndexCardBoxId == lIndexCardBox.Id);
+                lBoxStats.Learned = _context.IndexCards.Select(x => x).Count(x => x.IndexCardBoxId == lIndexCardBox.Id && x.Known > 0);
+
+                // assign stats
+                lIndexCardBox.BoxStats = lBoxStats;
+            }
+
+            return Json(lIndexCardBoxes);
+        }
     }
 }

@@ -32,6 +32,7 @@
     <li><a href="#" data-bind="click: function(){ $root.indexCardMoveClick(); }">Karteikarte verschieben</a></li>
     <li><a href="#" data-bind="click: function(){ $root.indexCardDuplicateClick(); }">Karteikarte duplizieren</a></li>
     <!-- /ko -->
+    <li><a href="#" data-bind="click: function(){ $root.showBoxStatistics(); }">Statistik</a></li>
     <li><a href="#" data-bind="click: function(){ $root.archiveIndexCardBoxDialog(); }">Archiv</a></li>
     <li><a href="#" data-bind="click: function(){ $root.sandtimerDialog(); }">Sanduhr</a></li>
 </ul>
@@ -50,5 +51,17 @@
 <script id="ict-archive-template" type="text/html">
     <div id="ict-archive-dialog-container" data-bind="foreach: boxes">
         <div class="ict-archived-box-listitem" data-bind="text: $data.name, css: { 'selected-box': $data.archived === true }, click: function() { $root.indexCardBoxToggleArchived($data); }"></div>
+    </div>
+</script>
+
+
+<script id="ict-boxstats-template" type="text/html">
+    <div id="ict-boxstats-dialog-container" data-bind="foreach: boxStats">
+        <div class="ict-boxstats-listitem">
+            <div class="col-stats col-1"><span data-bind="text: $data.name"></span></div>
+            <div class="col-stats col-2"><span data-bind="text: $data.boxStats.totalCount"></span>/<span data-bind="text: $data.boxStats.learned"></span></div>
+            <div class="col-stats col-3"><span data-bind="text: $data.boxStats.percentLearned"></span><span>%</span></div>
+            <div class="clearfix"></div>
+        </div>
     </div>
 </script>

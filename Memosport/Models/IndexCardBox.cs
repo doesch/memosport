@@ -2,6 +2,7 @@
 using Memosport.Data;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 
 namespace Memosport.Models
@@ -18,6 +19,9 @@ namespace Memosport.Models
 
         // the UTC-time when the user has lastly learned this box.
         public DateTime? DateLastLearned { get; set; }
+
+        [NotMapped]
+        public IBoxStats BoxStats { get; set; }
 
         public DateTime Created { get; set; }
 

@@ -15,6 +15,10 @@ namespace Memosport.Models
 
         bool Archived { get; set; }
 
+        DateTime? DateLastLearned { get; set; }
+
+        IBoxStats BoxStats { get; set; }
+
         DateTime Created { get; set; }
 
         DateTime Modified { get; set; }

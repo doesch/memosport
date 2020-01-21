@@ -21,12 +21,33 @@ define(["require", "exports", "../lib/tsLib/tsLib"], function (require, exports,
             _this.id = null;
             _this.name = null;
             _this.userId = null;
+            _this.dateLastLearned = null;
             _this.archived = null;
+            _this.boxStats = null;
             _super.prototype.autoConstructor.call(_this, pArgs);
+            if (pArgs.hasOwnProperty("dateLastLearned") && pArgs.datedateLastLearned !== null) {
+                _this.dateLastLearned = new Date(pArgs.datedateLastLearned);
+            }
+            if (pArgs.hasOwnProperty("boxStats") && pArgs.boxStats !== null) {
+                _this.boxStats = new BoxStats(pArgs.boxStats);
+            }
             return _this;
         }
         return IndexCardBox;
     }(tsLib.HelperBase));
     exports.IndexCardBox = IndexCardBox;
+    var BoxStats = (function (_super) {
+        __extends(BoxStats, _super);
+        function BoxStats(pArgs) {
+            var _this = _super.call(this) || this;
+            _this.totalCount = null;
+            _this.learned = null;
+            _this.percentLearned = null;
+            _super.prototype.autoConstructor.call(_this, pArgs);
+            return _this;
+        }
+        return BoxStats;
+    }(tsLib.HelperBase));
+    exports.BoxStats = BoxStats;
 });
 //# sourceMappingURL=IndexCardBox.js.map
