@@ -103,6 +103,12 @@ namespace Memosport.Controllers
             // execute sql
             var lResult = await lQuery.ToListAsync();
 
+            // set 'learned'-datetime for this box for stats and save it in the database
+            lIndexCardBox.DateLastLearned = DateTime.UtcNow;
+            _context.Entry(lIndexCardBox).State = EntityState.Modified;
+            _context.SaveChanges();
+
+            // return dataset
             return Json(lResult);
         }
 

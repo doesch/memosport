@@ -16,6 +16,9 @@ namespace Memosport.Models
 
         public bool Archived { get; set; }
 
+        // the UTC-time when the user has lastly learned this box.
+        public DateTime? DateLastLearned { get; set; }
+
         public DateTime Created { get; set; }
 
         public DateTime Modified { get; set; }
