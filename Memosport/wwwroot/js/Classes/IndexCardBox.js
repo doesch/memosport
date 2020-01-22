@@ -27,7 +27,7 @@ define(["require", "exports", "../lib/tsLib/tsLib"], function (require, exports,
             _this.boxStats = null;
             _super.prototype.autoConstructor.call(_this, pArgs);
             if (typeof pArgs !== 'undefined' && pArgs.hasOwnProperty("dateLastLearned") && pArgs.datedateLastLearned !== null) {
-                _this.dateLastLearned = new Date(pArgs.datedateLastLearned);
+                _this.dateLastLearned = new Date(pArgs.dateLastLearned);
             }
             if (typeof pArgs !== 'undefined' && pArgs.hasOwnProperty("boxStats") && pArgs.boxStats !== null) {
                 _this.boxStats = new BoxStats(pArgs.boxStats);

@@ -18,7 +18,7 @@ export class IndexCardBox extends tsLib.HelperBase
 
         // the property dateLastLearned is an date. create object of date if possible.
         if (typeof pArgs !== 'undefined' && pArgs.hasOwnProperty("dateLastLearned") && pArgs.datedateLastLearned !== null) {
-            this.dateLastLearned = new Date(pArgs.datedateLastLearned);
+            this.dateLastLearned = new Date(pArgs.dateLastLearned);
         }
 
         // apply box statistics if exists

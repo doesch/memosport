@@ -315,7 +315,8 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "Clas
             });
 
             // get Index Card Boxes into dropdown
-            self.GetIndexCardBoxes();
+            let lCallback = self.LoadLatestLearnedBox;
+            self.GetIndexCardBoxes(lCallback);
         };
 
         // close all menus (click-event on body)
@@ -328,7 +329,7 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "Clas
         };
 
         /// Get all index card boxes from the server
-        self.GetIndexCardBoxes = function () {
+        self.GetIndexCardBoxes = function (pCallback) {
 
             $.ajax({
                 url: '/IndexCardBoxApi',
@@ -348,21 +349,36 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "Clas
 
                     // add all boxes to dropdown
                     self.boxes(lTmpArr);
-
-                    // select last selected box when in cookie
-                    var lId = tsLib.Cookie.read("selected-icb");
-                    if (lId !== null) {
-                        // find in list
-                        for (var ii = 0, lenn = lTmpArr.length; ii < lenn; ii++) {
-                            if (lTmpArr[ii].id === lId) {
-                                // found index card box in list.
-                                self.BoxSelected(lTmpArr[ii]);
-                                break;
-                            }
-                        }
+                    
+                    // execute callback if exists
+                    if (typeof pCallback !== "undefined") {
+                        pCallback();
                     }
                 }
             });
+        };
+
+        // load the latest learned box
+        self.LoadLatestLearnedBox = function() {
+
+            let lBox = null;
+
+            // get latest learned box
+            for (let i = 0, len = self.boxes().length; i < len; i++) {
+                // could be null when never learned → skip!
+                if (typeof self.boxes()[i] === "undefined" || self.boxes()[i].dateLastLearned === null || typeof self.boxes()[i].dateLastLearned === "undefined") {
+                    continue;
+                }
+
+                if (lBox === null || typeof lBox === "undefined" || lBox.dateLastLearned < self.boxes()[i].dateLastLearned) {
+                    lBox = self.boxes()[i];
+                }
+            }
+
+            // now load the dataset of the latest box
+            if (lBox !== null) {
+                self.BoxSelected(lBox);
+            }
         };
 
         self.BoxSelected = function (pIndexCardBox) {
@@ -380,9 +396,6 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "Clas
 
             // load data
             self.loadData();
-
-            // remember selected box in cookie
-            tsLib.Cookie.write("selected-icb", pIndexCardBox.id, 365);
         };
 
         /*
