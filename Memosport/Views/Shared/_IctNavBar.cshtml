@@ -57,10 +57,13 @@
 
 <script id="ict-boxstats-template" type="text/html">
     <div id="ict-boxstats-dialog-container" data-bind="foreach: boxStats">
-        <div class="ict-boxstats-listitem">
+        <div class="ict-boxstats-listitem" data-bind="click: function(){ $root.boxSelectedInStats($data); }">
             <div class="col-stats col-1"><span data-bind="text: $data.name"></span></div>
-            <div class="col-stats col-2"><span data-bind="text: $data.boxStats.totalCount"></span>/<span data-bind="text: $data.boxStats.learned"></span></div>
-            <div class="col-stats col-3"><span data-bind="text: $data.boxStats.percentLearned"></span><span>%</span></div>
+            <div class="col-stats col-2" title="Karteikarten in Box und Gelernte Karteikarten."><span data-bind="text: $data.boxStats.totalCount"></span>/<span data-bind="text: $data.boxStats.learned"></span></div>
+            <div class="col-stats col-3" title="Gelernte Karteikarten in Prozent."><span data-bind="text: '(' + $data.boxStats.percentLearned + '%)'"></span></div>
+            <div class="col-stats col-4" title="Der Karteikasten wurde vor [x] Tagen zuletzt aufgerufen.">
+                <span data-bind="text: $data.dateLastLearnedDays === null ? '?' : $data.dateLastLearnedDays"></span><span class="icon icon-date"></span>
+            </div>
             <div class="clearfix"></div>
         </div>
     </div>

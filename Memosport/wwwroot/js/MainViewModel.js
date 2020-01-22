@@ -32,7 +32,6 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "Clas
         self.boxPlaceholder = { name: "Bitte wählen..." };
         self.box = ko.observable(self.boxPlaceholder); /* manual, auto */
         self.boxes = ko.observableArray(); // all available boxes
-        self.boxStats = ko.observableArray(); // box statistics
 
         // move indexcard to box - dialog
         self.boxMoveSelected = ko.observable(); // cache id of the selected box the current indexcard should be move to.
@@ -86,6 +85,10 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "Clas
         self.sandtimerHours = ko.observable();
         self.sandtimerMinutes = ko.observable();
         self.sandtimerSeconds = ko.observable();
+
+        // stats dialog
+        self.boxStats = ko.observableArray(); // box statistics
+        self.boxStatsDialog = null; // dialog of the box stats
 
         // Show Options diaclog
         self.showOptionsDialog = function () {
@@ -1632,11 +1635,21 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "Clas
                     // show dialog
                     let lBttnOk = new tsLib.Button("OK", function () { });
                     let lTemplate = document.getElementById("ict-boxstats-template");
-                    let lDialog = new tsLib.Dialog(lTemplate, "Statistik", [lBttnOk]);
-                    lDialog.afterRenderCallback = function () { ko.applyBindings(GLOBAL.MainViewModel, this.mHtmlWindow); };
-                    lDialog.show();
+                    self.boxStatsDialog = new tsLib.Dialog(lTemplate, "Statistik", [lBttnOk]);
+                    self.boxStatsDialog.afterRenderCallback = function () { ko.applyBindings(GLOBAL.MainViewModel, this.mHtmlWindow); };
+                    self.boxStatsDialog.show();
                 }
             });
+        };
+
+        // selected box in stats
+        self.boxSelectedInStats = function(pIndexCardBox) {
+            
+            // close the dialog
+            self.boxStatsDialog.close();
+
+            // load the box
+            self.BoxSelected(pIndexCardBox);
         };
 
         // EndRegion BoxStatistics

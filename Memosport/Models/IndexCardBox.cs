@@ -20,6 +20,24 @@ namespace Memosport.Models
         // the UTC-time when the user has lastly learned this box.
         public DateTime? DateLastLearned { get; set; }
 
+        // calculate the days when last learned the box. Reference is the Date in property 'DateLastLearned'
+        [NotMapped]
+        public int? DateLastLearnedDays {
+            get
+            {
+                if (DateLastLearned == null)
+                {
+                    return null;
+                }
+
+                // calculate the timespan
+                var lTimeSpan = DateTime.UtcNow.Subtract((DateTime) DateLastLearned);
+
+                // we can keep the UTC because we calculate an timespan only.
+                return lTimeSpan.Days;
+            }
+        }
+
         [NotMapped]
         public IBoxStats BoxStats { get; set; }
 

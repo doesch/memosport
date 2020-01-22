@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -16,6 +17,8 @@ namespace Memosport.Models
         bool Archived { get; set; }
 
         DateTime? DateLastLearned { get; set; }
+
+        int? DateLastLearnedDays { get; }
 
         IBoxStats BoxStats { get; set; }
 

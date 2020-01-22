@@ -6,7 +6,8 @@ export class IndexCardBox extends tsLib.HelperBase
     id: number = null; // the id in the database
     name: string = null;
     userId: number = null;
-    dateLastLearned: Date = null;
+    dateLastLearned: Date = null; // date when last learned this box
+    dateLastLearnedDays: number = null; // last learned this box in days ago
     archived: boolean = null;
     boxStats: IBoxStats = null; // IndexCardBox statistics
     
@@ -16,12 +17,12 @@ export class IndexCardBox extends tsLib.HelperBase
         super.autoConstructor(pArgs);
 
         // the property dateLastLearned is an date. create object of date if possible.
-        if (pArgs.hasOwnProperty("dateLastLearned") && pArgs.datedateLastLearned !== null) {
+        if (typeof pArgs !== 'undefined' && pArgs.hasOwnProperty("dateLastLearned") && pArgs.datedateLastLearned !== null) {
             this.dateLastLearned = new Date(pArgs.datedateLastLearned);
         }
 
         // apply box statistics if exists
-        if (pArgs.hasOwnProperty("boxStats") && pArgs.boxStats !== null) {
+        if (typeof pArgs !== 'undefined' && pArgs.hasOwnProperty("boxStats") && pArgs.boxStats !== null) {
             this.boxStats = new BoxStats(pArgs.boxStats);
         }
     }

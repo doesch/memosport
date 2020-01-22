@@ -935,8 +935,11 @@ background-position: -256px -160px;
     background-position: -352px 48px;
 }
 
-#bttn-start
-{
+.icon-date {
+    background-position: -96px 80px;
+}
+
+#bttn-start {
     width: 120px;
     background-image: url('/img/bttn-start.png');
 }
@@ -2256,20 +2259,27 @@ textarea.ict-question-answer-text {
         .col-stats {
             float: left;
             margin: 0px @GlobalMargin / 2;
-            width: 40px;
+            width: 45px;
             text-align: right;
             overflow: hidden;
             white-space: nowrap;
         }
 
-        .col-2{
-            width: 60px;
-        }
-        
         .col-1 {
             width: 80px;
             text-overflow: ellipsis;
             text-align: left;
+        }
+
+        .col-2 {
+            width: 60px;
+        }
+
+        .col-4
+        {
+            .icon-date{
+                margin-bottom: 0px;
+            }
         }
     }
 }
