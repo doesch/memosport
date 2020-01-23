@@ -1412,16 +1412,14 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "Clas
                     self.latestSources(xhr);
 
                     // create an dropdown when not exists
-                    if (self.latestSourcesDropdown instanceof tsLib.DropdownTextfield === false) {
-                        // show results in an dropdown
-                        let lTemplate = document.getElementById("latest-sources-dropdown-template");
-                        self.latestSourcesDropdown = new tsLib.DropdownTextfield(lTemplate);
-                        // now bind the knockout
-                        self.latestSourcesDropdown.afterRenderCallback = function () { ko.applyBindings(GLOBAL.MainViewModel, this.mHtmlWindow); };
-                        self.latestSourcesDropdown.appendTo("ict-input-source");
-                    }
+                    // show results in an dropdown
+                    let lTemplate = document.getElementById("latest-sources-dropdown-template");
+                    self.latestSourcesDropdown = new tsLib.DropdownTextfield(lTemplate);
+                    // now bind the knockout
+                    self.latestSourcesDropdown.afterRenderCallback = function () { ko.applyBindings(GLOBAL.MainViewModel, this.mHtmlWindow); };
+                    self.latestSourcesDropdown.appendTo("ict-input-source");
 
-                    // show the dropdown
+                        // show the dropdown
                     self.latestSourcesDropdown.show();
                 }
             });
