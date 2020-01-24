@@ -27,7 +27,6 @@
 <!-- /ko -->
 <!-- ko if: mainMenuShowDropdown -->
 <ul id="menu" data-bind="style: {display: $root.mainMenuShowDropdown() === true ? 'block' : 'none'}">
-    <li><a href="/User/logout">Logout</a></li>
     <!-- ko if: $root.currentIndexCard() !== null && $root.currentIndexCard().id !== null -->
     <li><a href="#" data-bind="click: function(){ $root.indexCardMoveClick(); }">Karteikarte verschieben</a></li>
     <li><a href="#" data-bind="click: function(){ $root.indexCardDuplicateClick(); }">Karteikarte duplizieren</a></li>
@@ -35,6 +34,7 @@
     <li><a href="#" data-bind="click: function(){ $root.showBoxStatistics(); }">Statistik</a></li>
     <li><a href="#" data-bind="click: function(){ $root.archiveIndexCardBoxDialog(); }">Archiv</a></li>
     <li><a href="#" data-bind="click: function(){ $root.sandtimerDialog(); }">Sanduhr</a></li>
+    <li><a href="/User/logout">Logout</a></li>
 </ul>
 <!-- /ko -->
 

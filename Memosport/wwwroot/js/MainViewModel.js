@@ -90,6 +90,9 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "Clas
         self.boxStats = ko.observableArray(); // box statistics
         self.boxStatsDialog = null; // dialog of the box stats
 
+        // an loading screen for the entire viewport
+        self.loadingScreen = new tsLib.Sandtimer();
+
         // Show Options diaclog
         self.showOptionsDialog = function () {
 
@@ -168,6 +171,9 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "Clas
             // create image element
             let lImage = new Image();
 
+            // show loading screen
+            self.loadingScreen.show();
+
             // add "load" event
             lImage.addEventListener("load", function (a, b) {
 
@@ -186,6 +192,11 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "Clas
 
                 // add callbacks
                 lDialog.afterRenderCallback = function () { ko.applyBindings(GLOBAL.MainViewModel, this.mHtmlWindow); };
+
+                // hide loading screen
+                self.loadingScreen.close();
+
+                // show dialog
                 lDialog.show();
             });
 
@@ -335,6 +346,12 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "Clas
                 url: '/IndexCardBoxApi',
                 type: 'get',
                 dataType: 'json',
+                beforeSend: function() {
+                    self.loadingScreen.show();
+                },
+                complete: function() {
+                    self.loadingScreen.close();
+                },
                 success: function (data) {
 
                     var lTmpArr = [];
@@ -421,6 +438,12 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "Clas
                 type: 'get',
                 data: lPayload,
                 dataType: 'json',
+                beforeSend: function() {
+                    self.loadingScreen.show();
+                },
+                complete: function() {
+                    self.loadingScreen.close();
+                },
                 success: function (data) {
 
                     if (data !== null && data.length > 0) {
@@ -901,9 +924,6 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "Clas
 
             // duplicate an indexcard
 
-            // show sandtimer
-            let lSandtimer = new tsLib.Sandtimer("Eine Kopie der Karteikarte wird erstellt. Bitte warten...");
-
             // convert into payload (formdata)
             let lFormData = self.indexCardToFormData(self.currentIndexCard());
 
@@ -915,7 +935,7 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "Clas
                 processData: false,
                 dataType: "json",
                 beforeSend: function() {
-                    lSandtimer.show();
+                    self.loadingScreen.show();
                 },
                 success: function (xhr) {
 
@@ -923,7 +943,7 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "Clas
                     let lIndexCard = new indexCard.IndexCard(xhr);
 
                     // close sandtimer
-                    lSandtimer.close();
+                    self.loadingScreen.close();
 
                     // show message to the user
                     new tsLib.MessageBox("Es wurde erfolgreich eine Kopie erstellt. Sie können die Kopie jetzt bearbeiten.").show();
@@ -940,7 +960,7 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "Clas
                     self.editForm(lIndexCard);
                 },
                 complete: function () {
-                    lSandtimer.close();
+                    self.loadingScreen.close();
                 }
             });
 
@@ -1412,16 +1432,14 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "Clas
                     self.latestSources(xhr);
 
                     // create an dropdown when not exists
-                    if (self.latestSourcesDropdown instanceof tsLib.DropdownTextfield === false) {
-                        // show results in an dropdown
-                        let lTemplate = document.getElementById("latest-sources-dropdown-template");
-                        self.latestSourcesDropdown = new tsLib.DropdownTextfield(lTemplate);
-                        // now bind the knockout
-                        self.latestSourcesDropdown.afterRenderCallback = function () { ko.applyBindings(GLOBAL.MainViewModel, this.mHtmlWindow); };
-                        self.latestSourcesDropdown.appendTo("ict-input-source");
-                    }
+                    // show results in an dropdown
+                    let lTemplate = document.getElementById("latest-sources-dropdown-template");
+                    self.latestSourcesDropdown = new tsLib.DropdownTextfield(lTemplate);
+                    // now bind the knockout
+                    self.latestSourcesDropdown.afterRenderCallback = function () { ko.applyBindings(GLOBAL.MainViewModel, this.mHtmlWindow); };
+                    self.latestSourcesDropdown.appendTo("ict-input-source");
 
-                    // show the dropdown
+                        // show the dropdown
                     self.latestSourcesDropdown.show();
                 }
             });
@@ -1577,6 +1595,7 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "Clas
             lDialog.show();
         };
 
+        // set archived/not archived in database
         self.indexCardBoxToggleArchived = function (pIndexCardBox) {
 
             if (pIndexCardBox instanceof indexCardBox.IndexCardBox === false) {
@@ -1633,6 +1652,12 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "Clas
                 type: "GET",
                 contentType: "application/json",
                 dataType: "json",
+                beforeSend: function() {
+                    self.loadingScreen.show();
+                },
+                complete: function() {
+                    self.loadingScreen.close();
+                },
                 success: function (xhr) {
 
                     // maps objects
