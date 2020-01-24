@@ -171,6 +171,9 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "Clas
             // create image element
             let lImage = new Image();
 
+            // show loading screen
+            self.loadingScreen.show();
+
             // add "load" event
             lImage.addEventListener("load", function (a, b) {
 
@@ -189,6 +192,11 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "Clas
 
                 // add callbacks
                 lDialog.afterRenderCallback = function () { ko.applyBindings(GLOBAL.MainViewModel, this.mHtmlWindow); };
+
+                // hide loading screen
+                self.loadingScreen.close();
+
+                // show dialog
                 lDialog.show();
             });
 
