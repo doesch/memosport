@@ -160,7 +160,7 @@ namespace Memosport.Controllers
             var lUser = base.GetCurrentUser(_context);
 
             // get indexcardboxes
-            var lQuery = _context.IndexCardBoxes.OrderBy(x => x.Name).Select(x => x).Where(x => x.UserId == lUser.Id);
+            var lQuery = _context.IndexCardBoxes.OrderBy(x => x.Name).Select(x => x).Where(x => x.UserId == lUser.Id && x.Archived == false);
             List<IndexCardBox> lIndexCardBoxes = await lQuery.ToListAsync();
 
             // now count the stats
