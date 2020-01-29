@@ -308,7 +308,7 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "Clas
         self.Init = function () {
 
             // when using back button (e.g. smartphone), warn user
-            // window.onbeforeunload = function () { return "Möchten Sie den Trainier wirklich verlassen? Sie müssten beim nächsten mal von vorne beginnen."; };
+            window.onbeforeunload = function () { return "Möchten Sie den Trainier wirklich verlassen? Sie müssten beim nächsten mal von vorne beginnen."; };
 
             // close all context-menus and dropdowns when clicking in an free field
             document.body.addEventListener("click", function (e) { GLOBAL.MainViewModel.closeAllMenus(e); });
