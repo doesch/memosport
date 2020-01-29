@@ -50,7 +50,8 @@ namespace Memosport.Controllers
 
             if (lUser == null || Helper.HashedPasswordMatches(password, lUser.Password) == false)
             {
-                throw new AuthenticationException("Invalid Username or Password");
+                // ToDo: show error
+                return View();
             }
             
             // login successful
