@@ -11,7 +11,7 @@ namespace Memosport.Models
         int TotalCount { get; set; }
 
         // total count of learned cards
-        int Learned { get; set; }
+        int Unlearned { get; set; }
 
         // learned indexcards in %
         int PercentLearned { get; }

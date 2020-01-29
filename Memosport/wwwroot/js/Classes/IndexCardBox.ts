@@ -31,7 +31,7 @@ export class IndexCardBox extends tsLib.HelperBase
 // box statistics
 export interface IBoxStats {
     totalCount: number;
-    learned: number;
+    unlearned: number;
     percentLearned: number;
 }
 
@@ -39,7 +39,7 @@ export interface IBoxStats {
 export class BoxStats extends tsLib.HelperBase implements IBoxStats 
 {
     totalCount: number = null; // total number of index cards
-    learned: number = null; // number of learned index cards
+    unlearned: number = null; // number of not learned index cards
     percentLearned: number = null; // number of not learned index cards in %
 
     public constructor(pArgs: any) {
