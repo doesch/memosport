@@ -630,7 +630,7 @@ button, input[type="submit"]
 .bttn:hover,
 .dialog-window button:hover,
 input[type="submit"]:hover {
-    background-color: @GlobalButtonBgColorHover !important;
+    background-color: @GlobalButtonBgColorHover;
     cursor: pointer;
 }
 
@@ -2562,9 +2562,14 @@ div.ict-search-dialog-container
     }
 }
 
-#sandtimer-container
-{
+#sandtimer-container {
     text-align: center;
+
+    #sandtimer-display-value {
+        font-weight: bold;
+        font-size: @GlobalFontSize * 2;
+        background-color: #eee;
+    }
 }
 
 #sandtimer-elapsed-container

@@ -77,12 +77,14 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "Clas
         self.AudioIsPlaying = ko.observable(false); // if the audio is currently playing
 
         // sandtimer
-        self.sandtimerRunning = ko.observable(false);
+        self.sandtimerDialog = null;
+        self.sandtimerStateEnum = { showForm: "showForm", pause: "pause", running: "running" };
+        self.sandtimerState = ko.observable("showForm");
         self.sandtimerInterval = null;
         self.sandtimerTotalSeconds = null; // caches the current time of the sandtimer in seconds
         self.sandtimerDisplayValue = ko.observable("00:00:00"); // the formatted, displayed sandtimer
 
-        self.sandtimerHours = ko.observable();
+        self.sandtimerHours = ko.observable(); // the 'background'-value
         self.sandtimerMinutes = ko.observable();
         self.sandtimerSeconds = ko.observable();
 
@@ -1491,23 +1493,23 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "Clas
         // Region sandtimer
 
         // show the sandtimer dialog
-        self.sandtimerDialog = function() {
+        self.sandtimerShowDialog = function() {
 
             // preallocate the fields
             self.sandtimerReset(); 
 
             // show the dialog
             let lTemplate = document.getElementById("sandtimer-dialog-template");
-            let lDialog = new tsLib.Dialog(lTemplate, "Sanduhr");
-            lDialog.afterRenderCallback = function () { ko.applyBindings(GLOBAL.MainViewModel, this.mHtmlWindow); };
-            lDialog.show();
+            self.sandtimerDialog = new tsLib.Dialog(lTemplate, "Sanduhr");
+            self.sandtimerDialog.afterRenderCallback = function () { ko.applyBindings(GLOBAL.MainViewModel, this.mHtmlWindow); };
+            self.sandtimerDialog.show();
         };
 
-        // start the sandtimer
-        self.sandtimerStart = function () {
+        // start button click
+        self.sandtimerStart = function() {
 
             // clear old interval when exists
-            self.sandtimerStop();
+            self.sandtimerCancel();
 
             // get seconds
             self.sandtimerTotalSeconds = (Number(self.sandtimerHours()) * 3600) +
@@ -1525,8 +1527,46 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "Clas
             localStorage.setItem('sandtimerMinutes', self.sandtimerMinutes());
             localStorage.setItem('sandtimerSeconds', self.sandtimerSeconds());
 
-            // switch layout
-            self.sandtimerRunning(true);
+            // run sandtimer
+            self.sandtimerRun();
+        };
+
+        // stop the sandtimer
+        self.sandtimerCancel = function () {
+
+            if (self.sandtimerInterval !== null) {
+                clearInterval(self.sandtimerInterval);
+            }
+
+            // switch state and layout
+            // show form
+            self.sandtimerState(self.sandtimerStateEnum.showForm);
+
+            // reset the time to the cached value
+            self.sandtimerReset();
+        };
+
+        // pause the sandtimer
+        self.sandtimerPause = function() {
+
+            if (self.sandtimerInterval !== null) {
+                clearInterval(self.sandtimerInterval);
+            }
+
+            // switch state and layout
+            self.sandtimerState(self.sandtimerStateEnum.pause);
+        };
+
+        // continue sandtimer
+        self.sandtimerContinue = function () {
+            self.sandtimerRun();
+        };
+
+        // start the sandtimer
+        self.sandtimerRun = function () {
+
+            // switch state and layout
+            self.sandtimerState(self.sandtimerStateEnum.running);
 
             // start interval
             self.sandtimerInterval = setInterval(function() {
@@ -1535,7 +1575,7 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "Clas
                 if (self.sandtimerTotalSeconds <= 0) {
 
                     // stop timer
-                    self.sandtimerStop();
+                    self.sandtimerCancel();
 
                     // reset values
                     self.sandtimerReset();
@@ -1566,21 +1606,21 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "Clas
             }, 1000);
         };
 
-        // stop the sandtimer
-        self.sandtimerStop = function () {
-
-            if (self.sandtimerInterval !== null) {
-                clearInterval(self.sandtimerInterval);
-            }
-            
-            self.sandtimerRunning(false);
-        };
-
         // reset the sandtimer
         self.sandtimerReset = function () {
             self.sandtimerHours(localStorage.getItem('sandtimerHours') !== null ? localStorage.getItem('sandtimerHours') : 0);
             self.sandtimerMinutes(localStorage.getItem('sandtimerMinutes') !== null ? localStorage.getItem('sandtimerMinutes') : 30);
             self.sandtimerSeconds(localStorage.getItem('sandtimerSeconds') !== null ? localStorage.getItem('sandtimerSeconds') : 0);
+        };
+
+        // close the sandtimer dialog
+        self.sandtimerCloseDialog = function() {
+
+            // close the sandtimer dialog
+            if (self.sandtimerDialog instanceof tsLib.Dialog) {
+                self.sandtimerDialog.close();
+                self.sandtimerDialog = null;
+            }
         };
 
         // EndRegion Sandtimer
