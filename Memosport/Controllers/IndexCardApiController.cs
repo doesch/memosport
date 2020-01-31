@@ -191,10 +191,12 @@ namespace Memosport.Controllers
 
         /// <summary> (An Action that handles HTTP POST requests) makes a deep copy of this instance. </summary>
         /// <remarks> Doetsch, 15.01.20. </remarks>
-        /// <param name="indexcard"> The indexcard. </param>
+        /// <param name="indexcard">            The indexcard. </param>
+        /// <param name="invertQuestionAnswer"> (Optional) True to invert question answer. </param>
+        /// <param name="invertImageFiles">     (Optional) True to invert image files. </param>
         /// <returns> An asynchronous result that yields a copy of this instance. </returns>
         [HttpPost("duplicate")]
-        public async Task<IActionResult> Duplicate([FromForm]IndexCard indexcard)
+        public async Task<IActionResult> Duplicate([FromForm]IndexCard indexcard, [FromQuery]bool invertQuestionAnswer, [FromQuery]bool invertImageFiles)
         {
             // get indexcard from Server
             IIndexCard lIndexCard = _context.IndexCards.SingleOrDefault(x => x.Id == indexcard.Id);
@@ -212,9 +214,8 @@ namespace Memosport.Controllers
             
             // remove id to mark as a new indexcard
             lIndexCard.Id = null;
-
-            // copy files
             
+            // copy files
             if (lIndexCard.QuestionImageUrl != null)
             {
                 lIndexCard.QuestionImageUrl = await Upload.CopyFile(lIndexCard.QuestionImageUrl, _env.WebRootPath);
@@ -233,6 +234,26 @@ namespace Memosport.Controllers
             if (lIndexCard.AnswerAudioUrl != null)
             {
                 lIndexCard.AnswerAudioUrl = await Upload.CopyFile(lIndexCard.AnswerAudioUrl, _env.WebRootPath);
+            }
+
+            // when user wants to invert question/answer
+            if (invertQuestionAnswer)
+            {
+                var lAnswer = lIndexCard.Answer;
+                var lQuestion = lIndexCard.Question;
+
+                lIndexCard.Answer = lQuestion;
+                lIndexCard.Question = lAnswer;
+            }
+
+            // when user wants to invert image files
+            if (invertImageFiles)
+            {
+                var lQuestionImageUrl = lIndexCard.QuestionImageUrl;
+                var lAnswerImageUrl = lIndexCard.AnswerImageUrl;
+
+                lIndexCard.QuestionImageUrl = lAnswerImageUrl;
+                lIndexCard.AnswerImageUrl = lQuestionImageUrl;
             }
 
             // save in database

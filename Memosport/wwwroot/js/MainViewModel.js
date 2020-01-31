@@ -92,6 +92,10 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "Clas
         self.boxStats = ko.observableArray(); // box statistics
         self.boxStatsDialog = null; // dialog of the box stats
 
+        // duplicate dialog
+        self.duplicateInvertQuestionAnswer = ko.observable(false);
+        self.duplicateInvertQuestionAnswerImage = ko.observable(false);
+
         // an loading screen for the entire viewport
         self.loadingScreen = new tsLib.Sandtimer();
 
@@ -927,54 +931,61 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "Clas
         /// <remarks> Doetsch, 15.01.20. </remarks>
         /// <returns> . </returns>
         self.indexCardDuplicateClick = function() {
+            
+            let lBttnOk = new tsLib.Button("OK", function () {
+                
+                // convert into payload (formdata)
+                let lFormData = self.indexCardToFormData(self.currentIndexCard());
 
-            // duplicate an indexcard
+                $.ajax({
+                    url: "/IndexCardApi/duplicate/?invertQuestionAnswer=" + self.duplicateInvertQuestionAnswer() + "&invertImageFiles=" + self.duplicateInvertQuestionAnswerImage(),
+                    data: lFormData,
+                    type: "POST",
+                    contentType: false,
+                    processData: false,
+                    dataType: "json",
+                    beforeSend: function () {
+                        self.loadingScreen.show();
+                    },
+                    success: function (xhr) {
 
-            // convert into payload (formdata)
-            let lFormData = self.indexCardToFormData(self.currentIndexCard());
+                        // render indexcard
+                        let lIndexCard = new indexCard.IndexCard(xhr);
 
-            $.ajax({
-                url: "/IndexCardApi/duplicate",
-                data: lFormData,
-                type: "POST",
-                contentType: false,
-                processData: false,
-                dataType: "json",
-                beforeSend: function() {
-                    self.loadingScreen.show();
-                },
-                success: function (xhr) {
+                        // close sandtimer
+                        self.loadingScreen.close();
 
-                    // render indexcard
-                    let lIndexCard = new indexCard.IndexCard(xhr);
+                        // show message to the user
+                        new tsLib.MessageBox("Es wurde erfolgreich eine Kopie erstellt. Sie können die Kopie jetzt bearbeiten.").show();
 
-                    // close sandtimer
-                    self.loadingScreen.close();
+                        // add copy to current dataset
+                        var lPosition = self.i() + 1;
+                        self.dataset().splice(lPosition, 0, lIndexCard);
 
-                    // show message to the user
-                    new tsLib.MessageBox("Es wurde erfolgreich eine Kopie erstellt. Sie können die Kopie jetzt bearbeiten.").show();
 
-                    // add copy to current dataset
-                    var lPosition = self.i() + 1;
-                    self.dataset().splice(lPosition, 0, lIndexCard);
-                    
+                        // updated view (show index card) (show also when it is a different selected box for verification)
+                        self.currentIndexCard(lIndexCard);
 
-                    // updated view (show index card) (show also when it is a different selected box for verification)
-                    self.currentIndexCard(lIndexCard);
+                        // set new position in progress
+                        self.i(lPosition);
+                        self.setProgress();
 
-                    // set new position in progress
-                    self.i(lPosition);
-                    self.setProgress();
-
-                    // show in edit more
-                    self.showQuestion(true);
-                    self.editForm(lIndexCard);
-                },
-                complete: function () {
-                    self.loadingScreen.close();
-                }
+                        // show in edit more
+                        self.showQuestion(true);
+                        self.editForm(lIndexCard);
+                    },
+                    complete: function () {
+                        self.loadingScreen.close();
+                    }
+                });
             });
 
+            let lBttnCancel = new tsLib.Button("Abbrechen", function() {});
+
+            let lTemplate = document.getElementById("ict-duplicate-dialog-template");
+            let lDialog = new tsLib.Dialog(lTemplate, null, [lBttnOk, lBttnCancel]);
+            lDialog.afterRenderCallback = function () { ko.applyBindings(GLOBAL.MainViewModel, this.mHtmlWindow); };
+            lDialog.show();
         };
 
         /**
