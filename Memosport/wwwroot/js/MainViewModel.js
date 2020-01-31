@@ -709,7 +709,9 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "Clas
                     // when it is a new index card and the same box, then push it into the stack to the current next position
                     if (i === len && self.box().id === lXhrIndexCard.indexCardBoxId) {
                         // it´s new
-                        self.dataset().splice(self.i(), 0, lXhrIndexCard);
+                        let lPosition = self.i() + 1;
+                        self.dataset().splice(lPosition, 0, lXhrIndexCard);
+                        self.i(lPosition);
                     }
 
                     // updated view (show index card) (show also when it is a different selected box for verification)
@@ -717,6 +719,8 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "Clas
 
                     self.editMode(false);
                     self.editIndexCard(null);
+
+                    // set new position in progress
                     self.setProgress();
                 },
                 error: function () {
@@ -951,11 +955,16 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "Clas
                     new tsLib.MessageBox("Es wurde erfolgreich eine Kopie erstellt. Sie können die Kopie jetzt bearbeiten.").show();
 
                     // add copy to current dataset
-                    self.dataset().splice(self.i(), 0, lIndexCard);
-                    self.setProgress();
+                    var lPosition = self.i() + 1;
+                    self.dataset().splice(lPosition, 0, lIndexCard);
+                    
 
-                        // updated view (show index card) (show also when it is a different selected box for verification)
+                    // updated view (show index card) (show also when it is a different selected box for verification)
                     self.currentIndexCard(lIndexCard);
+
+                    // set new position in progress
+                    self.i(lPosition);
+                    self.setProgress();
 
                     // show in edit more
                     self.showQuestion(true);
