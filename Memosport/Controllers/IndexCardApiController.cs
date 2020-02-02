@@ -298,6 +298,7 @@ namespace Memosport.Controllers
 
             // set save
             _context.Entry(lIndexCard).State = EntityState.Modified;
+            _context.Entry(lIndexCard).Property(x => x.Created).IsModified = false; // do not modify create date. The create date is an constant value.
             _context.SaveChanges();
 
             // cleanup the indexcard response object
