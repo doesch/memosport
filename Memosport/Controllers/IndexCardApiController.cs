@@ -256,6 +256,10 @@ namespace Memosport.Controllers
                 lIndexCard.AnswerImageUrl = lQuestionImageUrl;
             }
 
+            // update created and updated time
+            lIndexCard.Created = DateTime.UtcNow;
+            lIndexCard.Modified = DateTime.UtcNow;
+
             // save in database
             _context.IndexCards.Add((IndexCard)lIndexCard);
             await _context.SaveChangesAsync();

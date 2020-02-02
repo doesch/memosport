@@ -461,6 +461,7 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "Clas
 
                         // order 'random' if set (default)
                         if (self.ictOptions().order === 0) {
+                            
                             lTmpArr = self.randomArr(lTmpArr);
                         }
 
