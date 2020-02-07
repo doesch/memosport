@@ -103,11 +103,6 @@ namespace Memosport.Controllers
             // execute sql
             var lResult = await lQuery.ToListAsync();
 
-            // set 'learned'-datetime for this box for stats and save it in the database
-            lIndexCardBox.DateLastLearned = DateTime.UtcNow;
-            _context.Entry(lIndexCardBox).State = EntityState.Modified;
-            _context.SaveChanges();
-
             // return dataset
             return Json(lResult);
         }
@@ -293,9 +288,12 @@ namespace Memosport.Controllers
             // save uploaded files
             lIndexCard = await HandleUploadedFiles(lIndexCard);
 
+            // set datelastlearned in box when user has learned the index card (Indicator: user has pushed buttons known/unknown)
+            SetDateLastLearned(lIndexCard);
+
             // set modified date
             lIndexCard.Modified = DateTime.UtcNow;
-
+            
             // set save
             _context.Entry(lIndexCard).State = EntityState.Modified;
             _context.Entry(lIndexCard).Property(x => x.Created).IsModified = false; // do not modify create date. The create date is an constant value.
@@ -305,6 +303,35 @@ namespace Memosport.Controllers
             lIndexCard = CleanupIndexCardResponse(lIndexCard);
 
             return Json(lIndexCard);
+        }
+
+        /// <summary> Sets date last learned. </summary>
+        /// <remarks> Doetsch, 07.02.20. </remarks>
+        /// <param name="pIndexCard"> The index card. </param>
+        private void SetDateLastLearned(IIndexCard pIndexCard)
+        {
+            // set datelastlearned in box when user has learned the index card(Indicator: user has pushed buttons known / unknown)
+            // get from database
+            var lIndexCard = _context.IndexCards.Single(x => x.Id == pIndexCard.Id);
+
+            if (lIndexCard != null)
+            {
+                // check if value 'known' has changed
+                if (pIndexCard.Known != lIndexCard.Known)
+                {
+                    // update value in box
+                    var lIndexCardBox = _context.IndexCardBoxes.Single(x => x.Id == pIndexCard.IndexCardBoxId);
+                    lIndexCardBox.DateLastLearned = DateTime.UtcNow;
+                    _context.Entry(lIndexCardBox).State = EntityState.Modified;
+                    _context.SaveChanges();
+
+                    // detach
+                    _context.Entry(lIndexCardBox).State = EntityState.Detached;
+                }
+
+                // detach
+                _context.Entry(lIndexCard).State = EntityState.Detached;
+            }
         }
 
         // delete
