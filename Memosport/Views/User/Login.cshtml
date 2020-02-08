@@ -11,21 +11,13 @@
         <form method="post" action="@Url.Action("Login", "User")">
             <input id="login-input-email" type="text" name="email" placeholder="E-Mail"/><br />
             <input id="login-input-password" type="password" name="password" placeholder="Passwort"/><br />
-            <input type="submit" value="LOGIN" />
+            <input type="submit" value="LOGIN" data-bind="click: function(){ $root.loginClick(); return true;}" />
         </form>
 
     </div>
 </div>
 
-<script>
-    (function () {
-
-        // set focus
-        document.getElementById("login-input-email").focus();
-
-    })();
-</script>
-
-
+<script type="text/javascript" src="@Url.Content("~/js/lib/knockout.js")"></script>
+<script src="@Url.Content("~/js/lib/require.js")" data-main="@Url.Content("~/js/UserViewModel")"></script>
 
 

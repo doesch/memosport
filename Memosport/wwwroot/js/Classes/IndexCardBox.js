@@ -42,7 +42,7 @@ define(["require", "exports", "../lib/tsLib/tsLib"], function (require, exports,
         function BoxStats(pArgs) {
             var _this = _super.call(this) || this;
             _this.totalCount = null;
-            _this.learned = null;
+            _this.unlearned = null;
             _this.percentLearned = null;
             _super.prototype.autoConstructor.call(_this, pArgs);
             return _this;

@@ -10,19 +10,21 @@ namespace Memosport.Models
     public class BoxStats : IBoxStats
     {
         public int TotalCount { get; set; }
-        public int Learned { get; set; }
+
+        // count of not learned cards
+        public int Unlearned { get; set; }
 
         public int PercentLearned {
             get
             {
                 var lResult = 0;
 
-                if (TotalCount == 0 || Learned == 0)
+                if (TotalCount == 0 || Unlearned == 0)
                 {
                     return lResult;
                 }
 
-                return Learned * 100 / TotalCount;
+                return (TotalCount - Unlearned) * 100 / TotalCount;
             }
         }
     }

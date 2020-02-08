@@ -33,7 +33,7 @@
     <!-- /ko -->
     <li><a href="#" data-bind="click: function(){ $root.showBoxStatistics(); }">Statistik</a></li>
     <li><a href="#" data-bind="click: function(){ $root.archiveIndexCardBoxDialog(); }">Archiv</a></li>
-    <li><a href="#" data-bind="click: function(){ $root.sandtimerDialog(); }">Sanduhr</a></li>
+    <li><a href="#" data-bind="click: function(){ $root.sandtimerShowDialog(); }">Sanduhr</a></li>
     <li><a href="/User/logout">Logout</a></li>
 </ul>
 <!-- /ko -->
@@ -58,13 +58,30 @@
 <script id="ict-boxstats-template" type="text/html">
     <div id="ict-boxstats-dialog-container" data-bind="foreach: boxStats">
         <div class="ict-boxstats-listitem" data-bind="click: function(){ $root.boxSelectedInStats($data); }">
-            <div class="col-stats col-1"><span data-bind="text: $data.name"></span></div>
-            <div class="col-stats col-2" title="Karteikarten in Box und Gelernte Karteikarten."><span data-bind="text: $data.boxStats.totalCount"></span>/<span data-bind="text: $data.boxStats.learned"></span></div>
-            <div class="col-stats col-3" title="Gelernte Karteikarten in Prozent."><span data-bind="text: '(' + $data.boxStats.percentLearned + '%)'"></span></div>
-            <div class="col-stats col-4" title="Der Karteikasten wurde vor [x] Tagen zuletzt aufgerufen.">
+            <div class="col-stats col-name"><span data-bind="text: $data.name"></span></div>
+            <div class="col-stats col-unlearned" title="Ungelernte Karteikarten."><span data-bind="text: $data.boxStats.unlearned"></span></div>
+            <div class="col-stats col-totalCount" title="Karteikarten in Box."><span data-bind="text: $data.boxStats.totalCount"></span></div>
+            <div class="col-stats col-learnedPercent" title="Gelernte Karteikarten in Prozent."><span data-bind="text: $data.boxStats.percentLearned + '%'"></span></div>
+            <div class="col-stats col-dateLastLearned" title="Der Karteikasten wurde zuletzt vor [x] Tagen aufgerufen.">
                 <span data-bind="text: $data.dateLastLearnedDays === null ? '?' : $data.dateLastLearnedDays"></span><span class="icon icon-date"></span>
             </div>
             <div class="clearfix"></div>
+        </div>
+    </div>
+</script>
+
+<script id="ict-duplicate-dialog-template" type="text/html">
+    <div id="ict-duplicate-dialog">
+        <div class="input checkbox">
+            <input id="ict-duplicate-invert-question-answer" type="checkbox" data-bind="checked: duplicateInvertQuestionAnswer" />
+            <label for="ict-duplicate-invert-question-answer"></label>
+            <label for="ict-duplicate-invert-question-answer">Frage und Antwort vertauschen.</label>
+        </div>
+        <p></p>
+        <div class="input checkbox">
+            <input id="ict-duplicate-invert-question-answer-image" type="checkbox" data-bind="checked: duplicateInvertQuestionAnswerImage" />
+            <label for="ict-duplicate-invert-question-answer-image"></label>
+            <label for="ict-duplicate-invert-question-answer-image">Bilder der Frage und Antwort vertauschen.</label>
         </div>
     </div>
 </script>

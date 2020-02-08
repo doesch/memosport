@@ -630,7 +630,7 @@ button, input[type="submit"]
 .bttn:hover,
 .dialog-window button:hover,
 input[type="submit"]:hover {
-    background-color: @GlobalButtonBgColorHover !important;
+    background-color: @GlobalButtonBgColorHover;
     cursor: pointer;
 }
 
@@ -1107,8 +1107,7 @@ input[type="checkbox"] + label {
     line-height: 24px;
     padding-left: 30px;
     vertical-align: middle;
-    width: auto;
-    margin: 0px 0px @GlobalVMargin 0px;
+    width: auto;    
 }
 
 input[type="radio"] {
@@ -2265,19 +2264,23 @@ textarea.ict-question-answer-text {
             white-space: nowrap;
         }
 
-        .col-1 {
+        .col-name {
             width: 80px;
             text-overflow: ellipsis;
             text-align: left;
         }
 
-        .col-2 {
-            width: 60px;
+        .col-totalCount,
+        .col-unlearned {
+            width: 30px;
         }
 
-        .col-4
-        {
-            .icon-date{
+        .col-learnedPercent{
+            width: 35px;
+        }
+
+        .col-dateLastLearned {
+            .icon-date {
                 margin-bottom: 0px;
             }
         }
@@ -2558,9 +2561,14 @@ div.ict-search-dialog-container
     }
 }
 
-#sandtimer-container
-{
+#sandtimer-container {
     text-align: center;
+
+    #sandtimer-display-value {
+        font-weight: bold;
+        font-size: @GlobalFontSize * 2;
+        background-color: #eee;
+    }
 }
 
 #sandtimer-elapsed-container

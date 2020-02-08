@@ -77,18 +77,24 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "Clas
         self.AudioIsPlaying = ko.observable(false); // if the audio is currently playing
 
         // sandtimer
-        self.sandtimerRunning = ko.observable(false);
+        self.sandtimerDialog = null;
+        self.sandtimerStateEnum = { showForm: "showForm", pause: "pause", running: "running" };
+        self.sandtimerState = ko.observable("showForm");
         self.sandtimerInterval = null;
         self.sandtimerTotalSeconds = null; // caches the current time of the sandtimer in seconds
         self.sandtimerDisplayValue = ko.observable("00:00:00"); // the formatted, displayed sandtimer
 
-        self.sandtimerHours = ko.observable();
+        self.sandtimerHours = ko.observable(); // the 'background'-value
         self.sandtimerMinutes = ko.observable();
         self.sandtimerSeconds = ko.observable();
 
         // stats dialog
         self.boxStats = ko.observableArray(); // box statistics
         self.boxStatsDialog = null; // dialog of the box stats
+
+        // duplicate dialog
+        self.duplicateInvertQuestionAnswer = ko.observable(false);
+        self.duplicateInvertQuestionAnswerImage = ko.observable(false);
 
         // an loading screen for the entire viewport
         self.loadingScreen = new tsLib.Sandtimer();
@@ -308,7 +314,7 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "Clas
         self.Init = function () {
 
             // when using back button (e.g. smartphone), warn user
-            // window.onbeforeunload = function () { return "Möchten Sie den Trainier wirklich verlassen? Sie müssten beim nächsten mal von vorne beginnen."; };
+            window.onbeforeunload = function () { return "Möchten Sie den Trainier wirklich verlassen? Sie müssten beim nächsten mal von vorne beginnen."; };
 
             // close all context-menus and dropdowns when clicking in an free field
             document.body.addEventListener("click", function (e) { GLOBAL.MainViewModel.closeAllMenus(e); });
@@ -455,6 +461,7 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "Clas
 
                         // order 'random' if set (default)
                         if (self.ictOptions().order === 0) {
+                            
                             lTmpArr = self.randomArr(lTmpArr);
                         }
 
@@ -707,7 +714,9 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "Clas
                     // when it is a new index card and the same box, then push it into the stack to the current next position
                     if (i === len && self.box().id === lXhrIndexCard.indexCardBoxId) {
                         // it´s new
-                        self.dataset().splice(self.i(), 0, lXhrIndexCard);
+                        let lPosition = self.i() + 1;
+                        self.dataset().splice(lPosition, 0, lXhrIndexCard);
+                        self.i(lPosition);
                     }
 
                     // updated view (show index card) (show also when it is a different selected box for verification)
@@ -715,6 +724,8 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "Clas
 
                     self.editMode(false);
                     self.editIndexCard(null);
+
+                    // set new position in progress
                     self.setProgress();
                 },
                 error: function () {
@@ -921,49 +932,61 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "Clas
         /// <remarks> Doetsch, 15.01.20. </remarks>
         /// <returns> . </returns>
         self.indexCardDuplicateClick = function() {
+            
+            let lBttnOk = new tsLib.Button("OK", function () {
+                
+                // convert into payload (formdata)
+                let lFormData = self.indexCardToFormData(self.currentIndexCard());
 
-            // duplicate an indexcard
+                $.ajax({
+                    url: "/IndexCardApi/duplicate/?invertQuestionAnswer=" + self.duplicateInvertQuestionAnswer() + "&invertImageFiles=" + self.duplicateInvertQuestionAnswerImage(),
+                    data: lFormData,
+                    type: "POST",
+                    contentType: false,
+                    processData: false,
+                    dataType: "json",
+                    beforeSend: function () {
+                        self.loadingScreen.show();
+                    },
+                    success: function (xhr) {
 
-            // convert into payload (formdata)
-            let lFormData = self.indexCardToFormData(self.currentIndexCard());
+                        // render indexcard
+                        let lIndexCard = new indexCard.IndexCard(xhr);
 
-            $.ajax({
-                url: "/IndexCardApi/duplicate",
-                data: lFormData,
-                type: "POST",
-                contentType: false,
-                processData: false,
-                dataType: "json",
-                beforeSend: function() {
-                    self.loadingScreen.show();
-                },
-                success: function (xhr) {
+                        // close sandtimer
+                        self.loadingScreen.close();
 
-                    // render indexcard
-                    let lIndexCard = new indexCard.IndexCard(xhr);
+                        // show message to the user
+                        new tsLib.MessageBox("Es wurde erfolgreich eine Kopie erstellt. Sie können die Kopie jetzt bearbeiten.").show();
 
-                    // close sandtimer
-                    self.loadingScreen.close();
+                        // add copy to current dataset
+                        var lPosition = self.i() + 1;
+                        self.dataset().splice(lPosition, 0, lIndexCard);
 
-                    // show message to the user
-                    new tsLib.MessageBox("Es wurde erfolgreich eine Kopie erstellt. Sie können die Kopie jetzt bearbeiten.").show();
-
-                    // add copy to current dataset
-                    self.dataset().splice(self.i(), 0, lIndexCard);
-                    self.setProgress();
 
                         // updated view (show index card) (show also when it is a different selected box for verification)
-                    self.currentIndexCard(lIndexCard);
+                        self.currentIndexCard(lIndexCard);
 
-                    // show in edit more
-                    self.showQuestion(true);
-                    self.editForm(lIndexCard);
-                },
-                complete: function () {
-                    self.loadingScreen.close();
-                }
+                        // set new position in progress
+                        self.i(lPosition);
+                        self.setProgress();
+
+                        // show in edit more
+                        self.showQuestion(true);
+                        self.editForm(lIndexCard);
+                    },
+                    complete: function () {
+                        self.loadingScreen.close();
+                    }
+                });
             });
 
+            let lBttnCancel = new tsLib.Button("Abbrechen", function() {});
+
+            let lTemplate = document.getElementById("ict-duplicate-dialog-template");
+            let lDialog = new tsLib.Dialog(lTemplate, null, [lBttnOk, lBttnCancel]);
+            lDialog.afterRenderCallback = function () { ko.applyBindings(GLOBAL.MainViewModel, this.mHtmlWindow); };
+            lDialog.show();
         };
 
         /**
@@ -1491,23 +1514,23 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "Clas
         // Region sandtimer
 
         // show the sandtimer dialog
-        self.sandtimerDialog = function() {
+        self.sandtimerShowDialog = function() {
 
             // preallocate the fields
             self.sandtimerReset(); 
 
             // show the dialog
             let lTemplate = document.getElementById("sandtimer-dialog-template");
-            let lDialog = new tsLib.Dialog(lTemplate, "Sanduhr");
-            lDialog.afterRenderCallback = function () { ko.applyBindings(GLOBAL.MainViewModel, this.mHtmlWindow); };
-            lDialog.show();
+            self.sandtimerDialog = new tsLib.Dialog(lTemplate, "Sanduhr");
+            self.sandtimerDialog.afterRenderCallback = function () { ko.applyBindings(GLOBAL.MainViewModel, this.mHtmlWindow); };
+            self.sandtimerDialog.show();
         };
 
-        // start the sandtimer
-        self.sandtimerStart = function () {
+        // start button click
+        self.sandtimerStart = function() {
 
             // clear old interval when exists
-            self.sandtimerStop();
+            self.sandtimerCancel();
 
             // get seconds
             self.sandtimerTotalSeconds = (Number(self.sandtimerHours()) * 3600) +
@@ -1525,8 +1548,46 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "Clas
             localStorage.setItem('sandtimerMinutes', self.sandtimerMinutes());
             localStorage.setItem('sandtimerSeconds', self.sandtimerSeconds());
 
-            // switch layout
-            self.sandtimerRunning(true);
+            // run sandtimer
+            self.sandtimerRun();
+        };
+
+        // stop the sandtimer
+        self.sandtimerCancel = function () {
+
+            if (self.sandtimerInterval !== null) {
+                clearInterval(self.sandtimerInterval);
+            }
+
+            // switch state and layout
+            // show form
+            self.sandtimerState(self.sandtimerStateEnum.showForm);
+
+            // reset the time to the cached value
+            self.sandtimerReset();
+        };
+
+        // pause the sandtimer
+        self.sandtimerPause = function() {
+
+            if (self.sandtimerInterval !== null) {
+                clearInterval(self.sandtimerInterval);
+            }
+
+            // switch state and layout
+            self.sandtimerState(self.sandtimerStateEnum.pause);
+        };
+
+        // continue sandtimer
+        self.sandtimerContinue = function () {
+            self.sandtimerRun();
+        };
+
+        // start the sandtimer
+        self.sandtimerRun = function () {
+
+            // switch state and layout
+            self.sandtimerState(self.sandtimerStateEnum.running);
 
             // start interval
             self.sandtimerInterval = setInterval(function() {
@@ -1535,7 +1596,7 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "Clas
                 if (self.sandtimerTotalSeconds <= 0) {
 
                     // stop timer
-                    self.sandtimerStop();
+                    self.sandtimerCancel();
 
                     // reset values
                     self.sandtimerReset();
@@ -1566,21 +1627,21 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "Clas
             }, 1000);
         };
 
-        // stop the sandtimer
-        self.sandtimerStop = function () {
-
-            if (self.sandtimerInterval !== null) {
-                clearInterval(self.sandtimerInterval);
-            }
-            
-            self.sandtimerRunning(false);
-        };
-
         // reset the sandtimer
         self.sandtimerReset = function () {
             self.sandtimerHours(localStorage.getItem('sandtimerHours') !== null ? localStorage.getItem('sandtimerHours') : 0);
             self.sandtimerMinutes(localStorage.getItem('sandtimerMinutes') !== null ? localStorage.getItem('sandtimerMinutes') : 30);
             self.sandtimerSeconds(localStorage.getItem('sandtimerSeconds') !== null ? localStorage.getItem('sandtimerSeconds') : 0);
+        };
+
+        // close the sandtimer dialog
+        self.sandtimerCloseDialog = function() {
+
+            // close the sandtimer dialog
+            if (self.sandtimerDialog instanceof tsLib.Dialog) {
+                self.sandtimerDialog.close();
+                self.sandtimerDialog = null;
+            }
         };
 
         // EndRegion Sandtimer

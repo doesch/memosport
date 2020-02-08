@@ -103,11 +103,6 @@ namespace Memosport.Controllers
             // execute sql
             var lResult = await lQuery.ToListAsync();
 
-            // set 'learned'-datetime for this box for stats and save it in the database
-            lIndexCardBox.DateLastLearned = DateTime.UtcNow;
-            _context.Entry(lIndexCardBox).State = EntityState.Modified;
-            _context.SaveChanges();
-
             // return dataset
             return Json(lResult);
         }
@@ -191,10 +186,12 @@ namespace Memosport.Controllers
 
         /// <summary> (An Action that handles HTTP POST requests) makes a deep copy of this instance. </summary>
         /// <remarks> Doetsch, 15.01.20. </remarks>
-        /// <param name="indexcard"> The indexcard. </param>
+        /// <param name="indexcard">            The indexcard. </param>
+        /// <param name="invertQuestionAnswer"> (Optional) True to invert question answer. </param>
+        /// <param name="invertImageFiles">     (Optional) True to invert image files. </param>
         /// <returns> An asynchronous result that yields a copy of this instance. </returns>
         [HttpPost("duplicate")]
-        public async Task<IActionResult> Duplicate([FromForm]IndexCard indexcard)
+        public async Task<IActionResult> Duplicate([FromForm]IndexCard indexcard, [FromQuery]bool invertQuestionAnswer, [FromQuery]bool invertImageFiles)
         {
             // get indexcard from Server
             IIndexCard lIndexCard = _context.IndexCards.SingleOrDefault(x => x.Id == indexcard.Id);
@@ -212,9 +209,8 @@ namespace Memosport.Controllers
             
             // remove id to mark as a new indexcard
             lIndexCard.Id = null;
-
-            // copy files
             
+            // copy files
             if (lIndexCard.QuestionImageUrl != null)
             {
                 lIndexCard.QuestionImageUrl = await Upload.CopyFile(lIndexCard.QuestionImageUrl, _env.WebRootPath);
@@ -234,6 +230,30 @@ namespace Memosport.Controllers
             {
                 lIndexCard.AnswerAudioUrl = await Upload.CopyFile(lIndexCard.AnswerAudioUrl, _env.WebRootPath);
             }
+
+            // when user wants to invert question/answer
+            if (invertQuestionAnswer)
+            {
+                var lAnswer = lIndexCard.Answer;
+                var lQuestion = lIndexCard.Question;
+
+                lIndexCard.Answer = lQuestion;
+                lIndexCard.Question = lAnswer;
+            }
+
+            // when user wants to invert image files
+            if (invertImageFiles)
+            {
+                var lQuestionImageUrl = lIndexCard.QuestionImageUrl;
+                var lAnswerImageUrl = lIndexCard.AnswerImageUrl;
+
+                lIndexCard.QuestionImageUrl = lAnswerImageUrl;
+                lIndexCard.AnswerImageUrl = lQuestionImageUrl;
+            }
+
+            // update created and updated time
+            lIndexCard.Created = DateTime.UtcNow;
+            lIndexCard.Modified = DateTime.UtcNow;
 
             // save in database
             _context.IndexCards.Add((IndexCard)lIndexCard);
@@ -268,17 +288,50 @@ namespace Memosport.Controllers
             // save uploaded files
             lIndexCard = await HandleUploadedFiles(lIndexCard);
 
+            // set datelastlearned in box when user has learned the index card (Indicator: user has pushed buttons known/unknown)
+            SetDateLastLearned(lIndexCard);
+
             // set modified date
             lIndexCard.Modified = DateTime.UtcNow;
-
+            
             // set save
             _context.Entry(lIndexCard).State = EntityState.Modified;
+            _context.Entry(lIndexCard).Property(x => x.Created).IsModified = false; // do not modify create date. The create date is an constant value.
             _context.SaveChanges();
 
             // cleanup the indexcard response object
             lIndexCard = CleanupIndexCardResponse(lIndexCard);
 
             return Json(lIndexCard);
+        }
+
+        /// <summary> Sets date last learned. </summary>
+        /// <remarks> Doetsch, 07.02.20. </remarks>
+        /// <param name="pIndexCard"> The index card. </param>
+        private void SetDateLastLearned(IIndexCard pIndexCard)
+        {
+            // set datelastlearned in box when user has learned the index card(Indicator: user has pushed buttons known / unknown)
+            // get from database
+            var lIndexCard = _context.IndexCards.Single(x => x.Id == pIndexCard.Id);
+
+            if (lIndexCard != null)
+            {
+                // check if value 'known' has changed
+                if (pIndexCard.Known != lIndexCard.Known)
+                {
+                    // update value in box
+                    var lIndexCardBox = _context.IndexCardBoxes.Single(x => x.Id == pIndexCard.IndexCardBoxId);
+                    lIndexCardBox.DateLastLearned = DateTime.UtcNow;
+                    _context.Entry(lIndexCardBox).State = EntityState.Modified;
+                    _context.SaveChanges();
+
+                    // detach
+                    _context.Entry(lIndexCardBox).State = EntityState.Detached;
+                }
+
+                // detach
+                _context.Entry(lIndexCard).State = EntityState.Detached;
+            }
         }
 
         // delete
