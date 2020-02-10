@@ -388,6 +388,7 @@ namespace Memosport.Controllers
                 .Where(x => x.IndexCard.Source != null && x.IndexCard.Source != string.Empty)
                 .OrderByDescending(x => x.IndexCard.Modified)
                 .Select(x => x.IndexCard.Source)
+                .Distinct() // do not show duplicates
                 .Take(3); // get newest 3 entries
 
 

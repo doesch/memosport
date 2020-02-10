@@ -1434,7 +1434,6 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "Clas
 
         /// click or keypress on sources field
         self.sourcesGetFromServer = function() {
-
             // when input filled then hide the dropdown and do not load source from server
             if (self.sourceInputHasValue()) {
                 // user has entered an value
@@ -1454,15 +1453,23 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "Clas
                     // add results to observable
                     self.latestSources(xhr);
 
+                    // when user has typed an source between request and response, then do not show the dropdown
+                    if (self.sourceInputHasValue()) {
+                        return;
+                    }
+
                     // create an dropdown when not exists
                     // show results in an dropdown
-                    let lTemplate = document.getElementById("latest-sources-dropdown-template");
-                    self.latestSourcesDropdown = new tsLib.DropdownTextfield(lTemplate);
-                    // now bind the knockout
-                    self.latestSourcesDropdown.afterRenderCallback = function () { ko.applyBindings(GLOBAL.MainViewModel, this.mHtmlWindow); };
-                    self.latestSourcesDropdown.appendTo("ict-input-source");
+                    if (self.latestSourcesDropdown instanceof tsLib.DropdownTextfield === false)
+                    {
+                        let lTemplate = document.getElementById("latest-sources-dropdown-template");
+                        self.latestSourcesDropdown = new tsLib.DropdownTextfield(lTemplate);
+                        // now bind the knockout
+                        self.latestSourcesDropdown.afterRenderCallback = function () { ko.applyBindings(GLOBAL.MainViewModel, this.mHtmlWindow); };
+                        self.latestSourcesDropdown.appendTo("ict-input-source");
+                    }
 
-                        // show the dropdown
+                    // show the dropdown
                     self.latestSourcesDropdown.show();
                 }
             });
@@ -1483,7 +1490,7 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "Clas
         /// hide the dropdown
         self.latestSourcesDropdownHide = function() {
 
-            if (self.latestSourcesDropdown instanceof tsLib.DropdownTextfield === true) {
+            if (self.latestSourcesDropdown instanceof tsLib.DropdownTextfield) {
                 self.latestSourcesDropdown.hide();
             }
         };
