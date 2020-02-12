@@ -367,7 +367,6 @@ namespace Memosport.Controllers
         [HttpGet("GetLatestSources")]
         public async Task<IActionResult> GetLatestSources()
         {
-            // "SELECT DISTINCT source, modified FROM `indexcards` where source is not null and source <> '' and indexcardboxid in (select id from indexcardboxes where userid = 1) order by modified desc"
             IUser lCurrentUser = GetCurrentUser(_context);
             
             // get the box ids, belonging to the user

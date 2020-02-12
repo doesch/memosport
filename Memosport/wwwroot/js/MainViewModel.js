@@ -50,7 +50,6 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "Clas
         self.currentIndexCard = ko.observable(new indexCard.IndexCard()); // current showing index card in trainer
         self.showProgressButtonBubble = ko.observable(false);
         self.latestSources = ko.observableArray();
-        self.latestSourcesDropdown = null;
 
         self.i = ko.observable(-1);
         self.pointerTraffic = true;
@@ -340,7 +339,7 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "Clas
         self.closeAllMenus = function(e) {
 
             // the dropdown for the latest sources of an indexcard.
-            self.latestSourcesDropdownHide();
+            self.latestSourcesDropdownRemove();
             self.mainMenuShowDropdown(false);
             self.boxesShowDropdown(false);
         };
@@ -1433,11 +1432,13 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "Clas
         };
 
         /// click or keypress on sources field
-        self.sourcesGetFromServer = function() {
+        self.sourcesGetFromServer = function () {
+
+            // user has entered an value. Remove the dropdown.
+            self.latestSourcesDropdownRemove();
+
             // when input filled then hide the dropdown and do not load source from server
             if (self.sourceInputHasValue()) {
-                // user has entered an value
-                self.latestSourcesDropdownHide();
                 return;
             }
 
@@ -1458,16 +1459,13 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "Clas
                         return;
                     }
 
-                    // create an dropdown when not exists
+                    // create an dropdown
                     // show results in an dropdown
-                    if (self.latestSourcesDropdown instanceof tsLib.DropdownTextfield === false)
-                    {
-                        let lTemplate = document.getElementById("latest-sources-dropdown-template");
-                        self.latestSourcesDropdown = new tsLib.DropdownTextfield(lTemplate);
-                        // now bind the knockout
-                        self.latestSourcesDropdown.afterRenderCallback = function () { ko.applyBindings(GLOBAL.MainViewModel, this.mHtmlWindow); };
-                        self.latestSourcesDropdown.appendTo("ict-input-source");
-                    }
+                    let lTemplate = document.getElementById("latest-sources-dropdown-template");
+                    self.latestSourcesDropdown = new tsLib.DropdownTextfield(lTemplate);
+                    // now bind the knockout
+                    self.latestSourcesDropdown.afterRenderCallback = function () { ko.applyBindings(GLOBAL.MainViewModel, this.mHtmlWindow); };
+                    self.latestSourcesDropdown.appendTo("ict-input-source");
 
                     // show the dropdown
                     self.latestSourcesDropdown.show();
@@ -1483,15 +1481,15 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "Clas
             document.getElementById("ict-input-source").value = pSource;
             self.editIndexCard().source = pSource;
 
-            // close dropdown
-            self.latestSourcesDropdownHide(); // close the dropdown
+            // remove dropdown
+            self.latestSourcesDropdownRemove(); // close the dropdown
         };
 
         /// hide the dropdown
-        self.latestSourcesDropdownHide = function() {
+        self.latestSourcesDropdownRemove = function() {
 
             if (self.latestSourcesDropdown instanceof tsLib.DropdownTextfield) {
-                self.latestSourcesDropdown.hide();
+                self.latestSourcesDropdown.remove();
             }
         };
 
