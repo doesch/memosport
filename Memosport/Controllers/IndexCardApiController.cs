@@ -369,31 +369,12 @@ namespace Memosport.Controllers
         {
             // "SELECT DISTINCT source, modified FROM `indexcards` where source is not null and source <> '' and indexcardboxid in (select id from indexcardboxes where userid = 1) order by modified desc"
             IUser lCurrentUser = GetCurrentUser(_context);
+            
+            // get the box ids, belonging to the user
+            var lBoxIds = _context.IndexCardBoxes.Where(x => x.UserId == lCurrentUser.Id).Select(x => x.Id).ToList();
 
-            // prepare query
-            var lQuery = _context.IndexCards
-                .Join(
-                    _context.IndexCardBoxes,
-                    IndexCard => IndexCard.IndexCardBoxId,
-                    IndexCardBox => IndexCardBox.Id,
-                    (IndexCard, IndexCardBox) => new SearchResult
-                    {
-                        IndexCard = IndexCard,
-                        IndexCardBox = IndexCardBox
-                    }
-                )
-                .Where(x => x.IndexCardBox.UserId == lCurrentUser.Id) // filter out by current userid
-                .Select(x => x)
-                // now filter out by searchstring
-                .Where(x => x.IndexCard.Source != null && x.IndexCard.Source != string.Empty)
-                .OrderByDescending(x => x.IndexCard.Modified)
-                .Select(x => x.IndexCard.Source)
-                .Distinct() // do not show duplicates
-                .Take(3); // get newest 3 entries
-
-
-            // execute query
-            var lResult = await lQuery.ToListAsync();
+            // now query the sources.
+            var lResult = _context.IndexCards.Where(x => lBoxIds.Contains(x.IndexCardBoxId) && x.Source != null && x.Source != string.Empty).OrderByDescending(z => z.Modified).Select(x => x.Source).ToList().Distinct().Take(3).ToList();
 
             return Json(lResult);
         }
