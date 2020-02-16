@@ -119,7 +119,7 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "Clas
                 if (self.box() instanceof indexCardBox.IndexCardBox) {
                     self.restart();
                 }
-            });
+            }, "bttn bttn-main");
 
             let lButtonCancel = new tsLib.Button("Abbrechen", function() {
 
