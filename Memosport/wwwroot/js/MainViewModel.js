@@ -1521,8 +1521,10 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "Clas
         // show the sandtimer dialog
         self.sandtimerShowDialog = function() {
 
-            // preallocate the fields
-            self.sandtimerReset(); 
+            // preallocate the fields when not running or pause.
+            if (self.sandtimerState() !== self.sandtimerStateEnum.running && self.sandtimerState() !== self.pause) {
+                self.sandtimerReset(); 
+            }
 
             // show the dialog
             let lTemplate = document.getElementById("sandtimer-dialog-template");
@@ -1567,9 +1569,6 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "Clas
             // switch state and layout
             // show form
             self.sandtimerState(self.sandtimerStateEnum.showForm);
-
-            // reset the time to the cached value
-            self.sandtimerReset();
         };
 
         // pause the sandtimer
@@ -1616,18 +1615,18 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "Clas
                 // substract one second
                 self.sandtimerTotalSeconds = self.sandtimerTotalSeconds - 1;
                 
-                // fill input fields
-                self.sandtimerSeconds(Math.floor(self.sandtimerTotalSeconds) % 60);
-                self.sandtimerMinutes(Math.floor(self.sandtimerTotalSeconds / 60 % 60));
-                self.sandtimerHours(Math.floor(self.sandtimerTotalSeconds / 3600 % 24));
+                // calculate the hours, minutes, seconds
+                let lHours = Math.floor(self.sandtimerTotalSeconds) % 60;
+                let lMinutes = Math.floor(self.sandtimerTotalSeconds / 60 % 60);
+                let lSeconds = Math.floor(self.sandtimerTotalSeconds / 3600 % 24);
 
                 // display formatted value
-                let lHours = self.sandtimerHours() < 10 ? "0" + self.sandtimerHours() : self.sandtimerHours();
-                let lMinutes = self.sandtimerMinutes() < 10 ? "0" + self.sandtimerMinutes() : self.sandtimerMinutes();
-                let lSeconds = self.sandtimerSeconds() < 10 ? "0" + self.sandtimerSeconds() : self.sandtimerSeconds();
+                let lDisplaySeconds = lHours < 10 ? "0" + lHours : lHours;
+                let lDisplayMinutes = lMinutes < 10 ? "0" + lMinutes : lMinutes;
+                let lDisplayHours = lSeconds < 10 ? "0" + lSeconds : lSeconds;
 
                 // render value
-                self.sandtimerDisplayValue(lHours + ":" + lMinutes + ":" + lSeconds);
+                self.sandtimerDisplayValue(lDisplayHours + ":" + lDisplayMinutes + ":" + lDisplaySeconds);
 
             }, 1000);
         };
