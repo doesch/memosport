@@ -1438,12 +1438,15 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "Clas
             self.latestSourcesDropdownRemove();
 
             // when input filled then hide the dropdown and do not load source from server
+            //  when field empty, then show dropdown
             if (self.sourceInputHasValue()) {
                 return;
             }
 
-            // when field empty, then show dropdown
-
+            // show hourglass
+            let lHourglassDropdown = new tsLib.DropdownTextfield("Loading...");
+            lHourglassDropdown.appendTo("ict-input-source");
+            
             // get latest sources from server
             $.ajax({
                 url: "/IndexCardApi/GetLatestSources",
@@ -1469,6 +1472,11 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "Clas
 
                     // show the dropdown
                     self.latestSourcesDropdown.show();
+                },
+                complete: function () {
+
+                    // hide hourglass
+                    lHourglassDropdown.remove();
                 }
             });
 
