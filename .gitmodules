@@ -1,0 +1,3 @@
+[submodule "memosport/wwwroot/js/lib/tsLib"]
+	path = memosport/wwwroot/js/lib/tsLib
+	url = https://github.com/doesch/tsLib
