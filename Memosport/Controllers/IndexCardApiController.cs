@@ -373,7 +373,7 @@ namespace Memosport.Controllers
             var lBoxIds = _context.IndexCardBoxes.Where(x => x.UserId == lCurrentUser.Id).Select(x => x.Id).ToList();
 
             // now query the sources.
-            var lResult = _context.IndexCards.Where(x => lBoxIds.Contains(x.IndexCardBoxId) && x.Source != null && x.Source != string.Empty).OrderByDescending(z => z.Modified).Select(x => x.Source).ToList().Distinct().Take(3).ToList();
+            var lResult = _context.IndexCards.Where(x => lBoxIds.Contains(x.IndexCardBoxId) && x.Source != null && x.Source != string.Empty).OrderByDescending(z => z.Created).Select(x => x.Source).ToList().Distinct().Take(3).ToList();
 
             return Json(lResult);
         }
