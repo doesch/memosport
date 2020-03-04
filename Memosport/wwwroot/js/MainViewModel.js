@@ -1444,8 +1444,9 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "Clas
             }
 
             // show hourglass
-            let lHourglassDropdown = new tsLib.DropdownTextfield("Loading...");
-            lHourglassDropdown.appendTo("ict-input-source");
+            let lTemplate = document.getElementById("latest-sources-dropdown-loading-template");
+            let lHourglassDropdown = new tsLib.DropdownTextfield(lTemplate);
+            lHourglassDropdown.appendTo("ict-input-source").show();
             
             // get latest sources from server
             $.ajax({
