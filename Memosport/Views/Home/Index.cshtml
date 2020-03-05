@@ -74,7 +74,7 @@
 
                                 <!-- /ko -->
                                 <!-- ko if: $root.editMode() == true -->
-                                <textarea class="ict-question-answer-text" rows="50" maxlength="500" data-bind="textInput: editIndexCard().question" placeholder="Bitte geben Sie hier eine Frage ein."></textarea>
+                                <textarea class="ict-question-answer-text" rows="50" maxlength="2000" data-bind="textInput: editIndexCard().question" placeholder="Bitte geben Sie hier eine Frage ein."></textarea>
                                 <div class="ict-edit-img-container">
                                     <!-- ko if: editIndexCard().questionImageUrl == null -->
                                     <div id="ict-question-image-box" class="ict-img-box" tabindex="0">
@@ -143,7 +143,7 @@
                                 </div>
                                 <!-- /ko -->
                                 <!-- ko if: $root.editMode() == true -->
-                                <textarea class="ict-question-answer-text" rows="50" maxlength="500" data-bind="textInput: editIndexCard().answer" placeholder="Bitte geben Sie hier eine Antwort ein."></textarea>
+                                <textarea class="ict-question-answer-text" rows="50" maxlength="2000" data-bind="textInput: editIndexCard().answer" placeholder="Bitte geben Sie hier eine Antwort ein."></textarea>
                                 <div class="ict-edit-img-container">
                                     <!-- ko if: editIndexCard().answerImageUrl == null -->
                                     <div id="ict-answer-image-box" class="ict-img-box" tabindex="2">
