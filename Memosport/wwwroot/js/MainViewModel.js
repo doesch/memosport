@@ -639,6 +639,11 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "Clas
 
             self.editIndexCard(pIndexCard);
             self.editMode(true);
+            
+            if (pIndexCard.id === null) {
+                // its a new index card
+                self.showQuestion(true);
+            }
 
             // register TinyMce wysiwyg-editor
             tinymce.init({
@@ -649,32 +654,24 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "Clas
                 resize: false,
                 toolbar: 'bold italic',
                 init_instance_callback: function (editor) {
-                    editor.on('change', function (e) {
+                    //set cursor into field
+                    editor.on('init',
+                        function() {
+                            editor.focus();
+                        },
+                        // update observables when content changed
+                        editor.on('change',
+                            function(e) {
 
-                        // update ovservable
-                        if (e.target.id === "ict-question-textarea") {
-                            self.editIndexCard().question = tinymce.get("ict-question-textarea").getContent();
-                        }
-                        else if (e.target.id === "ict-answer-textarea")
-                        {
-                            self.editIndexCard().answer = tinymce.get("ict-answer-textarea").getContent();
-                        }
-                    });
+                                // update ovservable
+                                if (e.target.id === "ict-question-textarea") {
+                                    self.editIndexCard().question = tinymce.get("ict-question-textarea").getContent();
+                                } else if (e.target.id === "ict-answer-textarea") {
+                                    self.editIndexCard().answer = tinymce.get("ict-answer-textarea").getContent();
+                                }
+                            }));
                 }
             });
-
-            //set cursor into field
-            if (pIndexCard.id === null) {
-                // its a new index card
-                self.showQuestion(true);
-                document.querySelector(".ict-question-container .ict-question-answer-text").focus();
-            }
-            else {
-                // set either into question or answer dependent what is current active
-                let lQueryElement = self.showQuestion() ? ".ict-question-container" : ".ict-result-container";
-                lQueryElement += " .ict-question-answer-text";
-                document.querySelector(lQueryElement).focus();
-            }
         };
 
         /**
