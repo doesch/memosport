@@ -1176,7 +1176,7 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "Clas
             var lPastedFile = null; // file from clipboard
             var lFileType = null; // either 'image' or 'audio'
 
-            if (lHtmlElement === null || lClipboardData === false || typeof lClipboardData.items === 'undefined' || lClipboardData.items.Length === 0) {
+            if (lHtmlElement === null || lClipboardData === false || typeof lClipboardData.items === 'undefined' || lClipboardData.items.length === 0) {
                 // no active Element or no clipboard data
                 return false;
             }
