@@ -1825,7 +1825,6 @@ MajorSystem edit.ctp
 .ict-question-container,
 .ict-result-container {
     background-color: white;
-    padding: @GlobalMargin / 3;
     text-align: center;
     position: relative;
     z-index: 1;
@@ -2332,13 +2331,18 @@ textarea.ict-question-answer-text {
         text-align: left;
 
         .ict-text-container {
-            min-width: 100%;
+            padding: @GlobalMargin;
             min-height: @GlobalButtonHeight;
 
             &:hover {
-                border: solid 1px @GlobalBorderColor !important;
-                border-collapse: collapse;
-                cursor: text;
+                /*border: solid 1px @GlobalBorderColor !important;
+                border-collapse: collapse;*/
+                cursor: pointer;
+            }
+
+            &>span>p
+            {
+                padding: 0px;
             }
         }
     }
@@ -2353,7 +2357,7 @@ textarea.ict-question-answer-text {
 
     .ict-edit-img-container,
     .ict-edit-audio-container {
-        margin-top: @GlobalMargin / 3;
+        margin: @GlobalMargin 0 @GlobalMargin @GlobalMargin;
         float: left;
 
         .ict-img-box,
@@ -2388,10 +2392,6 @@ textarea.ict-question-answer-text {
         .ict-bttn-delete-img {
             float: left;
         }
-    }
-
-    .ict-edit-img-container {
-        margin-right: @GlobalMargin / 3;
     }
 }
 
