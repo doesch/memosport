@@ -329,7 +329,7 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "Clas
             document.getElementById('software-bttn-start').addEventListener("click", function () {
                 tsLib.Style.removeClass(document.getElementById('software-bttn-start'), "mark-start-button");
             });
-
+            
             // get Index Card Boxes into dropdown
             let lCallback = self.LoadLatestLearnedBox;
             self.GetIndexCardBoxes(lCallback);
@@ -528,7 +528,7 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "Clas
             }
 
             // convert into payload (formdata)
-            lFormData = self.indexCardToFormData(self.currentIndexCard());
+            let lFormData = self.indexCardToFormData(self.currentIndexCard());
 
             // ged id of current index card
             $.ajax({
@@ -613,6 +613,10 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "Clas
             self.editForm(new indexCard.IndexCard(), true);
         };
 
+        self.tinymceContentChangeEvent = function(e) {
+
+        }
+
         /// user clicked on a text box to edit the index card
         self.editForm = function (pIndexCard) {
 
@@ -635,6 +639,29 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "Clas
 
             self.editIndexCard(pIndexCard);
             self.editMode(true);
+
+            // register TinyMce wysiwyg-editor
+            tinymce.init({
+                selector: "textarea.tinymce",
+                themes: "modern",
+                statusbar: false,
+                menubar: false,
+                resize: false,
+                toolbar: 'bold italic',
+                init_instance_callback: function (editor) {
+                    editor.on('change', function (e) {
+
+                        // update ovservable
+                        if (e.target.id === "ict-question-textarea") {
+                            self.editIndexCard().question = tinymce.get("ict-question-textarea").getContent();
+                        }
+                        else if (e.target.id === "ict-answer-textarea")
+                        {
+                            self.editIndexCard().answer = tinymce.get("ict-answer-textarea").getContent();
+                        }
+                    });
+                }
+            });
 
             //set cursor into field
             if (pIndexCard.id === null) {
@@ -669,7 +696,7 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "Clas
             self.editIndexCardIsLoading(true);
 
             let lIndexCard = self.editIndexCard();
-
+            
             if (lIndexCard.id === null) {
                 // remove id when not set (new)
                 delete lIndexCard.id;
@@ -677,7 +704,7 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "Clas
                 // when id is null then it is a new index card. Assign selected box id
                 lIndexCard.indexCardBoxId = self.box().id;
             }
-
+            
             // convert indexcard to payload
             let lFormData = self.indexCardToFormData(lIndexCard);
 
