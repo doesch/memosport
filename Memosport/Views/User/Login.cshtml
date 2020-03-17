@@ -3,14 +3,15 @@
     ViewData["Title"] = "Login";
 }
 
+
 <div id="login-page-container">
-    <h1>Login</h1>
+
+    <h1>memosport.de</h1>
 
     <div id="login-form-container">
-
         <form method="post" action="@Url.Action("Login", "User")">
-            <input id="login-input-email" type="text" name="email" placeholder="E-Mail"/><br />
-            <input id="login-input-password" type="password" name="password" placeholder="Passwort"/><br />
+            <input id="login-input-email" type="text" name="email" placeholder="E-Mail" /><br />
+            <input id="login-input-password" type="password" name="password" placeholder="Passwort" /><br />
             <input type="submit" value="LOGIN" data-bind="click: function(){ $root.loginClick(); return true;}" />
         </form>
 
