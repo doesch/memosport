@@ -2350,14 +2350,16 @@ textarea.ict-question-answer-text {
             padding: @GlobalMargin;
             min-height: @GlobalButtonHeight;
 
-            &:hover {
-                /*border: solid 1px @GlobalBorderColor !important;
-                border-collapse: collapse;*/
-                cursor: pointer;
-            }
 
             & > span > p {
                 padding: 0px;
+                border: solid 1px transparent;
+
+                &:hover {
+                    border: solid 1px @GlobalBorderColor !important;
+                    border-collapse: collapse;
+                    cursor: text;
+                }
             }
         }
     }
