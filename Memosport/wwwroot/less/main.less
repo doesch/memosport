@@ -2089,9 +2089,8 @@ textarea.ict-question-answer-text {
         background-color: #e9e9e9;
         border: solid 1px #ccc;
         border-bottom: none;
-        // width: 100%;
         height: @IctProgressBarHeight;
-        line-height: @IctProgressBarHeight;
+        line-height: 100%;
         text-align: center;
         box-sizing: border-box;
         position: relative;
@@ -2108,11 +2107,10 @@ textarea.ict-question-answer-text {
         width: 40px;
         text-align: center;
         height: @IctProgressBarHeight;
-        line-height: @IctProgressBarHeight;
+        line-height: @IctProgressBarHeight - 1px;
         box-sizing: border-box;
 
-        .icon
-        {
+        .icon {
             margin-bottom: 0px !important;
         }
     }
@@ -2166,6 +2164,8 @@ textarea.ict-question-answer-text {
     margin-top: @IctProgressBarHeight;
 
     .ict-label {
+        padding: @GlobalMargin / 3 !important;
+        text-align: center;
         display: block !important;
         width: 100%;
         height: @IctContainerHeight / 2 - 10px !important;
@@ -2175,7 +2175,6 @@ textarea.ict-question-answer-text {
         border-radius: 0 @GlobalBorderRadius @GlobalBorderRadius 0;
         background-color: #eeeef5;
         position: relative;
-        color: @GlobalFontColor !important;
     }
 }
 
@@ -2323,7 +2322,6 @@ textarea.ict-question-answer-text {
 
     #ict-col-right {
         margin-left: -1px;
-        width: 35px;
         height: auto;
         z-index: 2;
     }
@@ -2607,5 +2605,20 @@ div.ict-search-dialog-container
 
     #ict-dialog-source {
         padding: @GlobalMargin 0px;
+    }
+}
+
+.sprite-24 {
+    display: inline-block;
+    width: 24px;
+    height: 24px;
+    background: transparent url('/img/sprite-24.png') 24px 24px scroll;
+
+    &.question {
+        background-position: 0px 0px;
+    }
+
+    &.answer {
+        background-position: -24px 0px;
     }
 }

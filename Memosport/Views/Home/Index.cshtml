@@ -198,11 +198,8 @@
                     <div id="ict-col-right">
 
                         <div id="ict-label-container">
-                            <button id="ict-label-question" class="ict-label cursor-pointer" data-bind="click: function() { $root.showQuestion(true);}, css: {'ict-label-activated' : $root.showQuestion()}">F<br />R<br />A<br />G<br />E</button>
-                            <button id="ict-label-answer" class="ict-label cursor-pointer" data-bind="click: function() { $root.showQuestion(false);}, css: {'ict-label-activated' : !$root.showQuestion()}">
-                                A<br />N<br />T<br />W<br />O<br />R<br />T
-                            </button>
-
+                            <button id="ict-label-question" class="ict-label cursor-pointer" title="Frage" data-bind="click: function() { $root.showQuestion(true);}, css: {'ict-label-activated' : $root.showQuestion()}"><span class="sprite-24 question"></span></button>
+                            <button id="ict-label-answer" class="ict-label cursor-pointer" title="Antwort" data-bind="click: function() { $root.showQuestion(false);}, css: {'ict-label-activated' : !$root.showQuestion()}"><span class="sprite-24 answer"></span></button>
                         </div>
                     </div>
                 </div>
