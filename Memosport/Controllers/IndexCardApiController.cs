@@ -251,6 +251,9 @@ namespace Memosport.Controllers
                 lIndexCard.AnswerImageUrl = lQuestionImageUrl;
             }
 
+            // reset the stats to 0
+            lIndexCard.Known = 0;
+
             // update created and updated time
             lIndexCard.Created = DateTime.UtcNow;
             lIndexCard.Modified = DateTime.UtcNow;
