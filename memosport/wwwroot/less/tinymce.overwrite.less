@@ -1,13 +1,19 @@
 ﻿@import "shared.less";
 
+div[role="application"] {
+    &.tox-tinymce
+    {
+        height: 220px !important;
+    }
+}
+
 .tox-tinymce {
     border-top: none !important;
     border-right: none !important;
     border-left: none !important;
     margin-right: @GlobalMargin / 3;
 
-    .tox-edit-area 
-    {
+    .tox-edit-area {
         border-right: @GlobalBorderControls;
 
         &:focus {
