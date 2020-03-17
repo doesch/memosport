@@ -6,7 +6,12 @@
     border-left: none !important;
     margin-right: @GlobalMargin / 3;
 
-    .tox-edit-area {
+    .tox-edit-area 
+    {
         border-right: @GlobalBorderControls;
+
+        &:focus {
+            border-color: @BorderFocus;
+        }
     }
 }

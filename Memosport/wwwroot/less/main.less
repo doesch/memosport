@@ -137,11 +137,24 @@ input[type="password"],
 textarea {
     resize: none;
     padding: @GlobalMargin / 3;
+}
+
+textarea {
     border: @GlobalBorderControls;
 }
 
-table
-{
+input[type="text"],
+input[type="password"] {
+    border-radius: 0px;
+    border: none;
+    border-bottom: @GlobalBorderControls;
+
+    &:focus {
+        border-bottom: @BorderFocus;
+    }
+}
+
+table {
     width: 100%;
 }
 
@@ -228,6 +241,11 @@ td
 #page-container {
     max-width: @PageContainerWidth;
     margin: 0 auto;
+    
+    #content
+    {
+        margin-top: @GlobalMargin / 3;
+    }
 }
 
 #login-bttn
@@ -389,7 +407,7 @@ td
 #navbar-container {
     max-width: @IctMaxWidth;
     height: @GlobalBarHeight;
-    line-height: @GlobalBarHeight;
+    line-height: @GlobalBarHeight - 1px;
     width: 100%;
     margin: 0px @GlobalMargin / 3;
     position: relative;
@@ -649,7 +667,7 @@ input[type="submit"] /* overwrite */
 
 .bttn-main // suggested button
 {
-    background-color: #4c65bf !important;
+    background-color: @ColorFocus !important;
     color: white !important;
 
     .bttn-icon-text {
@@ -2340,8 +2358,7 @@ textarea.ict-question-answer-text {
                 cursor: pointer;
             }
 
-            &>span>p
-            {
+            & > span > p {
                 padding: 0px;
             }
         }
@@ -2379,6 +2396,10 @@ textarea.ict-question-answer-text {
 
             img {
                 width: 100%;
+            }
+
+            &:focus {
+                border-color: @ColorFocus;
             }
         }
 
@@ -2551,37 +2572,40 @@ div.ict-search-dialog-container
 }
 
 #latest-sources-dropdown-list {
+
     div.latest-sources-dropdown-list-item {
         margin: 0;
-        padding: @GlobalMargin / 3;
+        padding: @GlobalMargin / 2;
 
         &:hover {
             background-color: @GlobalHoverBgColor;
             cursor: pointer;
         }
+
+        &:not(:last-child) {
+            border-bottom: dashed 1px @GlobalBorderColor;
+        }
     }
-}
 
-#latest-sources-dropdown-please-wait
-{
-    margin: @GlobalMargin;
-}
-
-#sandtimer-container {
-    text-align: center;
-
-    #sandtimer-display-value {
-        font-weight: bold;
-        font-size: @GlobalFontSize * 2;
-        background-color: #eee;
+    #latest-sources-dropdown-please-wait {
+        margin: @GlobalMargin;
     }
-}
 
-#sandtimer-elapsed-container
-{
-    text-align: center;
-}
-#ict-dialog-source
-{
-    padding: @GlobalMargin 0px;
+    #sandtimer-container {
+        text-align: center;
+
+        #sandtimer-display-value {
+            font-weight: bold;
+            font-size: @GlobalFontSize * 2;
+            background-color: #eee;
+        }
+    }
+
+    #sandtimer-elapsed-container {
+        text-align: center;
+    }
+
+    #ict-dialog-source {
+        padding: @GlobalMargin 0px;
+    }
 }
