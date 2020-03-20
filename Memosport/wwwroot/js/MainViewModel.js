@@ -612,11 +612,7 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "Clas
 
             self.editForm(new indexCard.IndexCard(), true);
         };
-
-        self.tinymceContentChangeEvent = function(e) {
-
-        }
-
+        
         /// user clicked on a text box to edit the index card
         self.editForm = function (pIndexCard) {
 
@@ -1076,6 +1072,7 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "Clas
 
             var lIndexCard = self.editIndexCard();
             lIndexCard.questionImageUrl = null;
+            lIndexCard.questionImageThumbUrl = null;
             lIndexCard.questionImageFile(null);
             lIndexCard.deleteQuestionImage = true; // set marker for server
             self.editIndexCard(lIndexCard);
@@ -1089,6 +1086,7 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "Clas
             var lIndexCard = self.editIndexCard();
             lIndexCard.answerImageUrl = null;
             lIndexCard.answerImageFile(null);
+            lIndexCard.answerImageThumbUrl = null;
             lIndexCard.deleteAnswerImage = true; // set marker for server
             self.editIndexCard(lIndexCard);
         };

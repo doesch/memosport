@@ -22,12 +22,14 @@ define(["require", "exports", "../lib/tsLib/tsLib"], function (require, exports,
             _this.indexCardBoxId = null;
             _this.question = null;
             _this.questionImageUrl = null;
+            _this.questionImageThumbUrl = null;
             _this.questionImageFile = ko.observable(null);
             _this.questionAudioUrl = null;
             _this.questionAudioFile = ko.observable(null);
             _this.jingle = null;
             _this.answer = null;
             _this.answerImageUrl = null;
+            _this.answerImageThumbUrl = null;
             _this.answerImageFile = ko.observable(null);
             _this.answerAudioUrl = null;
             _this.answerAudioFile = ko.observable(null);

@@ -16,6 +16,19 @@ namespace Memosport.Models
 
         public string QuestionImageUrl { get; set; }
 
+        public string QuestionImageThumbUrl
+        {
+            get
+            {
+                if (QuestionImageUrl != null)
+                {
+                    return Upload.FullPathThumbnailBySourceFullPath(QuestionImageUrl);
+                }
+
+                return null;
+            }
+        }
+
         [NotMapped]
         public IFormFile QuestionImageFile { get; set; }
 
@@ -29,6 +42,19 @@ namespace Memosport.Models
         public string Answer { get; set; }
 
         public string AnswerImageUrl { get; set; }
+
+        public string AnswerImageThumbUrl
+        {
+            get
+            {
+                if (AnswerImageUrl != null)
+                {
+                    return Upload.FullPathThumbnailBySourceFullPath(AnswerImageUrl);
+                }
+
+                return null;
+            }
+        }
 
         [NotMapped]
         public IFormFile AnswerImageFile { get; set; }

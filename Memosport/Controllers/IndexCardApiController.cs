@@ -213,22 +213,22 @@ namespace Memosport.Controllers
             // copy files
             if (lIndexCard.QuestionImageUrl != null)
             {
-                lIndexCard.QuestionImageUrl = await Upload.CopyFile(lIndexCard.QuestionImageUrl, _env.WebRootPath);
+                lIndexCard.QuestionImageUrl = Upload.CopyFile(lIndexCard.QuestionImageUrl, _env.WebRootPath);
             }
 
             if (lIndexCard.AnswerImageUrl != null)
             {
-                lIndexCard.AnswerImageUrl = await Upload.CopyFile(lIndexCard.AnswerImageUrl, _env.WebRootPath);
+                lIndexCard.AnswerImageUrl = Upload.CopyFile(lIndexCard.AnswerImageUrl, _env.WebRootPath);
             }
 
             if (lIndexCard.QuestionAudioUrl != null)
             {
-                lIndexCard.QuestionAudioUrl = await Upload.CopyFile(lIndexCard.QuestionAudioUrl, _env.WebRootPath);
+                lIndexCard.QuestionAudioUrl = Upload.CopyFile(lIndexCard.QuestionAudioUrl, _env.WebRootPath);
             }
 
             if (lIndexCard.AnswerAudioUrl != null)
             {
-                lIndexCard.AnswerAudioUrl = await Upload.CopyFile(lIndexCard.AnswerAudioUrl, _env.WebRootPath);
+                lIndexCard.AnswerAudioUrl = Upload.CopyFile(lIndexCard.AnswerAudioUrl, _env.WebRootPath);
             }
 
             // when user wants to invert question/answer
@@ -368,7 +368,7 @@ namespace Memosport.Controllers
         /// <remarks> Doetsch, 03.01.20. </remarks>
         /// <returns> An asynchronous result that yields the latest sources. </returns>
         [HttpGet("GetLatestSources")]
-        public async Task<IActionResult> GetLatestSources()
+        public IActionResult GetLatestSources()
         {
             IUser lCurrentUser = GetCurrentUser(_context);
             
@@ -524,6 +524,15 @@ namespace Memosport.Controllers
             pIndexCard.QuestionAudioFile = null;
 
             return pIndexCard;
+        }
+
+        /// <summary> Creates thumbnails for all images. </summary>
+        /// <remarks> Doetsch, 20.03.20. </remarks>
+        ///  ToDo: Delete this code when done.
+        [HttpGet("CreateThumbnailsForAllImages")]
+        public void CreateThumbnailsForAllImages()
+        {
+            Upload.CreateThumbnailsForAllImages(_env.WebRootPath);
         }
     }
 }
