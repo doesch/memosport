@@ -10,12 +10,14 @@ export class IndexCard extends tsLib.HelperBase
     indexCardBoxId: number = null;
     question: string = null;
     questionImageUrl: string = null;
+    questionImageThumbUrl: string = null;
     questionImageFile: KnockoutObservable<any> = ko.observable(null);
     questionAudioUrl: string = null;
     questionAudioFile: KnockoutObservable<any> = ko.observable(null);
     jingle: string = null;
     answer: string = null;
     answerImageUrl: string = null;
+    answerImageThumbUrl: string = null;
     answerImageFile: KnockoutObservable<any> = ko.observable(null);
     answerAudioUrl: string = null;
     answerAudioFile: KnockoutObservable<any> = ko.observable(null);

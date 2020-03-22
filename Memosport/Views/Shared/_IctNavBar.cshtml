@@ -15,10 +15,7 @@
     <div id="ict-boxes-dropdown-scroll-container">
         <!-- ko foreach: boxes -->
             <!-- ko if: $data.archived === false -->
-            <div class="ict-boxes-dropdown-listitem" data-bind="css: {'selected-box' : $data === $root.box()}">
-                <div class="ict-boxes-dropdown-listitem-col-2"><a class="bttn" href="#" title="edit" data-bind="click: function(){ $root.editIndexCardBoxForm($data); }"><span class="icon icon-edit"></span></a></div>
-                <div class="ict-boxes-dropdown-listitem-col-1" data-bind="click: $root.BoxSelected"><span data-bind="text: $data.name"></span></div>
-            </div>
+            <div class="ict-boxes-dropdown-listitem" data-bind="css: {'selected-box' : $data === $root.box()}"><div class="ict-boxes-dropdown-listitem-col-2"><a class="bttn" href="#" title="edit" data-bind="click: function(){ $root.editIndexCardBoxForm($data); }"><span class="icon icon-edit"></span></a></div><div class="ict-boxes-dropdown-listitem-col-1" data-bind="click: $root.BoxSelected"><span data-bind="text: $data.name"></span></div></div>
             <!-- /ko -->
         <!-- /ko -->
     </div>
@@ -53,7 +50,6 @@
         <div class="ict-archived-box-listitem" data-bind="text: $data.name, css: { 'selected-box': $data.archived === true }, click: function() { $root.indexCardBoxToggleArchived($data); }"></div>
     </div>
 </script>
-
 
 <script id="ict-boxstats-template" type="text/html">
     <div id="ict-boxstats-dialog-container" data-bind="foreach: boxStats">

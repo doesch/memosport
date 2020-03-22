@@ -1072,6 +1072,7 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "Clas
 
             var lIndexCard = self.editIndexCard();
             lIndexCard.questionImageUrl = null;
+            lIndexCard.questionImageThumbUrl = null;
             lIndexCard.questionImageFile(null);
             lIndexCard.deleteQuestionImage = true; // set marker for server
             self.editIndexCard(lIndexCard);
@@ -1085,6 +1086,7 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "Clas
             var lIndexCard = self.editIndexCard();
             lIndexCard.answerImageUrl = null;
             lIndexCard.answerImageFile(null);
+            lIndexCard.answerImageThumbUrl = null;
             lIndexCard.deleteAnswerImage = true; // set marker for server
             self.editIndexCard(lIndexCard);
         };
