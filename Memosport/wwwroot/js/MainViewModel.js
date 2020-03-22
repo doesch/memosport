@@ -613,10 +613,6 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "Clas
             self.editForm(new indexCard.IndexCard(), true);
         };
 
-        self.tinymceContentChangeEvent = function(e) {
-
-        }
-
         /// user clicked on a text box to edit the index card
         self.editForm = function (pIndexCard) {
 
