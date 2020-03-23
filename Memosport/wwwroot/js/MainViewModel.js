@@ -650,22 +650,26 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "Clas
                 resize: false,
                 toolbar: 'bold italic',
                 init_instance_callback: function (editor) {
-                    //set cursor into field
-                    editor.on('init',
-                        function() {
-                            editor.focus();
-                        },
-                        // update observables when content changed
-                        editor.on('change',
-                            function(e) {
 
-                                // update ovservable
-                                if (e.target.id === "ict-question-textarea") {
-                                    self.editIndexCard().question = tinymce.get("ict-question-textarea").getContent();
-                                } else if (e.target.id === "ict-answer-textarea") {
-                                    self.editIndexCard().answer = tinymce.get("ict-answer-textarea").getContent();
-                                }
-                            }));
+                    // set cursor into editor
+                    // set focus
+                    if (self.showQuestion() === true && editor.settings.id === "ict-question-textarea") {
+                        editor.focus();
+                    } else if (self.showQuestion() === false && editor.settings.id === "ict-answer-textarea") {
+                        editor.focus();
+                    }
+
+                    // update observables when content changed
+                    editor.on('change',
+                        function(e) {
+
+                            // update observable
+                            if (e.target.id === "ict-question-textarea") {
+                                self.editIndexCard().question = tinymce.get("ict-question-textarea").getContent();
+                            } else if (e.target.id === "ict-answer-textarea") {
+                                self.editIndexCard().answer = tinymce.get("ict-answer-textarea").getContent();
+                            }
+                        });
                 }
             });
         };
