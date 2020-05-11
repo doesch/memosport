@@ -132,9 +132,9 @@
                                 </div>
 
                                 <div class="ict-media-container">
-                                    <!-- ko if: $root.currentIndexCard().AnswerImageThumbUrl !== null -->
+                                    <!-- ko if: $root.currentIndexCard().answerImageThumbUrl !== null -->
                                     <div class="img-mini-container cursor-pointer" data-bind="click: toggleAnswerImage">
-                                        <img width="100" data-bind="attr: {src: GLOBAL.Uploads + $root.currentIndexCard().AnswerImageThumbUrl}" />
+                                        <img width="100" data-bind="attr: {src: GLOBAL.Uploads + $root.currentIndexCard().answerImageThumbUrl}" />
                                     </div>
                                     <!-- /ko -->
                                     <!-- ko if: $root.currentIndexCard().answerAudioUrl !== null -->
@@ -145,7 +145,7 @@
                                 <!-- ko if: $root.editMode() == true -->
                                 <textarea id="ict-answer-textarea" class="ict-question-answer-text tinymce" rows="50" maxlength="2000" data-bind="textInput: editIndexCard().answer" placeholder="Bitte geben Sie hier eine Antwort ein."></textarea>
                                 <div class="ict-edit-img-container">
-                                    <!-- ko if: editIndexCard().AnswerImageThumbUrl == null -->
+                                    <!-- ko if: editIndexCard().answerImageThumbUrl == null -->
                                     <div id="ict-answer-image-box" class="ict-img-box" tabindex="2">
                                         <!-- ko if: $root.editIndexCard().answerImageFile() != null -->
                                         <span>Bild gewählt</span>
@@ -156,12 +156,12 @@
                                     </div>
                                     <input name="answer_image" id="ict-answer-img-file" type="file" data-bind="event: { change: function(){  $root.AnswerImageChanged($element); }}" />
                                     <!-- /ko -->
-                                    <!-- ko if: editIndexCard().AnswerImageThumbUrl !== null -->
+                                    <!-- ko if: editIndexCard().answerImageThumbUrl !== null -->
                                     <div class="ict-img-box" style="float: left;">
-                                        <img id="ict-answer-img" data-bind="click: toggleAnswerImage, attr: {src : GLOBAL.Uploads + editIndexCard().AnswerImageThumbUrl }" alt="Bild ausgewählt" />
+                                        <img id="ict-answer-img" data-bind="click: toggleAnswerImage, attr: {src : GLOBAL.Uploads + editIndexCard().answerImageThumbUrl }" alt="Bild ausgewählt" />
                                     </div>
                                     <!-- /ko -->
-                                    <!-- ko if: editIndexCard().AnswerImageThumbUrl !== null || $root.editIndexCard().answerImageFile() !== null -->
+                                    <!-- ko if: editIndexCard().answerImageThumbUrl !== null || $root.editIndexCard().answerImageFile() !== null -->
                                     <button class="bttn ict-bttn-delete-media" title="Bild löschen" data-bind="click: DeleteAnswerImage"><span class="icon icon-delete"></span></button>
                                     <!-- /ko -->
 

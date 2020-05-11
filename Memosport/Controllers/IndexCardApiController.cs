@@ -526,13 +526,13 @@ namespace Memosport.Controllers
             return pIndexCard;
         }
 
-        /// <summary> Creates thumbnails for all images. </summary>
-        /// <remarks> Doetsch, 20.03.20. </remarks>
-        ///  ToDo: Delete this code when done.
-        [HttpGet("CreateThumbnailsForAllImages")]
-        public void CreateThumbnailsForAllImages()
-        {
-            Upload.CreateThumbnailsForAllImages(_env.WebRootPath);
-        }
+        ///// <summary> Creates thumbnails for all images. </summary>
+        ///// <remarks> Doetsch, 20.03.20. </remarks>
+        /////  ToDo: Delete this code when done.
+        //[HttpGet("CreateThumbnailsForAllImages")]
+        //public void CreateThumbnailsForAllImages()
+        //{
+        //    Upload.CreateThumbnailsForAllImages(_env.WebRootPath);
+        //}
     }
 }

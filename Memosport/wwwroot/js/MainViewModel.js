@@ -649,6 +649,8 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "Clas
                 menubar: false,
                 resize: false,
                 toolbar: 'bold italic',
+                plugins: "paste", // plugin for paste_as_tesxt paste 
+                paste_as_text: true, // "paste as text" by default!
                 init_instance_callback: function (editor) {
 
                     // set cursor into editor

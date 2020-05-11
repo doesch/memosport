@@ -217,17 +217,23 @@ namespace Memosport.Classes
             string[] lFilePaths = Directory.GetFiles(Path.Combine(pWebRootPath, cUploadFolder));
 
             foreach (var lFilePath in lFilePaths)
-            {
+            {                
                 //  check if it is an thumbnail itself
                 if (lFilePath.Contains(cThumbnailSuffix) == false)
                 {
-                    var lTargetPath = FullPathThumbnailBySourceFullPath(lFilePath);
+                    // check it is an image
+                    var lExtension = Path.GetExtension(lFilePath).ToLowerInvariant();
 
-                    // do only create if thumbnail and thumbnail not exists
-                    if (File.Exists(lTargetPath) == false)
+                    if (cValidImageTypes.Any(x => x == lExtension))
                     {
-                        // create thumb
-                        new ImageThumbnail().Create(lFilePath, lTargetPath);
+                        var lTargetPath = FullPathThumbnailBySourceFullPath(lFilePath);
+
+                        // do only create if thumbnail and thumbnail not exists
+                        if (File.Exists(lTargetPath) == false)
+                        {
+                            // create thumb
+                            new ImageThumbnail().Create(lFilePath, lTargetPath);
+                        }
                     }
                 }
             }
