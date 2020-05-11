@@ -8,7 +8,7 @@ export class IndexCardBox extends tsLib.HelperBase
     userId: number = null;
     dateLastLearned: Date = null; // date when last learned this box
     dateLastLearnedDays: number = null; // last learned this box in days ago
-    archived: boolean = null;
+    archived: boolean = false;
     boxStats: IBoxStats = null; // IndexCardBox statistics
     
     public constructor(pArgs: any)

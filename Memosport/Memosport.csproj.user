@@ -10,6 +10,7 @@
     <WebStackScaffolding_IsAsyncSelected>False</WebStackScaffolding_IsAsyncSelected>
     <WebStackScaffolding_ViewDialogWidth>600</WebStackScaffolding_ViewDialogWidth>
     <NameOfLastUsedPublishProfile>HP-Notebook-Profile</NameOfLastUsedPublishProfile>
+    <ToolsVersionPromptShown>3.7</ToolsVersionPromptShown>
   </PropertyGroup>
   <ItemGroup>
     <TypeScriptCompile Update="wwwroot\js\Classes\SearchResult.ts">
