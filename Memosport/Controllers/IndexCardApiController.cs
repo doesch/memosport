@@ -213,22 +213,22 @@ namespace Memosport.Controllers
             // copy files
             if (lIndexCard.QuestionImageUrl != null)
             {
-                lIndexCard.QuestionImageUrl = await Upload.CopyFile(lIndexCard.QuestionImageUrl, _env.WebRootPath);
+                lIndexCard.QuestionImageUrl = Upload.CopyFile(lIndexCard.QuestionImageUrl, _env.WebRootPath);
             }
 
             if (lIndexCard.AnswerImageUrl != null)
             {
-                lIndexCard.AnswerImageUrl = await Upload.CopyFile(lIndexCard.AnswerImageUrl, _env.WebRootPath);
+                lIndexCard.AnswerImageUrl = Upload.CopyFile(lIndexCard.AnswerImageUrl, _env.WebRootPath);
             }
 
             if (lIndexCard.QuestionAudioUrl != null)
             {
-                lIndexCard.QuestionAudioUrl = await Upload.CopyFile(lIndexCard.QuestionAudioUrl, _env.WebRootPath);
+                lIndexCard.QuestionAudioUrl = Upload.CopyFile(lIndexCard.QuestionAudioUrl, _env.WebRootPath);
             }
 
             if (lIndexCard.AnswerAudioUrl != null)
             {
-                lIndexCard.AnswerAudioUrl = await Upload.CopyFile(lIndexCard.AnswerAudioUrl, _env.WebRootPath);
+                lIndexCard.AnswerAudioUrl = Upload.CopyFile(lIndexCard.AnswerAudioUrl, _env.WebRootPath);
             }
 
             // when user wants to invert question/answer
@@ -250,6 +250,9 @@ namespace Memosport.Controllers
                 lIndexCard.QuestionImageUrl = lAnswerImageUrl;
                 lIndexCard.AnswerImageUrl = lQuestionImageUrl;
             }
+
+            // reset the stats to 0
+            lIndexCard.Known = 0;
 
             // update created and updated time
             lIndexCard.Created = DateTime.UtcNow;
@@ -365,34 +368,15 @@ namespace Memosport.Controllers
         /// <remarks> Doetsch, 03.01.20. </remarks>
         /// <returns> An asynchronous result that yields the latest sources. </returns>
         [HttpGet("GetLatestSources")]
-        public async Task<IActionResult> GetLatestSources()
+        public IActionResult GetLatestSources()
         {
-            // "SELECT DISTINCT source, modified FROM `indexcards` where source is not null and source <> '' and indexcardboxid in (select id from indexcardboxes where userid = 1) order by modified desc"
             IUser lCurrentUser = GetCurrentUser(_context);
+            
+            // get the box ids, belonging to the user
+            var lBoxIds = _context.IndexCardBoxes.Where(x => x.UserId == lCurrentUser.Id).Select(x => x.Id).ToList();
 
-            // prepare query
-            var lQuery = _context.IndexCards
-                .Join(
-                    _context.IndexCardBoxes,
-                    IndexCard => IndexCard.IndexCardBoxId,
-                    IndexCardBox => IndexCardBox.Id,
-                    (IndexCard, IndexCardBox) => new SearchResult
-                    {
-                        IndexCard = IndexCard,
-                        IndexCardBox = IndexCardBox
-                    }
-                )
-                .Where(x => x.IndexCardBox.UserId == lCurrentUser.Id) // filter out by current userid
-                .Select(x => x)
-                // now filter out by searchstring
-                .Where(x => x.IndexCard.Source != null && x.IndexCard.Source != string.Empty)
-                .OrderByDescending(x => x.IndexCard.Modified)
-                .Select(x => x.IndexCard.Source)
-                .Take(3); // get newest 3 entries
-
-
-            // execute query
-            var lResult = await lQuery.ToListAsync();
+            // now query the sources.
+            var lResult = _context.IndexCards.Where(x => lBoxIds.Contains(x.IndexCardBoxId) && x.Source != null && x.Source != string.Empty).OrderByDescending(z => z.Created).Select(x => x.Source).ToList().Distinct().Take(3).ToList();
 
             return Json(lResult);
         }
@@ -541,5 +525,14 @@ namespace Memosport.Controllers
 
             return pIndexCard;
         }
+
+        ///// <summary> Creates thumbnails for all images. </summary>
+        ///// <remarks> Doetsch, 20.03.20. </remarks>
+        /////  ToDo: Delete this code when done.
+        //[HttpGet("CreateThumbnailsForAllImages")]
+        //public void CreateThumbnailsForAllImages()
+        //{
+        //    Upload.CreateThumbnailsForAllImages(_env.WebRootPath);
+        //}
     }
 }

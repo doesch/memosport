@@ -9,7 +9,12 @@
     <WebStackScaffolding_IsReferencingScriptLibrariesSelected>False</WebStackScaffolding_IsReferencingScriptLibrariesSelected>
     <WebStackScaffolding_IsAsyncSelected>False</WebStackScaffolding_IsAsyncSelected>
     <WebStackScaffolding_ViewDialogWidth>600</WebStackScaffolding_ViewDialogWidth>
+<<<<<<< HEAD
     <NameOfLastUsedPublishProfile>DesktopSimon</NameOfLastUsedPublishProfile>
+=======
+    <NameOfLastUsedPublishProfile>HP-Notebook-Profile</NameOfLastUsedPublishProfile>
+    <ToolsVersionPromptShown>3.7</ToolsVersionPromptShown>
+>>>>>>> 0982821b6f04a37dd83298b768fa79613e6a55a7
   </PropertyGroup>
   <ItemGroup>
     <TypeScriptCompile Update="wwwroot\js\Classes\SearchResult.ts">

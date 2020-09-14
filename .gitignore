@@ -5,3 +5,5 @@ Memosport/wwwroot/uploads/
 .vs
 Memosport/package-lock.json
 Memosport/wwwroot/uploads/
+MemosportTest/obj
+MemosportTest/bin

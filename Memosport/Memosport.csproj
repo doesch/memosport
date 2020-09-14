@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
-    <TypeScriptToolsVersion>3.7</TypeScriptToolsVersion>
+    <TypeScriptToolsVersion>3.8</TypeScriptToolsVersion>
   </PropertyGroup>
 
   <ItemGroup>
@@ -17,6 +17,7 @@
     <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="3.1.0" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.0" />
     <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="3.1.0" />
+    <PackageReference Include="System.Drawing.Common" Version="4.7.0" />
   </ItemGroup>
 
   <ItemGroup>

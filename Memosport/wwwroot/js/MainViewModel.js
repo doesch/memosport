@@ -50,7 +50,6 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "Clas
         self.currentIndexCard = ko.observable(new indexCard.IndexCard()); // current showing index card in trainer
         self.showProgressButtonBubble = ko.observable(false);
         self.latestSources = ko.observableArray();
-        self.latestSourcesDropdown = null;
 
         self.i = ko.observable(-1);
         self.pointerTraffic = true;
@@ -120,7 +119,7 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "Clas
                 if (self.box() instanceof indexCardBox.IndexCardBox) {
                     self.restart();
                 }
-            });
+            }, "bttn bttn-main");
 
             let lButtonCancel = new tsLib.Button("Abbrechen", function() {
 
@@ -330,7 +329,7 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "Clas
             document.getElementById('software-bttn-start').addEventListener("click", function () {
                 tsLib.Style.removeClass(document.getElementById('software-bttn-start'), "mark-start-button");
             });
-
+            
             // get Index Card Boxes into dropdown
             let lCallback = self.LoadLatestLearnedBox;
             self.GetIndexCardBoxes(lCallback);
@@ -340,7 +339,7 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "Clas
         self.closeAllMenus = function(e) {
 
             // the dropdown for the latest sources of an indexcard.
-            self.latestSourcesDropdownHide();
+            self.latestSourcesDropdownRemove();
             self.mainMenuShowDropdown(false);
             self.boxesShowDropdown(false);
         };
@@ -529,7 +528,7 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "Clas
             }
 
             // convert into payload (formdata)
-            lFormData = self.indexCardToFormData(self.currentIndexCard());
+            let lFormData = self.indexCardToFormData(self.currentIndexCard());
 
             // ged id of current index card
             $.ajax({
@@ -636,19 +635,45 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "Clas
 
             self.editIndexCard(pIndexCard);
             self.editMode(true);
-
-            //set cursor into field
+            
             if (pIndexCard.id === null) {
                 // its a new index card
                 self.showQuestion(true);
-                document.querySelector(".ict-question-container .ict-question-answer-text").focus();
             }
-            else {
-                // set either into question or answer dependent what is current active
-                let lQueryElement = self.showQuestion() ? ".ict-question-container" : ".ict-result-container";
-                lQueryElement += " .ict-question-answer-text";
-                document.querySelector(lQueryElement).focus();
-            }
+
+            // register TinyMce wysiwyg-editor
+            tinymce.init({
+                selector: "textarea.tinymce",
+                themes: "modern",
+                statusbar: false,
+                menubar: false,
+                resize: false,
+                toolbar: 'bold italic',
+                plugins: "paste", // plugin for paste_as_tesxt paste 
+                paste_as_text: true, // "paste as text" by default!
+                init_instance_callback: function (editor) {
+
+                    // set cursor into editor
+                    // set focus
+                    if (self.showQuestion() === true && editor.settings.id === "ict-question-textarea") {
+                        editor.focus();
+                    } else if (self.showQuestion() === false && editor.settings.id === "ict-answer-textarea") {
+                        editor.focus();
+                    }
+
+                    // update observables when content changed
+                    editor.on('change',
+                        function(e) {
+
+                            // update observable
+                            if (e.target.id === "ict-question-textarea") {
+                                self.editIndexCard().question = tinymce.get("ict-question-textarea").getContent();
+                            } else if (e.target.id === "ict-answer-textarea") {
+                                self.editIndexCard().answer = tinymce.get("ict-answer-textarea").getContent();
+                            }
+                        });
+                }
+            });
         };
 
         /**
@@ -670,7 +695,7 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "Clas
             self.editIndexCardIsLoading(true);
 
             let lIndexCard = self.editIndexCard();
-
+            
             if (lIndexCard.id === null) {
                 // remove id when not set (new)
                 delete lIndexCard.id;
@@ -678,7 +703,7 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "Clas
                 // when id is null then it is a new index card. Assign selected box id
                 lIndexCard.indexCardBoxId = self.box().id;
             }
-
+            
             // convert indexcard to payload
             let lFormData = self.indexCardToFormData(lIndexCard);
 
@@ -1053,6 +1078,7 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "Clas
 
             var lIndexCard = self.editIndexCard();
             lIndexCard.questionImageUrl = null;
+            lIndexCard.questionImageThumbUrl = null;
             lIndexCard.questionImageFile(null);
             lIndexCard.deleteQuestionImage = true; // set marker for server
             self.editIndexCard(lIndexCard);
@@ -1066,6 +1092,7 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "Clas
             var lIndexCard = self.editIndexCard();
             lIndexCard.answerImageUrl = null;
             lIndexCard.answerImageFile(null);
+            lIndexCard.answerImageThumbUrl = null;
             lIndexCard.deleteAnswerImage = true; // set marker for server
             self.editIndexCard(lIndexCard);
         };
@@ -1177,7 +1204,7 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "Clas
             var lPastedFile = null; // file from clipboard
             var lFileType = null; // either 'image' or 'audio'
 
-            if (lHtmlElement === null || lClipboardData === false || typeof lClipboardData.items === 'undefined' || lClipboardData.items.Length === 0) {
+            if (lHtmlElement === null || lClipboardData === false || typeof lClipboardData.items === 'undefined' || lClipboardData.items.length === 0) {
                 // no active Element or no clipboard data
                 return false;
             }
@@ -1433,17 +1460,22 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "Clas
         };
 
         /// click or keypress on sources field
-        self.sourcesGetFromServer = function() {
+        self.sourcesGetFromServer = function () {
+
+            // user has entered an value. Remove the dropdown.
+            self.latestSourcesDropdownRemove();
 
             // when input filled then hide the dropdown and do not load source from server
+            //  when field empty, then show dropdown
             if (self.sourceInputHasValue()) {
-                // user has entered an value
-                self.latestSourcesDropdownHide();
                 return;
             }
 
-            // when field empty, then show dropdown
-
+            // show hourglass
+            let lTemplate = document.getElementById("latest-sources-dropdown-loading-template");
+            let lHourglassDropdown = new tsLib.DropdownTextfield(lTemplate);
+            lHourglassDropdown.appendTo("ict-input-source").show();
+            
             // get latest sources from server
             $.ajax({
                 url: "/IndexCardApi/GetLatestSources",
@@ -1454,7 +1486,12 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "Clas
                     // add results to observable
                     self.latestSources(xhr);
 
-                    // create an dropdown when not exists
+                    // when user has typed an source between request and response, then do not show the dropdown
+                    if (self.sourceInputHasValue()) {
+                        return;
+                    }
+
+                    // create an dropdown
                     // show results in an dropdown
                     let lTemplate = document.getElementById("latest-sources-dropdown-template");
                     self.latestSourcesDropdown = new tsLib.DropdownTextfield(lTemplate);
@@ -1462,8 +1499,13 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "Clas
                     self.latestSourcesDropdown.afterRenderCallback = function () { ko.applyBindings(GLOBAL.MainViewModel, this.mHtmlWindow); };
                     self.latestSourcesDropdown.appendTo("ict-input-source");
 
-                        // show the dropdown
+                    // show the dropdown
                     self.latestSourcesDropdown.show();
+                },
+                complete: function () {
+
+                    // hide hourglass
+                    lHourglassDropdown.remove();
                 }
             });
 
@@ -1476,15 +1518,15 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "Clas
             document.getElementById("ict-input-source").value = pSource;
             self.editIndexCard().source = pSource;
 
-            // close dropdown
-            self.latestSourcesDropdownHide(); // close the dropdown
+            // remove dropdown
+            self.latestSourcesDropdownRemove(); // close the dropdown
         };
 
         /// hide the dropdown
-        self.latestSourcesDropdownHide = function() {
+        self.latestSourcesDropdownRemove = function() {
 
-            if (self.latestSourcesDropdown instanceof tsLib.DropdownTextfield === true) {
-                self.latestSourcesDropdown.hide();
+            if (self.latestSourcesDropdown instanceof tsLib.DropdownTextfield) {
+                self.latestSourcesDropdown.remove();
             }
         };
 
@@ -1516,8 +1558,10 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "Clas
         // show the sandtimer dialog
         self.sandtimerShowDialog = function() {
 
-            // preallocate the fields
-            self.sandtimerReset(); 
+            // preallocate the fields when not running or pause.
+            if (self.sandtimerState() !== self.sandtimerStateEnum.running && self.sandtimerState() !== self.pause) {
+                self.sandtimerReset(); 
+            }
 
             // show the dialog
             let lTemplate = document.getElementById("sandtimer-dialog-template");
@@ -1562,9 +1606,6 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "Clas
             // switch state and layout
             // show form
             self.sandtimerState(self.sandtimerStateEnum.showForm);
-
-            // reset the time to the cached value
-            self.sandtimerReset();
         };
 
         // pause the sandtimer
@@ -1611,18 +1652,18 @@ requirejs(["lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "Clas
                 // substract one second
                 self.sandtimerTotalSeconds = self.sandtimerTotalSeconds - 1;
                 
-                // fill input fields
-                self.sandtimerSeconds(Math.floor(self.sandtimerTotalSeconds) % 60);
-                self.sandtimerMinutes(Math.floor(self.sandtimerTotalSeconds / 60 % 60));
-                self.sandtimerHours(Math.floor(self.sandtimerTotalSeconds / 3600 % 24));
+                // calculate the hours, minutes, seconds
+                let lHours = Math.floor(self.sandtimerTotalSeconds) % 60;
+                let lMinutes = Math.floor(self.sandtimerTotalSeconds / 60 % 60);
+                let lSeconds = Math.floor(self.sandtimerTotalSeconds / 3600 % 24);
 
                 // display formatted value
-                let lHours = self.sandtimerHours() < 10 ? "0" + self.sandtimerHours() : self.sandtimerHours();
-                let lMinutes = self.sandtimerMinutes() < 10 ? "0" + self.sandtimerMinutes() : self.sandtimerMinutes();
-                let lSeconds = self.sandtimerSeconds() < 10 ? "0" + self.sandtimerSeconds() : self.sandtimerSeconds();
+                let lDisplaySeconds = lHours < 10 ? "0" + lHours : lHours;
+                let lDisplayMinutes = lMinutes < 10 ? "0" + lMinutes : lMinutes;
+                let lDisplayHours = lSeconds < 10 ? "0" + lSeconds : lSeconds;
 
                 // render value
-                self.sandtimerDisplayValue(lHours + ":" + lMinutes + ":" + lSeconds);
+                self.sandtimerDisplayValue(lDisplayHours + ":" + lDisplayMinutes + ":" + lDisplaySeconds);
 
             }, 1000);
         };

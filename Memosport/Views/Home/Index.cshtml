@@ -58,13 +58,13 @@
 
                                 <!-- ko if: $root.editMode() == false -->
                                 <div class="ict-text-container" title="Bearbeiten" data-bind="click: function() { $root.editForm($root.currentIndexCard());}">
-                                    <span class="question" data-bind="text: $root.currentIndexCard().question"></span>
+                                    <span class="question" data-bind="html: $root.currentIndexCard().question"></span>
                                 </div>
 
                                 <div class="ict-media-container">
-                                    <!-- ko if: $root.currentIndexCard().questionImageUrl !== null -->
+                                    <!-- ko if: $root.currentIndexCard().questionImageThumbUrl !== null -->
                                     <div class="img-mini-container cursor-pointer" data-bind="click: toggleQuestionImage">
-                                        <img data-bind="attr: {src: GLOBAL.Uploads + $root.currentIndexCard().questionImageUrl}" alt="Lade Bild..." />
+                                        <img data-bind="attr: {src: GLOBAL.Uploads + $root.currentIndexCard().questionImageThumbUrl}" alt="Lade Bild..." />
                                     </div>
                                     <!-- /ko -->
                                     <!-- ko if: $root.currentIndexCard().questionAudioUrl !== null -->
@@ -74,9 +74,9 @@
 
                                 <!-- /ko -->
                                 <!-- ko if: $root.editMode() == true -->
-                                <textarea class="ict-question-answer-text" rows="50" maxlength="500" data-bind="textInput: editIndexCard().question" placeholder="Bitte geben Sie hier eine Frage ein."></textarea>
+                                <textarea id="ict-question-textarea" class="ict-question-answer-text tinymce" rows="50" maxlength="2000" data-bind="textInput: editIndexCard().question" placeholder="Bitte geben Sie hier eine Frage ein."></textarea>
                                 <div class="ict-edit-img-container">
-                                    <!-- ko if: editIndexCard().questionImageUrl == null -->
+                                    <!-- ko if: editIndexCard().questionImageThumbUrl == null -->
                                     <div id="ict-question-image-box" class="ict-img-box" tabindex="0">
                                         <!-- ko if: $root.editIndexCard().questionImageFile() != null -->
                                         <span>Bild gewählt</span>
@@ -87,12 +87,12 @@
                                     </div>
                                     <input name="question_image" id="ict-question-img-file" type="file" data-bind="event: { change: function(){  $root.QuestionImageChanged($element); }}" />
                                     <!-- /ko -->
-                                    <!-- ko if: editIndexCard().questionImageUrl !== null -->
+                                    <!-- ko if: editIndexCard().questionImageThumbUrl !== null -->
                                     <div class="ict-img-box">
-                                        <img id="ict-question-img" data-bind="click: toggleQuestionImage, attr: {src : GLOBAL.Uploads + editIndexCard().questionImageUrl }" alt="Bild ausgewählt" />
+                                        <img id="ict-question-img" data-bind="click: toggleQuestionImage, attr: {src : GLOBAL.Uploads + editIndexCard().questionImageThumbUrl }" alt="Bild ausgewählt" />
                                     </div>
                                     <!-- /ko -->
-                                    <!-- ko if: editIndexCard().questionImageUrl !== null || $root.editIndexCard().questionImageFile() !== null -->
+                                    <!-- ko if: editIndexCard().questionImageThumbUrl !== null || $root.editIndexCard().questionImageFile() !== null -->
                                     <button class="bttn ict-bttn-delete-media" title="Bild löschen" data-bind="click: DeleteQuestionImage"><span class="icon icon-delete"></span></button>
                                     <!-- /ko -->
 
@@ -128,13 +128,13 @@
 
                                 <!-- ko if: $root.editMode() == false -->
                                 <div class="ict-text-container" title="Bearbeiten" data-bind="click: function() { $root.editForm($root.currentIndexCard());}">
-                                    <span class="result" data-bind="text: $root.currentIndexCard().answer"></span>
+                                    <span class="result" data-bind="html: $root.currentIndexCard().answer"></span>
                                 </div>
 
                                 <div class="ict-media-container">
-                                    <!-- ko if: $root.currentIndexCard().answerImageUrl !== null -->
+                                    <!-- ko if: $root.currentIndexCard().answerImageThumbUrl !== null -->
                                     <div class="img-mini-container cursor-pointer" data-bind="click: toggleAnswerImage">
-                                        <img width="100" data-bind="attr: {src: GLOBAL.Uploads + $root.currentIndexCard().answerImageUrl}" />
+                                        <img width="100" data-bind="attr: {src: GLOBAL.Uploads + $root.currentIndexCard().answerImageThumbUrl}" />
                                     </div>
                                     <!-- /ko -->
                                     <!-- ko if: $root.currentIndexCard().answerAudioUrl !== null -->
@@ -143,9 +143,9 @@
                                 </div>
                                 <!-- /ko -->
                                 <!-- ko if: $root.editMode() == true -->
-                                <textarea class="ict-question-answer-text" rows="50" maxlength="500" data-bind="textInput: editIndexCard().answer" placeholder="Bitte geben Sie hier eine Antwort ein."></textarea>
+                                <textarea id="ict-answer-textarea" class="ict-question-answer-text tinymce" rows="50" maxlength="2000" data-bind="textInput: editIndexCard().answer" placeholder="Bitte geben Sie hier eine Antwort ein."></textarea>
                                 <div class="ict-edit-img-container">
-                                    <!-- ko if: editIndexCard().answerImageUrl == null -->
+                                    <!-- ko if: editIndexCard().answerImageThumbUrl == null -->
                                     <div id="ict-answer-image-box" class="ict-img-box" tabindex="2">
                                         <!-- ko if: $root.editIndexCard().answerImageFile() != null -->
                                         <span>Bild gewählt</span>
@@ -156,12 +156,12 @@
                                     </div>
                                     <input name="answer_image" id="ict-answer-img-file" type="file" data-bind="event: { change: function(){  $root.AnswerImageChanged($element); }}" />
                                     <!-- /ko -->
-                                    <!-- ko if: editIndexCard().answerImageUrl !== null -->
+                                    <!-- ko if: editIndexCard().answerImageThumbUrl !== null -->
                                     <div class="ict-img-box" style="float: left;">
-                                        <img id="ict-answer-img" data-bind="click: toggleAnswerImage, attr: {src : GLOBAL.Uploads + editIndexCard().answerImageUrl }" alt="Bild ausgewählt" />
+                                        <img id="ict-answer-img" data-bind="click: toggleAnswerImage, attr: {src : GLOBAL.Uploads + editIndexCard().answerImageThumbUrl }" alt="Bild ausgewählt" />
                                     </div>
                                     <!-- /ko -->
-                                    <!-- ko if: editIndexCard().answerImageUrl !== null || $root.editIndexCard().answerImageFile() !== null -->
+                                    <!-- ko if: editIndexCard().answerImageThumbUrl !== null || $root.editIndexCard().answerImageFile() !== null -->
                                     <button class="bttn ict-bttn-delete-media" title="Bild löschen" data-bind="click: DeleteAnswerImage"><span class="icon icon-delete"></span></button>
                                     <!-- /ko -->
 
@@ -198,11 +198,8 @@
                     <div id="ict-col-right">
 
                         <div id="ict-label-container">
-                            <button id="ict-label-question" class="ict-label cursor-pointer" data-bind="click: function() { $root.showQuestion(true);}, css: {'ict-label-activated' : $root.showQuestion()}">F<br />R<br />A<br />G<br />E</button>
-                            <button id="ict-label-answer" class="ict-label cursor-pointer" data-bind="click: function() { $root.showQuestion(false);}, css: {'ict-label-activated' : !$root.showQuestion()}">
-                                A<br />N<br />T<br />W<br />O<br />R<br />T
-                            </button>
-
+                            <button id="ict-label-question" class="ict-label cursor-pointer" title="Frage" data-bind="click: function() { $root.showQuestion(true);}, css: {'ict-label-activated' : $root.showQuestion()}"><span class="sprite-24 question"></span></button>
+                            <button id="ict-label-answer" class="ict-label cursor-pointer" title="Antwort" data-bind="click: function() { $root.showQuestion(false);}, css: {'ict-label-activated' : !$root.showQuestion()}"><span class="sprite-24 answer"></span></button>
                         </div>
                     </div>
                 </div>
@@ -362,12 +359,16 @@
     <!-- /ko -->
 </script>
 
+<script id="latest-sources-dropdown-loading-template" type="text/html">
+    <span id="latest-sources-dropdown-please-wait">Bitte warten...</span>
+</script>
+
 <script id="sandtimer-dialog-template" type="text/html">    
     <div id="sandtimer-container">
         <!-- ko if: $root.sandtimerState() === $root.sandtimerStateEnum.showForm -->
         <input type="number" id="sandtimer-hours" name="sandtimer-hours" min="0" max="24" data-bind="value: sandtimerHours">
         <span>:</span>
-        <input type="number" id="sandtimer-minutes" name="sandtimer-hours" min="0" max="59" data-bind="value: sandtimerMinutes">
+        <input type="number" id="sandtimer-minutes" name="sandtimer-minutes" min="0" max="59" data-bind="value: sandtimerMinutes">
         <span>:</span>
         <input type="number" id="sandtimer-seconds" name="sandtimer-seconds" min="1" max="59" data-bind="value: sandtimerSeconds">
         <p>
@@ -375,7 +376,7 @@
         </p>
         <!-- /ko -->
         <!-- ko if: $root.sandtimerState() === $root.sandtimerStateEnum.running || $root.sandtimerState() === $root.sandtimerStateEnum.pause -->
-        <p id="sandtimer-display-value"><span data-bind="text: $root.sandtimerDisplayValue()"></span></pid="sandtimer-display-value">
+        <p id="sandtimer-display-value"><span data-bind="text: $root.sandtimerDisplayValue()"></span></p>
         <p></p>
         <!-- /ko -->
         <!-- ko if: $root.sandtimerState() === $root.sandtimerStateEnum.showForm -->
@@ -391,7 +392,7 @@
         <button data-bind="click: function(){ $root.sandtimerContinue();};"><span class="bttn-icon-text">Weiter</span></button>
         <!-- /ko -->
         <!-- ko if: $root.sandtimerState() === $root.sandtimerStateEnum.running || $root.sandtimerState() === $root.sandtimerStateEnum.pause -->
-        <button data-bind="click: function() { $root.sandtimerCancel();}" class="bttn"><span class="bttn-icon-text">Abbrechen</span></button>
+        <button data-bind="click: function() { $root.sandtimerCancel();}" class="bttn"><span class="bttn-icon-text">Stop</span></button>
         <!-- /ko -->
     </div>
 </script>
@@ -405,4 +406,5 @@
 
 <script type="text/javascript" src="@Url.Content("~/js/lib/jquery.js")"></script>
 <script type="text/javascript" src="@Url.Content("~/js/lib/knockout.js")"></script>
+<script type="text/javascript" src="@Url.Content("~/js/lib/tinymce/tinymce.min.js")"></script>
 <script src="@Url.Content("~/js/lib/require.js")" data-main="@Url.Content("~/js/MainViewModel")"></script>

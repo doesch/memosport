@@ -23,7 +23,7 @@ define(["require", "exports", "../lib/tsLib/tsLib"], function (require, exports,
             _this.userId = null;
             _this.dateLastLearned = null;
             _this.dateLastLearnedDays = null;
-            _this.archived = null;
+            _this.archived = false;
             _this.boxStats = null;
             _super.prototype.autoConstructor.call(_this, pArgs);
             if (typeof pArgs !== 'undefined' && pArgs.hasOwnProperty("dateLastLearned") && pArgs.datedateLastLearned !== null) {

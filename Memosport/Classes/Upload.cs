@@ -22,6 +22,9 @@ namespace Memosport.Classes
             ".jpg", ".gif", ".png"
         };
 
+        /// <summary> The thumbnail suffix. </summary>
+        private const string cThumbnailSuffix = "_thumb";
+
         // only one valid audio type
         private const string cValidAudioType = ".mp3";
 
@@ -44,6 +47,9 @@ namespace Memosport.Classes
                 await pImageFile.CopyToAsync(lStream);
             }
 
+            // create thumbnail
+            CreateThumbnail(lFullPath);
+
             return lNewFilename;
         }
 
@@ -52,7 +58,7 @@ namespace Memosport.Classes
         /// <param name="pOriginalFilename"> The file. </param>
         /// <param name="pWebRootPath">      Full pathname of the web root file. </param>
         /// <returns> An asynchronous result that yields a string. </returns>
-        public static async Task<string> CopyFile(string pOriginalFilename, string pWebRootPath)
+        public static string CopyFile(string pOriginalFilename, string pWebRootPath)
         {
             // create filename
             var lNewFilename = CreateFileName(pOriginalFilename, pWebRootPath);
@@ -61,6 +67,9 @@ namespace Memosport.Classes
             var lOriginalFullPath = Path.Combine(pWebRootPath, cUploadFolder, pOriginalFilename);
 
             File.Copy(lOriginalFullPath, lTargetFullPath);
+
+            // create thumbnail
+            CreateThumbnail(lTargetFullPath);
 
             return lNewFilename;
         }
@@ -104,6 +113,13 @@ namespace Memosport.Classes
             if (File.Exists(lFullPath))
             {
                 File.Delete(lFullPath);
+            }
+
+            // when it is an image file then delete also the thumbnail
+            var lThumbnailFullPath = FullPathThumbnailBySourceFullPath(lFullPath);
+            if (File.Exists(lThumbnailFullPath))
+            {
+                File.Delete(lThumbnailFullPath);
             }
         }
 
@@ -162,6 +178,64 @@ namespace Memosport.Classes
             if (Path.GetExtension(pAudioFile.FileName).ToLowerInvariant() != cValidAudioType)
             {
                 throw new InvalidFileTypeException();
+            }
+        }
+
+        /// <summary> Initializes a new instance of the Memosport.Classes.Upload class. </summary>
+        /// <remarks> Doetsch, 20.03.20. </remarks>
+        /// <param name="pSourceFullPath"> Full pathname of the source full file. </param>
+        private static void CreateThumbnail(string pSourceFullPath)
+        {
+            // examine source path
+            var lFullPathThumbnail = FullPathThumbnailBySourceFullPath(pSourceFullPath);
+
+            new ImageThumbnail().Create(pSourceFullPath, lFullPathThumbnail);
+        }
+
+        /// <summary> Full path thumbnail by source full path. </summary>
+        /// <remarks> Doetsch, 20.03.20. </remarks>
+        /// <param name="pSourceFullPath"> Full pathname of the source full file. </param>
+        /// <returns> A string. </returns>
+        public static string FullPathThumbnailBySourceFullPath(string pSourceFullPath)
+        {
+            // convert a path C:\foobar\aksdjföalksdjfökas.jpg 
+            // into C:\foobar\aksdjföalksdjfökas_thumb.jpg
+
+            var lFileName = Path.GetFileName(pSourceFullPath);
+            var lFullPathTargetFolder = Path.GetDirectoryName(pSourceFullPath);
+            var lFileNameThumb = $"{Path.GetFileNameWithoutExtension(lFileName)}{cThumbnailSuffix}{Path.GetExtension(lFileName)}";
+            var lFullPathThumbnail = Path.Combine(lFullPathTargetFolder, lFileNameThumb);
+            return lFullPathThumbnail;
+        }
+
+        /// <summary> Creates thumbnails for all images. </summary>
+        /// <remarks> Doetsch, 20.03.20. </remarks>
+        /// <param name="pWebRootPath"> Full pathname of the web root file. </param>
+        /// ToDo: Delete this code when done.
+        public static void CreateThumbnailsForAllImages(string pWebRootPath)
+        {
+            string[] lFilePaths = Directory.GetFiles(Path.Combine(pWebRootPath, cUploadFolder));
+
+            foreach (var lFilePath in lFilePaths)
+            {                
+                //  check if it is an thumbnail itself
+                if (lFilePath.Contains(cThumbnailSuffix) == false)
+                {
+                    // check it is an image
+                    var lExtension = Path.GetExtension(lFilePath).ToLowerInvariant();
+
+                    if (cValidImageTypes.Any(x => x == lExtension))
+                    {
+                        var lTargetPath = FullPathThumbnailBySourceFullPath(lFilePath);
+
+                        // do only create if thumbnail and thumbnail not exists
+                        if (File.Exists(lTargetPath) == false)
+                        {
+                            // create thumb
+                            new ImageThumbnail().Create(lFilePath, lTargetPath);
+                        }
+                    }
+                }
             }
         }
     }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
+using Memosport.Classes;
 using Microsoft.AspNetCore.Http;
 
 namespace Memosport.Models
@@ -18,6 +19,9 @@ namespace Memosport.Models
         string QuestionImageUrl { get; set; }
 
         [NotMapped]
+        string QuestionImageThumbUrl { get; }
+
+        [NotMapped]
         IFormFile QuestionImageFile { get; set; }
 
         string QuestionAudioUrl { get; set; }
@@ -30,6 +34,9 @@ namespace Memosport.Models
         string Answer { get; set; }
 
         string AnswerImageUrl { get; set; }
+
+        [NotMapped]
+        string AnswerImageThumbUrl { get; }
 
         [NotMapped]
         IFormFile AnswerImageFile { get; set; }
