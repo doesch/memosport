@@ -43,7 +43,7 @@
                     <div id="ict-col-left">
                         <!-- ko if: $root.editMode() == false -->
                         <div id="ict-header">
-                            <div id="ict-progress-container" data-bind="click: function() { $root.showProgressButtonBubble(true); };">
+                            <div id="ict-progress-container" data-bind="click: function() { $root.showProgressButtonBubble(!$root.showProgressButtonBubble()); };">
                                 <div id="ict-progress">
                                     <span class="text" data-bind="text: ($root.i() + 1) + '&#47;' + $root.dataset().length"></span>
                                 </div>
