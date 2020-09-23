@@ -32,8 +32,15 @@ namespace Memosport
                 options.LoginPath = "/User/Login/";
             });
 
+#if Release
+
             services.AddDbContext<MemosportContext>(options =>
                 options.UseMySql(Configuration.GetConnectionString("DefaultConnection")));
+#else
+            services.AddDbContext<MemosportContext>(options =>
+                options.UseMySql(Configuration.GetConnectionString("DebugConnection")));
+            
+#endif
 
             services.AddControllersWithViews();
         }

@@ -212,8 +212,16 @@
                         <button id="ict-bttn-edit-index-card" class="bttn bttn-icon" data-bind="click: function() { $root.editForm($root.currentIndexCard());}"><span class="icon icon-edit"></span></button>
                         <button id="ict-bttn-link" class="bttn bttn-icon" data-bind="click: function() { $root.toggleShowSource();}"><span class="icon icon-link"></span></button>
                         <button class="bttn bttn-icon" data-bind="click: toggleJingle"><span class="icon icon-bridge"></span></button>
-                        <button id="ict-bttn-unknown" class="bttn ict-main-bttn" data-bind="click: function() { $root.next(0); }, disable: showQuestion" title="nicht gewusst"><span class="icon icon-thumb-down-white"></span></button>
-                        <button id="ict-bttn-known" class="bttn ict-main-bttn" data-bind="click: function() { $root.next(1); }, disable: showQuestion" title="gewusst"><span class="icon icon-thumb-up-white"></span></button>
+
+                        <div id="learn-bttn-container">
+                            <!-- ko if: $root.showQuestion() -->
+                            <button id="ict-bttn-show-answer" class="bttn" title="zeige Antwort" data-bind="click: function() { $root.showQuestion(false);}"><span class="icon icon-answer-white"></span></button>
+                            <!-- /ko -->
+                            <!-- ko if: $root.showQuestion() == false -->
+                            <button id="ict-bttn-unknown" class="bttn ict-main-bttn" data-bind="click: function() { $root.next(0); }" title="nicht gewusst"><span class="icon icon-thumb-down-white"></span></button>
+                            <button id="ict-bttn-known" class="bttn ict-main-bttn" data-bind="click: function() { $root.next(1); }" title="gewusst"><span class="icon icon-thumb-up-white"></span></button>
+                            <!-- /ko -->
+                        </div>
 
                         <div class="clearfix"></div>
                     </div>
@@ -323,27 +331,27 @@
         <!-- ko if: $root.searchResult().length > 0 -->
         <table id="ict-search-result-table">
             <thead>
-            <tr>
-                <th class="th col-1">Frage</th>
-                <th class="th col-2">Karteikasten</th>
-                <th class="th col-3">Gewusst</th>
-            </tr>
+                <tr>
+                    <th class="th col-1">Frage</th>
+                    <th class="th col-2">Karteikasten</th>
+                    <th class="th col-3">Gewusst</th>
+                </tr>
             </thead>
             <tbody class="tbody" data-bind="foreach: searchResult">
-            <tr class="tr" data-bind="click: function() { $root.searchEditIndexCardClick($data.IndexCard);}">
-                <td class="td col-1"><span data-bind="text: $data.IndexCard.question"></span></td>
-                <td class="td col-2"><span data-bind="text: $data.IndexCardBox.name"></span></td>
-                <td class="td col-3">
-                    <!-- ko if: $data.IndexCard.known < 3 -->
-                    <span></span>
-                    <!-- /ko -->
-                    <!-- ko if: $data.IndexCard.known >= 3 -->
-                    <span class="icon icon-learned"></span>
-                    <!-- /ko -->
-                    <span data-bind="text: $data.IndexCard.known"></span>
+                <tr class="tr" data-bind="click: function() { $root.searchEditIndexCardClick($data.IndexCard);}">
+                    <td class="td col-1"><span data-bind="text: $data.IndexCard.question"></span></td>
+                    <td class="td col-2"><span data-bind="text: $data.IndexCardBox.name"></span></td>
+                    <td class="td col-3">
+                        <!-- ko if: $data.IndexCard.known < 3 -->
+                        <span></span>
+                        <!-- /ko -->
+                        <!-- ko if: $data.IndexCard.known >= 3 -->
+                        <span class="icon icon-learned"></span>
+                        <!-- /ko -->
+                        <span data-bind="text: $data.IndexCard.known"></span>
 
-                </td>
-            </tr>
+                    </td>
+                </tr>
             </tbody>
         </table>
 
@@ -363,7 +371,7 @@
     <span id="latest-sources-dropdown-please-wait">Bitte warten...</span>
 </script>
 
-<script id="sandtimer-dialog-template" type="text/html">    
+<script id="sandtimer-dialog-template" type="text/html">
     <div id="sandtimer-container">
         <!-- ko if: $root.sandtimerState() === $root.sandtimerStateEnum.showForm -->
         <input type="number" id="sandtimer-hours" name="sandtimer-hours" min="0" max="24" data-bind="value: sandtimerHours">
