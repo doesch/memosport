@@ -2,5 +2,6 @@
 <Project ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <NameOfLastUsedPublishProfile>DesktopPC</NameOfLastUsedPublishProfile>
+    <ToolsVersionPromptShown>3.7</ToolsVersionPromptShown>
   </PropertyGroup>
 </Project>
