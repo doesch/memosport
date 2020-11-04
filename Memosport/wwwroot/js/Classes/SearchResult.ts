@@ -1,4 +1,4 @@
-﻿import tsLib = require("../lib/tsLib/tsLib");
+﻿import tsLib = require("../../lib/tsLib/tsLib");
 import { IndexCard } from "./IndexCard";
 import { IndexCardBox } from "./IndexCardBox";
 

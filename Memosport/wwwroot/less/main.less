@@ -240,12 +240,8 @@ td
 
 #page-container {
     max-width: @PageContainerWidth;
-    margin: 0 auto;
-    
-    #content
-    {
-        margin-top: @GlobalMargin / 3;
-    }
+    padding: 0px @GlobalMargin / 3;
+    margin: 0 auto;   
 }
 
 #login-bttn
@@ -404,16 +400,18 @@ td
     margin: 0px;
 }
 
-#navbar-container {
-    max-width: @IctMaxWidth;
-    height: @GlobalBarHeight;
-    line-height: @GlobalBarHeight - 1px;
+#navbar-container
+{
     width: 100%;
-    margin: 0px @GlobalMargin / 3;
     position: relative;
     z-index: 5;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin: @GlobalMargin 0px;
 
-    #ict-progress-menu-container {
+    #ict-progress-menu-container
+    {
         display: none; // do not break layout on init html loading
         position: absolute;
         left: 0;
@@ -423,8 +421,8 @@ td
         height: 100%;
         z-index: 1;
         text-align: center; // center inner 'progress-menu'
-
-        #ict-progress-menu {
+        #ict-progress-menu
+        {
             display: inline-block;
         }
     }
@@ -1733,7 +1731,6 @@ MajorSystem edit.ctp
 }
 
 .software-container {
-    margin: 0px @GlobalMargin / 3;
     position: relative;
     background-color: white;
 
@@ -1839,7 +1836,6 @@ MajorSystem edit.ctp
 }
 
 #ict-content {
-    max-width: @IctMaxWidth;
     position: relative;
     z-index: 3;
 }
@@ -2185,6 +2181,8 @@ textarea.ict-question-answer-text {
     text-overflow: ellipsis;
     text-align: left;
     white-space: nowrap;
+    flex: 1;
+    margin: 0px @GlobalMargin / 3;
 
     .icon-arrow-down {
         float: right;

@@ -1,6 +1,6 @@
 ﻿var GLOBAL = {};
 
-requirejs(["lib/tsLib/tsLib"], function (tsLib) {
+requirejs(["../lib/tsLib/tsLib"], function (tsLib) {
 
     // init knockout
     (function () {

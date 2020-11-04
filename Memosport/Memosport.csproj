@@ -44,6 +44,9 @@
     <Content Update="wwwroot\css\all.min.css">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Content>
+    <Content Update="wwwroot\lib\tsLib\tsLib.js">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
 

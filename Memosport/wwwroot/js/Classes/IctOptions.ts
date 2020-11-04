@@ -1,4 +1,4 @@
-﻿import tsLib = require("../lib/tsLib/tsLib");
+﻿import tsLib = require("../../lib/tsLib/tsLib");
 
 /// <summary> Order of index cards in the trainer </summary>
 /// <remarks> Doetsch, 20.12.19. </remarks>

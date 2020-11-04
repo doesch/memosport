@@ -1,4 +1,4 @@
-﻿import tsLib = require("../lib/tsLib/tsLib");
+﻿import tsLib = require("../../lib/tsLib/tsLib");
 import * as ko from "../lib/knockout.js";
 
 export class IndexCardBox extends tsLib.HelperBase

@@ -1,5 +1,5 @@
 ﻿// the MyClass.ts which uses also knockout:
-import tsLib = require("../lib/tsLib/tsLib");
+import tsLib = require("../../lib/tsLib/tsLib");
 // import * as ko from "../lib/knockout.js";
 
 /// <summary> An index card. </summary>
