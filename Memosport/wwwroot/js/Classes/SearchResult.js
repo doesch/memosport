@@ -1,6 +1,7 @@
 define(["require", "exports", "./IndexCard", "./IndexCardBox"], function (require, exports, IndexCard_1, IndexCardBox_1) {
     "use strict";
     exports.__esModule = true;
+    exports.SearchResult = void 0;
     var SearchResult = (function () {
         function SearchResult(pArgs) {
             this.IndexCard = null;

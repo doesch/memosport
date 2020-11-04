@@ -14,6 +14,7 @@ var __extends = (this && this.__extends) || (function () {
 define(["require", "exports", "../lib/tsLib/tsLib"], function (require, exports, tsLib) {
     "use strict";
     exports.__esModule = true;
+    exports.IctOptions = exports.Order = void 0;
     var Order;
     (function (Order) {
         Order[Order["Random"] = 0] = "Random";

@@ -14,6 +14,7 @@ var __extends = (this && this.__extends) || (function () {
 define(["require", "exports", "../lib/tsLib/tsLib"], function (require, exports, tsLib) {
     "use strict";
     exports.__esModule = true;
+    exports.BoxStats = exports.IndexCardBox = void 0;
     var IndexCardBox = (function (_super) {
         __extends(IndexCardBox, _super);
         function IndexCardBox(pArgs) {
