@@ -197,6 +197,7 @@ requirejs(["../lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "C
 
                 // add callbacks
                 lDialog.afterRenderCallback = function () { ko.applyBindings(GLOBAL.MainViewModel, this.mHtmlWindow); };
+                lDialog.afterCloseCallback = function () { self.ResetZoom(); }; // reset zoom when closed.
 
                 // hide loading screen
                 self.loadingScreen.close();
@@ -1793,5 +1794,14 @@ requirejs(["../lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "C
         };
 
         // EndRegion BoxStatistics
+
+        // Region Misc
+
+        self.ResetZoom = function () {
+
+            window.parent.document.body.style.zoom = 1.0;
+        };
+
+        // Endregion Misc
     }
 });
