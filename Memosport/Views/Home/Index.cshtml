@@ -196,7 +196,6 @@
                     </div>
 
                     <div id="ict-col-right">
-
                         <div id="ict-label-container">
                             <button id="ict-label-question" class="ict-label cursor-pointer" title="Frage" data-bind="click: function() { $root.showQuestion(true);}, css: {'ict-label-activated' : $root.showQuestion()}"><span class="sprite-24 question"></span></button>
                             <button id="ict-label-answer" class="ict-label cursor-pointer" title="Antwort" data-bind="click: function() { $root.showQuestion(false);}, css: {'ict-label-activated' : !$root.showQuestion()}"><span class="sprite-24 answer"></span></button>
@@ -206,25 +205,20 @@
                 <div class="clearfix"></div>
 
                 <!-- ko if: $root.editMode() == false -->
-                <nav id="main-bttn-outer-container">
-                    <div id="main-bttn-inner-container">
+                <nav id="main-bttn-container">
 
-                        <button id="ict-bttn-edit-index-card" class="bttn bttn-icon" data-bind="click: function() { $root.editForm($root.currentIndexCard());}"><span class="icon icon-edit"></span></button>
-                        <button id="ict-bttn-link" class="bttn bttn-icon" data-bind="click: function() { $root.toggleShowSource();}"><span class="icon icon-link"></span></button>
-                        <button class="bttn bttn-icon" data-bind="click: toggleJingle"><span class="icon icon-bridge"></span></button>
+                    <!-- ko if: $root.showQuestion() == false -->
+                    <button id="ict-bttn-known" class="bttn ict-main-bttn" data-bind="click: function() { $root.next(1); }" title="gewusst"><span class="icon icon-thumb-up-white"></span></button>
+                    <button id="ict-bttn-unknown" class="bttn ict-main-bttn" data-bind="click: function() { $root.next(0); }" title="nicht gewusst"><span class="icon icon-thumb-down-white"></span></button>
 
-                        <div id="learn-bttn-container">
-                            <!-- ko if: $root.showQuestion() -->
-                            <button id="ict-bttn-show-answer" class="bttn" title="zeige Antwort" data-bind="click: function() { $root.showQuestion(false);}"><span class="icon icon-answer-white"></span></button>
-                            <!-- /ko -->
-                            <!-- ko if: $root.showQuestion() == false -->
-                            <button id="ict-bttn-unknown" class="bttn ict-main-bttn" data-bind="click: function() { $root.next(0); }" title="nicht gewusst"><span class="icon icon-thumb-down-white"></span></button>
-                            <button id="ict-bttn-known" class="bttn ict-main-bttn" data-bind="click: function() { $root.next(1); }" title="gewusst"><span class="icon icon-thumb-up-white"></span></button>
-                            <!-- /ko -->
-                        </div>
+                    <!-- /ko -->
+                    <!-- ko if: $root.showQuestion() -->
+                    <button id="ict-bttn-show-answer" class="bttn" title="zeige Antwort" data-bind="click: function() { $root.showQuestion(false);}"><span class="icon icon-answer-white"></span></button>
+                    <!-- /ko -->
 
-                        <div class="clearfix"></div>
-                    </div>
+                    <button class="bttn bttn-icon" data-bind="click: toggleJingle"><span class="icon icon-bridge"></span></button>
+                    <button id="ict-bttn-link" class="bttn bttn-icon" data-bind="click: function() { $root.toggleShowSource();}"><span class="icon icon-link"></span></button>
+                    <button id="ict-bttn-edit-index-card" class="bttn bttn-icon" data-bind="click: function() { $root.editForm($root.currentIndexCard());}"><span class="icon icon-edit"></span></button>
                 </nav>
                 <!-- /ko -->
                 <!-- /ko -->
