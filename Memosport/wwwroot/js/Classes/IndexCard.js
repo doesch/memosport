@@ -36,6 +36,7 @@ define(["require", "exports", "../../lib/tsLib/tsLib"], function (require, expor
             _this.answerAudioFile = ko.observable(null);
             _this.source = null;
             _this.known = null;
+            _this.modified = null;
             _this.deleteQuestionImage = false;
             _this.deleteAnswerImage = false;
             _this.deleteQuestionAudio = false;

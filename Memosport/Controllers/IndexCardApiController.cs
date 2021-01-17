@@ -288,6 +288,15 @@ namespace Memosport.Controllers
                 return Forbid();
             }
 
+            // check inconsistency by change date. Change-Date in PUT-Request should match the change date in the database
+            // currently not working because PUT converts datetime in payload to Local time
+            //var lIndexCardInDB = _context.IndexCards.SingleOrDefault(x => x.Id == id);
+
+            //if (lIndexCardInDB == null || lIndexCardInDB.Modified != indexcard.Modified)
+            //{
+            //    return Conflict(); // returns an 409 conflic because of inconsistency
+            //}
+
             // save uploaded files
             lIndexCard = await HandleUploadedFiles(lIndexCard);
 

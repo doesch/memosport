@@ -1,4 +1,5 @@
 ﻿// the MyClass.ts which uses also knockout:
+import { DateTime } from "../../../obj/Release/netcoreapp3.1/win-x64/PubTmp/Out/wwwroot/lib/tsLib/tsLib";
 import tsLib = require("../../lib/tsLib/tsLib");
 // import * as ko from "../lib/knockout.js";
 
@@ -23,6 +24,7 @@ export class IndexCard extends tsLib.HelperBase
     answerAudioFile: KnockoutObservable<any> = ko.observable(null);
     source: string = null;
     known: number = null;
+    modified: DateTime = null;
 
     // marker to delete images or audio
     deleteQuestionImage: boolean = false;

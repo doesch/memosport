@@ -513,11 +513,15 @@ requirejs(["../lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "C
             return lTmpArr;
         };
 
+        // Check if response code of jquery xhr is 409 (conflict)
+        self.CheckIfResponseIs409 = function (xhr) {
+            return typeof xhr !== "undefined" && xhr.hasOwnProperty("status") && xhr.status === 409;
+        }
+
         /*
          * 
          * Next button clicked
          */
-
         self.next = function (pKnown) {
 
             // set known / not known
@@ -541,9 +545,28 @@ requirejs(["../lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "C
                 dataType: 'json',
                 success: function (data) {
 
+                    var lTmpIndexCard = new indexCard.IndexCard(data);
+
+                    // update modified date to keep consistency
+                    for (var i = 0; i < self.dataset().length; i++)
+                    {
+                        if (self.dataset()[i].id === lTmpIndexCard.id)
+                        {
+                            self.dataset()[i].modified = lTmpIndexCard.modified;
+                            console.log("updated modified date");
+                            break;
+                        }
+                    }
                 },
-                error: function () {
-                    new tsLib.MessageBox("Das Setzen von 'gewusst' hat für diese Karteikarte leider nicht funktioniert. Bitte versuchen Sie es später erneut.").show();
+                error: function (xhr) {
+                    // check for 409 inconsistency which could occur while PUT and the indexcard has a different version
+                    if (self.CheckIfResponseIs409(xhr)) {
+                        self.showInconsistencyDialog();
+                    }
+                    else {
+                        // any other problem
+                        new tsLib.MessageBox("Das Setzen von 'gewusst' hat für diese Karteikarte leider nicht funktioniert. Bitte versuchen Sie es später erneut.").show();
+                    }
                 }
             });
 
@@ -754,8 +777,16 @@ requirejs(["../lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "C
                     // set new position in progress
                     self.setProgress();
                 },
-                error: function () {
-                    new tsLib.MessageBox("Der Post konnte nicht gespeichert werden. Bitte versuchen Sie es später erneut.").show();
+                error: function (xhr) {
+                    // check for 409 inconsistency which could occur while PUT and the indexcard has a different version
+                    if (self.CheckIfResponseIs409(xhr)) {
+                        self.showInconsistencyDialog();
+                    }
+                    else
+                    {
+                        // any other problem
+                        new tsLib.MessageBox("Der Post konnte nicht gespeichert werden. Bitte versuchen Sie es später erneut.").show();
+                    }
                 },
                 complete: function () {
 
@@ -764,6 +795,12 @@ requirejs(["../lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "C
                 }
             });
         };
+
+        /// Show dialog when inconsistency and provide button to reload indexcard boxes from server
+        self.showInconsistencyDialog = function() {
+            let lBttnOk = new tsLib.Button("Karteikasten neu laden", () => { self.restart(); });
+            new tsLib.MessageBox("Für diese Karteikarte existiert eine neuere Version auf dem Server. Bitte laden Sie den Karteikasten neu um inkonsistenzen zu vermeiden.", "Versionskonflikt", [lBttnOk]).show();
+        }
 
         /// convert an indexcard to an FormData-payload
         self.indexCardToFormData = function (pIndexCard) {
