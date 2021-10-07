@@ -390,6 +390,15 @@ namespace Memosport.Controllers
             return Json(lResult);
         }
 
+        /// <summary> (An Action that handles HTTP GET requests) gets latest sources. </summary>
+        /// <remarks> Doetsch, 03.01.20. </remarks>
+        /// <returns> An asynchronous result that yields the latest sources. </returns>
+        [HttpGet("Translate")]
+        public async Task<IActionResult> Translate(Language pCurrentLang, Language pTargetLang, string pText)
+        {
+            return Json(await Deepl.Translate(pCurrentLang, pTargetLang, pText));
+        }
+
         /// <summary> Authenticated User is owner of index card. </summary>
         /// <remarks> Doetsch, 18.12.19. </remarks>
         /// <param name="pIndexCard"> The index card. </param>

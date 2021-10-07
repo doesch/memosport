@@ -1454,6 +1454,31 @@ requirejs(["../lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "C
             document.querySelector("#index-card-box-form-container input[name='name']").focus();
         };
 
+        // user wants to translate EN/DE
+        self.TranslateClick = function (pCurrentLang, pTargetLang) {
+
+            // strip html from question
+            let lText = tinymce.get("ict-question-textarea").getBody().textContent;
+
+            $.ajax({
+                url: "/IndexCardApi/Translate?pCurrentLang = " + pCurrentLang + "&pTargetLang=" + pTargetLang + "&pText=" + lText,
+                type: "GET",
+                dataType: "json",
+                beforeSend: function () {
+                    self.loadingScreen.show();
+                },
+                complete: function () {
+                    self.loadingScreen.close();
+                },
+                success: function (xhr) {
+
+                    // pass the translated answer into the textfield   
+                    tinymce.get("ict-answer-textarea").setContent(xhr);
+                    self.editIndexCard().answer = tinymce.get("ict-answer-textarea").getContent();
+                }
+            });
+        };
+
         /// click on menu button
         self.menuBttnClick = function () {
 

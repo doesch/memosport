@@ -189,6 +189,14 @@
 
                                     <div class="clearfix"></div>
                                 </div>
+
+                                <!-- ko if: $root.box().id == 18 -->
+                                <div class="ict-translate-buttons-container">
+                                    <button class="bttn" data-bind="click: function() { $root.TranslateClick('en', 'de'); }">EN → DE</button>
+                                    <button class="bttn" data-bind="click: function() { $root.TranslateClick('de', 'en'); }">DE → EN</button>
+                                </div>
+                                <!-- /ko -->
+
                                 <div class="clearfix"></div>
                                 <!-- /ko -->
                             </div>

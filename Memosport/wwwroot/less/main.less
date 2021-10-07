@@ -2110,18 +2110,21 @@ textarea.ict-question-answer-text {
     }
 }
 
-.question-answer-container {
+.question-answer-container
+{
     min-height: @IctContainerHeight;
     position: relative;
     z-index: 0;
 
-    textarea {
+    textarea
+    {
         line-height: @GlobalLineHeightQuestionAnswer;
         font-size: @GlobalFontSize + 1;
     }
 
     .ict-question-container,
-    .ict-result-container {
+    .ict-result-container
+    {
         display: none; // show nothing inititally. Visibility will be handled by an observable.
         line-height: @GlobalLineHeightQuestionAnswer;
         text-align: left;
@@ -2129,24 +2132,28 @@ textarea.ict-question-answer-text {
         min-height: @IctContainerHeight;
         text-align: left;
 
-        .ict-text-container {
+        .ict-text-container
+        {
             padding: @GlobalMargin;
             min-height: @GlobalButtonHeight;
 
-            &:hover {
+            &:hover
+            {
                 /*border: solid 1px @GlobalBorderColor !important;
                 border-collapse: collapse;*/
                 cursor: pointer;
             }
 
-            & > span > p {
+            & > span > p
+            {
                 padding: 0px;
             }
         }
     }
 
     .ict-question-container .question,
-    .ict-result-container .result {
+    .ict-result-container .result
+    {
         display: inline;
         font-size: @GlobalFontSize + 1;
         line-height: 14px;
@@ -2154,12 +2161,14 @@ textarea.ict-question-answer-text {
     }
 
     .ict-edit-img-container,
-    .ict-edit-audio-container {
+    .ict-edit-audio-container
+    {
         margin: @GlobalMargin 0 @GlobalMargin @GlobalMargin;
         float: left;
 
         .ict-img-box,
-        .ict-audio-box {
+        .ict-audio-box
+        {
             display: block;
             float: left;
             width: 100px;
@@ -2171,15 +2180,18 @@ textarea.ict-question-answer-text {
             overflow: hidden;
             background-color: white;
 
-            &:hover {
+            &:hover
+            {
                 cursor: pointer;
             }
 
-            img {
+            img
+            {
                 width: 100%;
             }
 
-            &:focus {
+            &:focus
+            {
                 border-color: @ColorFocus;
             }
         }
@@ -2187,13 +2199,21 @@ textarea.ict-question-answer-text {
         #ict-question-img,
         #ict-answer-img,
         #ict-question-audio,
-        #ict-answer-audio {
+        #ict-answer-audio
+        {
             float: left;
         }
 
-        .ict-bttn-delete-img {
+        .ict-bttn-delete-img
+        {
             float: left;
         }
+    }
+
+    .ict-translate-buttons-container
+    {
+        margin: @GlobalMargin 0 @GlobalMargin @GlobalMargin;
+        float: left;
     }
 }
 
