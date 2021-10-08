@@ -9,14 +9,6 @@ using System.Text.Json.Serialization;
 
 namespace Memosport.Classes
 {
-    /// <summary> Values that represent languages. </summary>
-    /// <remarks> Doetsch, 07.10.2021. </remarks>
-    public enum Language
-    {
-        de,
-        en
-    }
-
     /// <summary> A deepl translator </summary>
     /// <remarks> Doetsch, 07.10.2021. </remarks>
     public static class Deepl
@@ -25,7 +17,7 @@ namespace Memosport.Classes
         /// Source: https://www.deepl.com/de/pro-account/summary
         private const string ApiKey = "4f100c06-41e9-631a-f17f-8fec384a6774:fx";
 
-        public async static Task<string> Translate(Language pCurrentLang, Language pTargetLang, string pText)
+        public async static Task<string> Translate(string pCurrentLang, string pTargetLang, string pText)
         {
             string lTranslatedString = string.Empty;
 

@@ -394,7 +394,7 @@ namespace Memosport.Controllers
         /// <remarks> Doetsch, 03.01.20. </remarks>
         /// <returns> An asynchronous result that yields the latest sources. </returns>
         [HttpGet("Translate")]
-        public async Task<IActionResult> Translate(Language pCurrentLang, Language pTargetLang, string pText)
+        public async Task<IActionResult> Translate(string pCurrentLang, string pTargetLang, string pText)
         {
             return Json(await Deepl.Translate(pCurrentLang, pTargetLang, pText));
         }

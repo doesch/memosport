@@ -5,5 +5,6 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <_PublishTargetUrl>C:\Users\doetsch\Desktop\Memosport</_PublishTargetUrl>
+    <History>True|2021-10-07T13:01:34.9081986Z;</History>
   </PropertyGroup>
 </Project>

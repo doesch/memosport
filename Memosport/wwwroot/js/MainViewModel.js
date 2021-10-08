@@ -98,7 +98,7 @@ requirejs(["../lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "C
         // an loading screen for the entire viewport
         self.loadingScreen = new tsLib.Sandtimer();
 
-        // Show Options diaclog
+        // Show Options dialog
         self.showOptionsDialog = function () {
 
             // ToDo -oDoetsch: close main menu if open
@@ -1461,7 +1461,7 @@ requirejs(["../lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "C
             let lText = tinymce.get("ict-question-textarea").getBody().textContent;
 
             $.ajax({
-                url: "/IndexCardApi/Translate?pCurrentLang = " + pCurrentLang + "&pTargetLang=" + pTargetLang + "&pText=" + lText,
+                url: "/IndexCardApi/Translate?pCurrentLang=" + pCurrentLang + "&pTargetLang=" + pTargetLang + "&pText=" + lText,
                 type: "GET",
                 dataType: "json",
                 beforeSend: function () {

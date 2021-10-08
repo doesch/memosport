@@ -18,7 +18,7 @@ namespace MemosportTest
             var lExpectedTranslation = "Hello World!";
 
             // Act
-            var lTranslation = await Deepl.Translate(Language.de, Language.en, lTextDe);
+            var lTranslation = await Deepl.Translate("de", "en", lTextDe);
 
             // Assert
             Assert.AreEqual(lExpectedTranslation, lTranslation);
