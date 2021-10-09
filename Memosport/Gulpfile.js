@@ -1,4 +1,5 @@
-﻿let gulp = require('gulp');
+﻿const appVersion = "1.0.0"; // app version required for cache buster
+let gulp = require('gulp');
 let less = require('gulp-less');
 let cleanCSS = require('gulp-clean-css');
 let concat = require('gulp-concat');
@@ -11,7 +12,11 @@ gulp.task("CssWatcher", gulp.series(function () {
     // define scope here:
     let lLessFolder = "wwwroot/less";
     let lCssFolder = "wwwroot/css";
-    let lTargetFilename = "all.min.css";
+    let lTargetFilename = "all-" + getAppVersion() + ".min.css";
+
+    // Copy css-file to debug folder to style css during debug-mode.
+    // let lCssFolderDebugBlazor = "bin/Debug/net5.0/wwwroot/css";
+    // let lCssFolderDebugAspNetMvc = "bin/Debug/net5.0/wwwroot/css";
 
     // run Task
     gulp.task("CompileLessAndClean", gulp.series(
@@ -22,6 +27,7 @@ gulp.task("CssWatcher", gulp.series(function () {
                 .pipe(cleanCSS()) // minify css files
                 .pipe(concat(lTargetFilename)) // concatenate all files
                 .pipe(gulp.dest(lCssFolder)
+                // .pipe(gulp.dest(lCssFolderDebugAspNetMvc)) // copy to debug folder
                 );
 
         }));
@@ -32,6 +38,17 @@ gulp.task("CssWatcher", gulp.series(function () {
 
 // start watcher
 gulp.task("default", gulp.parallel("CssWatcher"));
+
+// -------------------------------------------------
+// Helper functions --------------------------------
+// -------------------------------------------------
+
+//
+// provide version number of the app for cache buster
+// 
+function getAppVersion() {
+    return appVersion;
+}
 
 //
 // global Error handler for tasks
