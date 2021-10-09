@@ -8,6 +8,13 @@ export enum Order {
     Oldest = 2
 }
 
+/// <summary> Values that represent quantity modes. </summary>
+/// <remarks> Doetsch, 09.10.2021. </remarks>
+export enum QuantityMode {
+    Custom = 0,
+    All = 1
+}
+
 // Options for the index card trainer
 export class IctOptions extends tsLib.HelperBase {
     
@@ -15,7 +22,13 @@ export class IctOptions extends tsLib.HelperBase {
     known: Boolean = false;
 
     // the order of the index cards in the trainer 
-    order: Order = Order.Random;
+    order: Order = Order.Oldest;
+
+    // the quantity mode
+    quantityMode: QuantityMode = QuantityMode.Custom;
+
+    // the quantity of index cards, when users has selected the QuantityMode.Custom
+    quantity: Number = 10; 
 
     public constructor(pArgs: any) {
         super();

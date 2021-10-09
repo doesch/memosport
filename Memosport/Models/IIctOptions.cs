@@ -14,6 +14,14 @@ namespace Memosport.Models
         Oldest = 2
     }
 
+    /// <summary> Number of cards per learning-block. </summary>
+    /// <remarks> Doetsch, 09.10.2021. </remarks>
+    public enum QuantityMode
+    { 
+        Custom = 0,
+        All = 1
+    }
+
     /// <summary> Options for the index card trainer </summary>
     /// <remarks> Doetsch, 20.12.19. </remarks>
     interface IIctOptions
@@ -23,5 +31,13 @@ namespace Memosport.Models
 
         // the order of the index cards in the trainer 
         Order Order { get; set; }
+
+        /// <summary> Gets or sets the quantity mode. </summary>
+        /// <value> The quantity mode. </value>
+        QuantityMode QuantityMode { get; set; }
+
+        /// <summary> Number of cards per learning-block. </summary>
+        /// <value> The quantity. </value>
+        int Quantity { get; set; }
     }
 }

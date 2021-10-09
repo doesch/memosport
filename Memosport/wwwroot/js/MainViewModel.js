@@ -149,6 +149,15 @@ requirejs(["../lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "C
             return true;
         };
 
+        // click on the radio box for the quantity of cards
+        self.ictOptionQuantityChanged = function (pQuantityMode) {
+
+            self.ictOptions().quantityMode = pQuantityMode;
+            self.ictOptions(self.ictOptions()); // trigger re-render
+
+            return true;
+        };
+
         self.toggleJingle = function () {
             let lTemplate = document.getElementById("ict-dialog-jingle-template");
             let lDialog = new tsLib.Dialog(lTemplate, "Eselsbrücke");
@@ -498,7 +507,7 @@ requirejs(["../lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "C
             });
         };
 
-        /// <summary> Random array. </summary>
+        /// <summary> Rort array random. </summary>
         /// <remarks> Doetsch, 17.12.19. </remarks>
         /// <param name="pArr"> The array. </param>
         /// <returns> . </returns>

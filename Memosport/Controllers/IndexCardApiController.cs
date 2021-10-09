@@ -99,6 +99,13 @@ namespace Memosport.Controllers
             {
                 lQuery = lQuery.OrderBy(x => x.Created);
             }
+
+            // number of files per learning block
+            // 0 = custom, 1 = all
+            if (ictOptions.QuantityMode == QuantityMode.Custom)
+            {
+                lQuery = lQuery.Take(ictOptions.Quantity);
+            }
             
             // execute sql
             var lResult = await lQuery.ToListAsync();

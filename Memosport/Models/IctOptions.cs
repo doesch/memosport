@@ -15,6 +15,14 @@ namespace Memosport.Models
 
         /// <summary> Gets or sets the order of the index cards in the trainer </summary>
         /// <value> The order. </value>
-        public Order Order { get; set; } = Order.Random; // default is randowm
+        public Order Order { get; set; } = Order.Oldest;
+
+        /// <summary> Gets or sets the quantity mode. </summary>
+        /// <value> The quantity mode. </value>
+        public QuantityMode QuantityMode { get; set; } = QuantityMode.Custom;
+
+        /// <summary> Number of cards per learning-block. </summary>
+        /// <value> The quantity. </value>
+        public int Quantity { get; set; } = 10;
     }
 }

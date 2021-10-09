@@ -16,19 +16,26 @@ var __extends = (this && this.__extends) || (function () {
 define(["require", "exports", "../../lib/tsLib/tsLib"], function (require, exports, tsLib) {
     "use strict";
     exports.__esModule = true;
-    exports.IctOptions = exports.Order = void 0;
+    exports.IctOptions = exports.QuantityMode = exports.Order = void 0;
     var Order;
     (function (Order) {
         Order[Order["Random"] = 0] = "Random";
         Order[Order["Newest"] = 1] = "Newest";
         Order[Order["Oldest"] = 2] = "Oldest";
     })(Order = exports.Order || (exports.Order = {}));
+    var QuantityMode;
+    (function (QuantityMode) {
+        QuantityMode[QuantityMode["Custom"] = 0] = "Custom";
+        QuantityMode[QuantityMode["All"] = 1] = "All";
+    })(QuantityMode = exports.QuantityMode || (exports.QuantityMode = {}));
     var IctOptions = (function (_super) {
         __extends(IctOptions, _super);
         function IctOptions(pArgs) {
             var _this = _super.call(this) || this;
             _this.known = false;
-            _this.order = Order.Random;
+            _this.order = Order.Oldest;
+            _this.quantityMode = QuantityMode.Custom;
+            _this.quantity = 10;
             _super.prototype.autoConstructor.call(_this, pArgs);
             return _this;
         }
