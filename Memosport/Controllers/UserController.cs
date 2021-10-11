@@ -65,12 +65,17 @@ namespace Memosport.Controllers
                 new Claim(ClaimTypes.Role, lUser.Role.ToString()),
             };
 
-            var lClaimsIdentity = new ClaimsIdentity(lClaims, CookieAuthenticationDefaults.AuthenticationScheme);
-            
+            var lClaimsIdentity = new ClaimsIdentity(lClaims, CookieAuthenticationDefaults.AuthenticationScheme); // auth cookie
+            var lExpireDate = DateTime.UtcNow.AddDays(Constants.AuthExpireInDays); // date when the login expires
+
             await HttpContext.SignInAsync(
                 CookieAuthenticationDefaults.AuthenticationScheme,
                 new ClaimsPrincipal(lClaimsIdentity),
-                new AuthenticationProperties() { IsPersistent = remindUser });
+                new AuthenticationProperties() { 
+                    IsPersistent = remindUser,
+                    AllowRefresh = true, // Gets or sets if refreshing the authentication session should be allowed.
+                    ExpiresUtc = new DateTimeOffset(lExpireDate) // Expire date of login
+                });
 
             return RedirectToAction("Index", "Home");
         }
