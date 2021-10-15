@@ -24,5 +24,9 @@ namespace Memosport.Models
         /// <summary> Number of cards per learning-block. </summary>
         /// <value> The quantity. </value>
         public int Quantity { get; set; } = 10;
+
+        /// <summary> Gets a value indicating whether the merge learning set. </summary>
+        /// <value> True if merge learning set, false if not. </value>
+        public bool MergeLearningSet { get; set; } = true;
     }
 }

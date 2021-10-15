@@ -9,9 +9,8 @@ namespace Memosport.Models
     /// <remarks> Doetsch, 20.12.19. </remarks>
     public enum Order
     {
-        Random = 0,
-        Newest = 1,
-        Oldest = 2
+        Oldest = 0,
+        Newest = 1
     }
 
     /// <summary> Number of cards per learning-block. </summary>

@@ -473,8 +473,7 @@ requirejs(["../lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "C
                         }
 
                         // order 'random' if set (default)
-                        if (self.ictOptions().order === 0) {
-                            
+                        if (self.ictOptions().mergeLearningSet) {
                             lTmpArr = self.randomArr(lTmpArr);
                         }
 

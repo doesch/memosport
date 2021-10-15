@@ -19,9 +19,8 @@ define(["require", "exports", "../../lib/tsLib/tsLib"], function (require, expor
     exports.IctOptions = exports.QuantityMode = exports.Order = void 0;
     var Order;
     (function (Order) {
-        Order[Order["Random"] = 0] = "Random";
+        Order[Order["Oldest"] = 0] = "Oldest";
         Order[Order["Newest"] = 1] = "Newest";
-        Order[Order["Oldest"] = 2] = "Oldest";
     })(Order = exports.Order || (exports.Order = {}));
     var QuantityMode;
     (function (QuantityMode) {
@@ -36,6 +35,7 @@ define(["require", "exports", "../../lib/tsLib/tsLib"], function (require, expor
             _this.order = Order.Oldest;
             _this.quantityMode = QuantityMode.Custom;
             _this.quantity = 10;
+            _this.mergeLearningSet = true;
             _super.prototype.autoConstructor.call(_this, pArgs);
             return _this;
         }

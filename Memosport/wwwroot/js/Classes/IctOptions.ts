@@ -3,9 +3,8 @@
 /// <summary> Order of index cards in the trainer </summary>
 /// <remarks> Doetsch, 20.12.19. </remarks>
 export enum Order {
-    Random = 0,
-    Newest = 1,
-    Oldest = 2
+    Oldest = 0,
+    Newest = 1
 }
 
 /// <summary> Values that represent quantity modes. </summary>
@@ -28,7 +27,10 @@ export class IctOptions extends tsLib.HelperBase {
     quantityMode: QuantityMode = QuantityMode.Custom;
 
     // the quantity of index cards, when users has selected the QuantityMode.Custom
-    quantity: Number = 10; 
+    quantity: Number = 10;
+
+    // if the leraning set should be merged random
+    mergeLearningSet: Boolean = true;
 
     public constructor(pArgs: any) {
         super();

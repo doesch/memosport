@@ -278,14 +278,11 @@
         <ul>
             <li class="col-1">Reihenfolge:</li>
             <li>
-                <input id="IndexCardTrainerOrderAscending" type="radio" data-bind="value: 2, checked: $root.ictOptions().order">
-                <label for="IndexCardTrainerOrderAscending" data-bind="css : {radioChecked : $root.ictOptions().order === 2}, click: function(){ $root.ictOptionOrderChanged(2); }">Älteste</label>
+                <input id="IndexCardTrainerOrderAscending" type="radio" data-bind="value: 0, checked: $root.ictOptions().order">
+                <label for="IndexCardTrainerOrderAscending" data-bind="css : {radioChecked : $root.ictOptions().order === 0}, click: function(){ $root.ictOptionOrderChanged(0); }">Älteste</label>
                 <br>
                 <input id="IndexCardTrainerOrderDescending" type="radio" data-bind="value: 1, checked: $root.ictOptions().order">
                 <label for="IndexCardTrainerOrderDescending" data-bind="css : {radioChecked : $root.ictOptions().order === 1}, click: function(){ $root.ictOptionOrderChanged(1); }">Neuste</label>
-                <br>
-                <input id="IndexCardTrainerOrderRandom" type="radio" data-bind="value: 0, checked: $root.ictOptions().order">
-                <label for="IndexCardTrainerOrderRandom" data-bind="css : {radioChecked : $root.ictOptions().order === 0}, click: function(){ $root.ictOptionOrderChanged(0); }">Zufall</label>
             </li>
         </ul>
         <div class="clearfix"></div>
@@ -294,7 +291,7 @@
             <li>
                 <input id="IndexCardTrainerCustomQuantityMode" type="radio" data-bind="value: 0, checked: $root.ictOptions().quantityMode">
                 <label for="IndexCardTrainerCustomQuantityMode" data-bind="css : {radioChecked : $root.ictOptions().quantityMode === 0}, click: function(){ $root.ictOptionQuantityChanged(0); }">
-                    <input type="number" min="1" data-bind="value: $root.ictOptions().quantity"/>
+                    <input type="number" min="1" data-bind="value: $root.ictOptions().quantity" />
                 </label>
                 <br>
                 <input id="IndexCardTrainerAllQuantityMode" type="radio" data-bind="value: 1, checked: $root.ictOptions().quantityMode">
@@ -304,7 +301,19 @@
         <div class="clearfix"></div>
         <ul>
             <li class="col-1">
-                <label for="IndexCardTrainerKnown">Zeige gelernte Karteikarten an (3 grüne Daumen).</label>
+                <label for="IndexCardTrainerKnown">Lernsatz mischen</label>
+            </li>
+            <li>
+                <div class="input checkbox">
+                    <input id="IndexCardTrainerMergeLearningSet" type="checkbox" data-bind="checked: $root.ictOptions().mergeLearningSet, css : {checkboxChecked : $root.ictOptions().mergeLearningSet}" />
+                    <label for="IndexCardTrainerMergeLearningSet"></label>
+                </div>
+            </li>
+        </ul>
+        <div class="clearfix"></div>
+        <ul>
+            <li class="col-1">
+                <label for="IndexCardTrainerKnown">Zeige gelernte Karteikarten an (3 grüne Daumen)</label>
             </li>
             <li>
                 <div class="input checkbox">
