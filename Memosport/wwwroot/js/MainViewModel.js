@@ -444,6 +444,10 @@ requirejs(["../lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "C
 
         self.loadData = function () {
 
+            // clear dataset
+            self.dataset([]);
+            self.currentIndexCard(new indexCard.IndexCard());
+
             // get options
             let lPayload = JSON.parse(localStorage.getItem('ictOptions'));
 
@@ -618,7 +622,7 @@ requirejs(["../lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "C
          */
         self.setProgress = function () {
 
-            if (self.i() < 0) {
+            if (self.i() < 0 || self.dataset().length === 0) {
                 return;
             }
 
@@ -643,7 +647,11 @@ requirejs(["../lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "C
          */
         self.NewIndexCard = function () {
 
-            self.editForm(new indexCard.IndexCard(), true);
+            let lIndexCard = new indexCard.IndexCard();
+            // Assign selected box id
+            lIndexCard.indexCardBoxId = self.box().id;
+            // edit the new index card
+            self.editForm(lIndexCard);
         };
 
         /// user clicked on a text box to edit the index card
@@ -732,9 +740,6 @@ requirejs(["../lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "C
             if (lIndexCard.id === null) {
                 // remove id when not set (new)
                 delete lIndexCard.id;
-
-                // when id is null then it is a new index card. Assign selected box id
-                lIndexCard.indexCardBoxId = self.box().id;
             }
             
             // convert indexcard to payload
@@ -759,31 +764,22 @@ requirejs(["../lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "C
 
                     var lXhrIndexCard = new indexCard.IndexCard(xhr);
 
-                    // replace (when update) or insert (when new) the response
+                    // replace, when update.
                     let i = 0;
                     let len = self.dataset().length;
                     for (; i < len; i++) {
                         if (self.dataset()[i].id === lXhrIndexCard.id) {
                             self.dataset()[i] = lXhrIndexCard;
+                            // updated view (show index card) (show also when it is a different selected box for verification)
+                            self.currentIndexCard(lXhrIndexCard);
                             break;
                         }
                     }
 
-                    // when it is a new index card and the same box, then push it into the stack to the current next position
-                    if (i === len && self.box().id === lXhrIndexCard.indexCardBoxId) {
-                        // it´s new
-                        let lPosition = self.i() + 1;
-                        self.dataset().splice(lPosition, 0, lXhrIndexCard);
-                        self.i(lPosition);
-                    }
-
-                    // updated view (show index card) (show also when it is a different selected box for verification)
-                    self.currentIndexCard(lXhrIndexCard);
-
                     self.editMode(false);
                     self.editIndexCard(null);
 
-                    // set new position in progress
+                    // draw progress
                     self.setProgress();
                 },
                 error: function (xhr) {
@@ -1031,17 +1027,8 @@ requirejs(["../lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "C
                         // show message to the user
                         new tsLib.MessageBox("Es wurde erfolgreich eine Kopie erstellt. Sie können die Kopie jetzt bearbeiten.").show();
 
-                        // add copy to current dataset
-                        var lPosition = self.i() + 1;
-                        self.dataset().splice(lPosition, 0, lIndexCard);
-
-
                         // updated view (show index card) (show also when it is a different selected box for verification)
                         self.currentIndexCard(lIndexCard);
-
-                        // set new position in progress
-                        self.i(lPosition);
-                        self.setProgress();
 
                         // show in edit more
                         self.showQuestion(true);
