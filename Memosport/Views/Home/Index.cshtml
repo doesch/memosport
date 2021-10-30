@@ -30,18 +30,18 @@
 
             <section id="ict-content">
 
-                <!-- ko if: $root.step() == 'restart' -->
+                <!-- ko if: $root.currentMode() === 'restart' -->
                 <div id="mvmt-no-data-container" style="text-align: center;">
                     <p>Herzlichen Glückwunsch. <br /> Sie haben alle Karteikarten durchgearbeitet.</p>
                     <button class="bttn" data-bind="click: restart"><span class="icon icon-restart"></span><span class="bttn-icon-text">Neustart</span></button>
                 </div>
                 <!-- /ko -->
-                <!-- ko if: $root.step() == 'learn' -->
+                <!-- ko if: $root.currentMode() !== 'restart' -->
 
                 <div id="ict-col-container">
 
                     <div id="ict-col-left">
-                        <!-- ko if: $root.editMode() == false -->
+                        <!-- ko if: $root.currentMode() !== 'edit' -->
                         <div id="ict-header">
                             <div id="ict-progress-container" data-bind="click: function() { $root.showProgressButtonBubble(!$root.showProgressButtonBubble()); };">
                                 <div id="ict-progress">
@@ -56,7 +56,7 @@
                         <div class="question-answer-container">
                             <div class="ict-question-container" data-bind="css: {'z-index-1 display-block' : $root.showQuestion()}">
 
-                                <!-- ko if: $root.editMode() == false -->
+                                <!-- ko if: $root.currentMode() !== 'edit' -->
                                 <div class="ict-text-container" title="Bearbeiten" data-bind="click: function() { $root.editForm($root.currentIndexCard());}">
                                     <span class="question" data-bind="html: $root.currentIndexCard().question"></span>
                                 </div>
@@ -73,7 +73,7 @@
                                 </div>
 
                                 <!-- /ko -->
-                                <!-- ko if: $root.editMode() == true -->
+                                <!-- ko if: $root.currentMode() === 'edit' -->
                                 <textarea id="ict-question-textarea" class="ict-question-answer-text tinymce" rows="50" maxlength="2000" data-bind="textInput: editIndexCard().question" placeholder="Bitte geben Sie hier eine Frage ein."></textarea>
                                 <div class="ict-edit-img-container">
                                     <!-- ko if: editIndexCard().questionImageThumbUrl == null -->
@@ -126,7 +126,7 @@
 
                             <div class="ict-result-container" data-bind="css: {'z-index-1 display-block' : !$root.showQuestion()}">
 
-                                <!-- ko if: $root.editMode() == false -->
+                                <!-- ko if: $root.currentMode() !== 'edit' -->
                                 <div class="ict-text-container" title="Bearbeiten" data-bind="click: function() { $root.editForm($root.currentIndexCard());}">
                                     <span class="result" data-bind="html: $root.currentIndexCard().answer"></span>
                                 </div>
@@ -142,7 +142,7 @@
                                     <!-- /ko -->
                                 </div>
                                 <!-- /ko -->
-                                <!-- ko if: $root.editMode() == true -->
+                                <!-- ko if: $root.currentMode() === 'edit' -->
                                 <textarea id="ict-answer-textarea" class="ict-question-answer-text tinymce" rows="50" maxlength="2000" data-bind="textInput: editIndexCard().answer" placeholder="Bitte geben Sie hier eine Antwort ein."></textarea>
                                 <div class="ict-edit-img-container">
                                     <!-- ko if: editIndexCard().answerImageThumbUrl == null -->
@@ -212,7 +212,7 @@
                 </div>
                 <div class="clearfix"></div>
 
-                <!-- ko if: $root.editMode() == false -->
+                <!-- ko if: $root.currentMode() !== 'edit' -->
                 <nav id="main-bttn-container">
 
                     <!-- ko if: $root.showQuestion() == false -->
@@ -230,7 +230,7 @@
                 </nav>
                 <!-- /ko -->
                 <!-- /ko -->
-                <!-- ko if: $root.editMode() == true -->
+                <!-- ko if: $root.currentMode() === 'edit' -->
                 <div id="ict-edit-mode-additions-bar">
                     <input id="ict-input-source" type="text" data-bind="click: function() { $root.sourcesGetFromServer(); return false; }, clickBubble: false, textInput: editIndexCard().source, event : { 'keyup': function() { $root.sourcesGetFromServer(); return false; } }" placeholder="Quelle" autocomplete="off" />
                     <input type="text" data-bind="textInput: editIndexCard().jingle" placeholder="Eselsbrücke" />

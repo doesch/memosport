@@ -56,10 +56,10 @@ requirejs(["../lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "C
 
         // save the actual answer
         self.answer = ko.observable('');
-        self.step = ko.observable(); //restart, learn
+        self.currentMode = ko.observable(); //restart, learn
 
-        // IndexCard edit mode
-        self.editMode = ko.observable(false);
+        // IndexCard current mode
+        self.currentMode = ko.observable('learn');
         self.editIndexCard = ko.observable(); // current editing index card
         self.editIndexCardIsLoading = ko.observable(false); // current state of saving
 
@@ -311,7 +311,7 @@ requirejs(["../lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "C
          */
 
         self.restart = function () {
-            self.step('learn');
+            self.currentMode('learn');
             self.start();
         };
 
@@ -486,11 +486,8 @@ requirejs(["../lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "C
                         // start at 0
                         self.i(-1);
 
-                        // leave edit mode if active
-                        self.editMode(false);
-
                         // show 'learn' mode
-                        self.step("learn");
+                        self.currentMode("learn");
 
                         // start workflow
                         self.workflow();
@@ -499,7 +496,7 @@ requirejs(["../lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "C
                         // there is no index card in the box. create a new one
 
                         // show 'learn' mode
-                        self.step("learn");
+                        self.currentMode("learn");
 
                         self.NewIndexCard();
                     }
@@ -598,7 +595,7 @@ requirejs(["../lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "C
             self.i(self.i() + 1);
 
             if (self.i() >= self.dataset().length) {
-                self.step('restart');
+                self.currentMode('restart');
                 return;
             }
 
@@ -674,7 +671,7 @@ requirejs(["../lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "C
             }
 
             self.editIndexCard(pIndexCard);
-            self.editMode(true);
+            self.currentMode("edit");
             
             if (pIndexCard.id === null) {
                 // its a new index card
@@ -721,13 +718,13 @@ requirejs(["../lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "C
          */
         self.editCancel = function () {
 
-            self.editMode(false);
+            self.currentMode("learn");
             self.editIndexCard(null);
             self.setProgress();
         };
 
         /**
-         * save the post
+         * save the index card
          */
         self.editSave = function () {
 
@@ -769,16 +766,18 @@ requirejs(["../lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "C
                     for (; i < len; i++) {
                         if (self.dataset()[i].id === lXhrIndexCard.id) {
                             self.dataset()[i] = lXhrIndexCard;
+
                             // updated view (show index card) (show also when it is a different selected box for verification)
                             self.currentIndexCard(lXhrIndexCard);
+
                             break;
                         }
                     }
 
-                    self.editMode(false);
+                    self.currentMode('learn');
                     self.editIndexCard(null);
-
-                    // draw progress
+                    
+                    // draw progress bar
                     self.setProgress();
                 },
                 error: function (xhr) {
@@ -874,7 +873,7 @@ requirejs(["../lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "C
                             }
 
                             self.currentIndexCard(self.dataset()[self.i()]);
-                            self.editMode(false); // go back to learn-mode
+                            self.currentMode("learn"); // go back to learn-mode
                             self.editIndexCard(null);
                             self.showQuestion(true); // go to question
                             self.setProgress();
@@ -958,7 +957,7 @@ requirejs(["../lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "C
                                     self.dataset.remove(self.dataset()[i]);
 
                                     // when in edit-mode, then switch to learn-mode
-                                    self.editMode(false);
+                                    self.currentMode("learn");
 
                                     // go to next indexcard
                                     self.i(self.i() - 1); // we need to move one back before, because we have removed one from the stack
@@ -1406,7 +1405,7 @@ requirejs(["../lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "C
                             if (self.box().id === self.editIndexCardBox().id) {
 
                                 // leave edit mode
-                                self.editMode(false);
+                                self.currentMode("learn");
                                 self.box(self.boxPlaceholder);
                                 self.currentIndexCard(new indexCard.IndexCard());
                                 self.dataset([]); // clear datasets
@@ -1793,7 +1792,7 @@ requirejs(["../lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "C
                     // when box is currently selected, then remove from selection and current index card
                     if (self.anyBoxIsSelected() && self.box().id === lIndexCardBox.id) {
                         self.box(self.boxPlaceholder);
-                        self.editMode(false);
+                        self.currentMode("learn");
                         self.editIndexCard(null); // current editing index card
                     }                    
                 }
