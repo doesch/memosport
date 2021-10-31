@@ -610,6 +610,23 @@ requirejs(["../lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "C
             self.showQuestion(true);
         };
 
+        /*
+         * Close the preview
+         */
+        self.closePreview = function () {
+
+            // switch to learn mode
+            self.currentMode('learn');
+
+            // draw progress
+            self.setProgress();
+
+            // when user has edited the card during learn-mode, then t makes no sense to learn the latest edited card. Go to next card.
+            if (self.dataset().length > 0 && self.currentIndexCard().id === self.dataset()[self.i()].id) {
+                self.next();
+            }
+        }
+
         /**
          * set progress bar
          * @constructor
@@ -772,10 +789,7 @@ requirejs(["../lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "C
                     self.currentIndexCard(lXhrIndexCard);
 
                     self.currentMode('preview');
-                    self.editIndexCard(null);
-                    
-                    // draw progress bar
-                    self.setProgress();
+                    self.editIndexCard(null);                   
                 },
                 error: function (xhr) {
                     // check for 409 inconsistency which could occur while PUT and the indexcard has a different version
