@@ -597,7 +597,15 @@ requirejs(["../lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "C
                 return;
             }
 
-            // clean imagages
+            self.showIndexCard();
+        };
+
+        /*
+         * Render the index card
+         */
+        self.showIndexCard = function () {
+
+            // clean images
             self.cleanImages();
 
             // render view with next index card
@@ -608,7 +616,7 @@ requirejs(["../lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "C
 
             // show question
             self.showQuestion(true);
-        };
+        }
 
         /*
          * Close the preview
@@ -621,9 +629,18 @@ requirejs(["../lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "C
             // draw progress
             self.setProgress();
 
-            // when user has edited the card during learn-mode, then t makes no sense to learn the latest edited card. Go to next card.
+            // when user has edited the card during learn-mode, then it makes no sense to learn the latest edited card. Go to next card.
             if (self.dataset().length > 0 && self.currentIndexCard().id === self.dataset()[self.i()].id) {
                 self.next();
+            }
+            // when user has created a new index card, then show the current selected card
+            else if (self.dataset().length > 0) {
+                self.showIndexCard();
+            }
+            // no data in dataset
+            else
+            {
+                self.currentMode('emptyDataset');
             }
         }
 

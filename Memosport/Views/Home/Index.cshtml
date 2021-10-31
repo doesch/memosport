@@ -31,12 +31,18 @@
             <section id="ict-content">
 
                 <!-- ko if: $root.currentMode() === 'restart' -->
-                <div id="mvmt-no-data-container" style="text-align: center;">
+                <div id="empty-dataset-container" style="text-align: center;">
                     <p>Herzlichen Glückwunsch. <br /> Sie haben alle Karteikarten durchgearbeitet.</p>
                     <button class="bttn" data-bind="click: restart"><span class="icon icon-restart"></span><span class="bttn-icon-text">Neustart</span></button>
                 </div>
                 <!-- /ko -->
-                <!-- ko if: $root.currentMode() !== 'restart' -->
+                <!-- ko if: $root.currentMode() === 'emptyDataset' -->
+                <div id="empty-dataset-container" style="text-align: center;">
+                    <p>Der Lernsatz ist leider leer.</p>
+                    <button class="bttn" data-bind="click: restart"><span class="icon icon-restart"></span><span class="bttn-icon-text">Lade Lernsatz</span></button>
+                </div>
+                <!-- /ko -->
+                <!-- ko if: $root.currentMode() !== 'restart' && $root.currentMode() !== 'emptyDataset' -->
 
                 <div id="ict-col-container">
                     <div id="ict-col-left">
@@ -272,7 +278,7 @@
 <script id="index-card-box-form-template" type="text/html">
     <div id="index-card-box-form-container">
         <form>
-            <input type="text" name="name" placeholder="Name der Box" maxlength="32" data-bind="textInput: editIndexCardBox().name" />
+            <input type="text" name="name" placeholder="Name der Box" maxlength="32" autocomplete="off" data-bind="textInput: editIndexCardBox().name" />
         </form>
     </div>
 </script>
