@@ -1033,9 +1033,6 @@ requirejs(["../lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "C
                         // close sandtimer
                         self.loadingScreen.close();
 
-                        // show message to the user
-                        new tsLib.MessageBox("Es wurde erfolgreich eine Kopie erstellt. Sie können die Kopie jetzt bearbeiten.").show();
-
                         // updated view (show index card) (show also when it is a different selected box for verification)
                         self.currentIndexCard(lIndexCard);
 
