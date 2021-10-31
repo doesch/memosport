@@ -43,7 +43,7 @@ namespace Memosport.Controllers
         /// <param name="remindUser"> (Optional) Checkbox True to remind user. </param>
         /// <returns> An IActionResult. </returns>
         [HttpPost]
-        public async Task<IActionResult> Login(string email, string password, bool remindUser = false)
+        public async Task<IActionResult> Login(string email, string password, bool remindUser = true)
         {
             // query user by email and password from database
             var lUser = _context.Users.SingleOrDefault(x => x.Email == email);
