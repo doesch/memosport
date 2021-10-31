@@ -490,7 +490,7 @@ requirejs(["../lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "C
                         self.currentMode("learn");
 
                         // start workflow
-                        self.workflow();
+                        self.next();
                     }
                     else {
                         // there is no index card in the box. create a new one
@@ -531,10 +531,10 @@ requirejs(["../lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "C
          * 
          * Next button clicked
          */
-        self.next = function (pKnown) {
+        self.known = function (pKnown) {
 
             // set known / not known
-            if (pKnown === 1) {
+            if (pKnown) {
                 self.currentIndexCard().known += 1;
             }
             else {
@@ -562,7 +562,6 @@ requirejs(["../lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "C
                         if (self.dataset()[i].id === lTmpIndexCard.id)
                         {
                             self.dataset()[i].modified = lTmpIndexCard.modified;
-                            console.log("updated modified date");
                             break;
                         }
                     }
@@ -580,14 +579,13 @@ requirejs(["../lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "C
             });
 
             // fire and forget. go to next
-            self.workflow();
+            self.next();
         };
 
         /*
         * workflow
         */
-
-        self.workflow = function () {
+        self.next = function () {
             /*
              * next Question
              */
@@ -766,15 +764,14 @@ requirejs(["../lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "C
                     for (; i < len; i++) {
                         if (self.dataset()[i].id === lXhrIndexCard.id) {
                             self.dataset()[i] = lXhrIndexCard;
-
-                            // updated view (show index card) (show also when it is a different selected box for verification)
-                            self.currentIndexCard(lXhrIndexCard);
-
                             break;
                         }
                     }
 
-                    self.currentMode('learn');
+                    // updated view (show index card) (show also when it is a different selected box for verification)
+                    self.currentIndexCard(lXhrIndexCard);
+
+                    self.currentMode('preview');
                     self.editIndexCard(null);
                     
                     // draw progress bar
@@ -961,7 +958,7 @@ requirejs(["../lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "C
 
                                     // go to next indexcard
                                     self.i(self.i() - 1); // we need to move one back before, because we have removed one from the stack
-                                    self.workflow();
+                                    self.next();
 
                                     break;
                                 }

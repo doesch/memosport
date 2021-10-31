@@ -39,9 +39,8 @@
                 <!-- ko if: $root.currentMode() !== 'restart' -->
 
                 <div id="ict-col-container">
-
                     <div id="ict-col-left">
-                        <!-- ko if: $root.currentMode() !== 'edit' -->
+                        <!-- ko if: $root.currentMode() !== 'edit' && $root.currentMode() !== 'preview' -->
                         <div id="ict-header">
                             <div id="ict-progress-container" data-bind="click: function() { $root.showProgressButtonBubble(!$root.showProgressButtonBubble()); };">
                                 <div id="ict-progress">
@@ -215,13 +214,18 @@
                 <!-- ko if: $root.currentMode() !== 'edit' -->
                 <nav id="main-bttn-container">
 
-                    <!-- ko if: $root.showQuestion() == false -->
-                    <button id="ict-bttn-known" class="bttn ict-main-bttn" data-bind="click: function() { $root.next(1); }" title="gewusst"><span class="icon icon-thumb-up-white"></span></button>
-                    <button id="ict-bttn-unknown" class="bttn ict-main-bttn" data-bind="click: function() { $root.next(0); }" title="nicht gewusst"><span class="icon icon-thumb-down-white"></span></button>
+                    <!-- ko if: $root.currentMode() === 'preview' -->
+                    <button id="ict-bttn-preview-ok" class="bttn ict-main-bttn" data-bind="click: function() { $root.known(true); }" title="gewusst"><span class="icon icon-thumb-up-white"></span></button>
+                    <!-- /ko -->
+                    <!-- ko if: $root.currentMode() !== 'preview' -->
+                    <!-- ko if: $root.showQuestion() === false -->
+                    <button id="ict-bttn-known" class="bttn ict-main-bttn" data-bind="click: function() { $root.known(true); }" title="gewusst"><span class="icon icon-thumb-up-white"></span></button>
+                    <button id="ict-bttn-unknown" class="bttn ict-main-bttn" data-bind="click: function() { $root.known(false); }" title="nicht gewusst"><span class="icon icon-thumb-down-white"></span></button>
 
                     <!-- /ko -->
                     <!-- ko if: $root.showQuestion() -->
                     <button id="ict-bttn-show-answer" class="bttn" title="zeige Antwort" data-bind="click: function() { $root.showQuestion(false);}"><span class="icon icon-answer-white"></span></button>
+                    <!-- /ko -->
                     <!-- /ko -->
 
                     <button class="bttn bttn-icon" data-bind="click: toggleJingle"><span class="icon icon-bridge"></span></button>
