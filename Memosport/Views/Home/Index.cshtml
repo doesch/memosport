@@ -372,8 +372,8 @@
             </thead>
             <tbody class="tbody" data-bind="foreach: searchResult">
                 <tr class="tr" data-bind="click: function() { $root.searchEditIndexCardClick($data.IndexCard);}">
-                    <td class="td col-1"><span data-bind="text: $data.IndexCard.question"></span></td>
-                    <td class="td col-2"><span data-bind="text: $data.IndexCardBox.name"></span></td>
+                    <td class="td col-1"><span data-bind="html: $data.IndexCard.question"></span></td>
+                    <td class="td col-2"><span data-bind="html: $data.IndexCardBox.name"></span></td>
                     <td class="td col-3">
                         <!-- ko if: $data.IndexCard.known < 3 -->
                         <span></span>
