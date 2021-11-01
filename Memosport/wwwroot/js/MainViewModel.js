@@ -805,7 +805,17 @@ requirejs(["../lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "C
                     // updated view (show index card) (show also when it is a different selected box for verification)
                     self.currentIndexCard(lXhrIndexCard);
 
-                    self.currentMode('preview');
+                    // when the user has edited the card which he is currently learning, then go back to the learn-mode
+                    if (self.dataset()[self.i()].id === lXhrIndexCard.id)
+                    {
+                        self.currentMode('learn');
+                    }
+                    else
+                    {
+                        // show the index card in preview mode (e.g. the index card is new)
+                        self.currentMode('preview');                        
+                    }
+                                        
                     self.editIndexCard(null);                   
                 },
                 error: function (xhr) {
