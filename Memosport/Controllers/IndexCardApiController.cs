@@ -84,10 +84,15 @@ namespace Memosport.Controllers
             var lQuery = _context.IndexCards.Select(x => x).Where(x => x.IndexCardBoxId == boxId);
 
             // filter data by options
+            
+            // show cards which not learned or show cards which are already learned.
             if (ictOptions.Known == false)
             {
-                // add condition
                 lQuery = lQuery.Where(x => x.Known < 3);
+            }
+            else
+            {
+                lQuery = lQuery.Where(x => x.Known >= 3);
             }
 
             // get order
