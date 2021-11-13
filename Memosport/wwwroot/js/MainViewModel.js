@@ -56,7 +56,7 @@ requirejs(["../lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "C
 
         // save the actual answer
         self.answer = ko.observable('');
-        self.currentMode = ko.observable(); //restart, learn
+        self.currentMode = ko.observable(); //restart, learn, preview, emptyDataset
 
         // IndexCard current mode
         self.currentMode = ko.observable('learn');
@@ -495,10 +495,8 @@ requirejs(["../lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "C
                     else {
                         // there is no index card in the box. create a new one
 
-                        // show 'learn' mode
-                        self.currentMode("learn");
-
-                        self.NewIndexCard();
+                        // show message to the user
+                        self.currentMode("emptyDataset");
                     }
                 },
                 error: function (data) {
