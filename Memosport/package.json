@@ -4,7 +4,7 @@
   "dependencies": {},
   "devDependencies": {
     "@types/jquery": "^3.3.31",
-    "@types/knockout": "^3.4.66",
+    "@types/knockout": "^3.4.72",
     "gulp": "^4.0.2",
     "gulp-clean-css": "^4.2.0",
     "gulp-concat": "^2.6.1",

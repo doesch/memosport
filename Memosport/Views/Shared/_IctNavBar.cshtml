@@ -1,20 +1,20 @@
-﻿<button data-bind="click: function(){ $root.searchBttnClick();};" class="bttn"><span class="icon icon-search"></span><span class="bttn-icon-text remove-630px">Suche</span></button>
+﻿<button data-bind="click: function(){ $root.searchBttnClick();};" class="bttn"><span class="ict-icon icon-search"></span><span class="bttn-icon-text remove-630px">Suche</span></button>
 
 <button id="ict-boxes-dropdown-bttn" class="bttn" data-bind="click: function() { $root.boxesToggleShowDropdown(); return false; }, clickBubble: false">
     <div id="ict-boxes-dropdown-bttn-selected-name" data-bind="text: $root.box().name"></div>
-    <div class="icon icon-arrow-down"></div>
+    <div class="ict-icon icon-arrow-down"></div>
 </button>
-<button class="bttn" data-bind="click: function(){$root.NewIndexCard();}"><span class="icon icon-add"></span><span class="bttn-icon-text remove-630px">Neu</span></button>
+<button class="bttn" data-bind="click: function(){$root.NewIndexCard();}"><span class="ict-icon icon-add"></span><span class="bttn-icon-text remove-630px">Neu</span></button>
 
 <!-- ko if: boxesShowDropdown -->
 <div id="ict-boxes-dropdown-list-container" data-bind="style: {display: $root.boxesShowDropdown() === true ? 'block' : 'none'}">
     <div id="ict-boxes-dropdown-listitem-new-box" class="ict-boxes-dropdown-listitem">
-        <a class="bttn" href="" data-bind="click: $root.createNewIndexCardBoxClick"><span class="icon icon-add"></span>&nbsp;Neuer Karteikasten</a>
+        <a class="bttn" href="" data-bind="click: $root.createNewIndexCardBoxClick"><span class="ict-icon icon-add"></span>&nbsp;Neuer Karteikasten</a>
     </div>
     <div id="ict-boxes-dropdown-scroll-container">
         <!-- ko foreach: boxes -->
             <!-- ko if: $data.archived === false -->
-            <div class="ict-boxes-dropdown-listitem" data-bind="css: {'selected-box' : $data === $root.box()}"><div class="ict-boxes-dropdown-listitem-col-2"><a class="bttn" href="#" title="edit" data-bind="click: function(){ $root.editIndexCardBoxForm($data); }"><span class="icon icon-edit"></span></a></div><div class="ict-boxes-dropdown-listitem-col-1" data-bind="click: $root.BoxSelected"><span data-bind="text: $data.name"></span></div></div>
+            <div class="ict-boxes-dropdown-listitem" data-bind="css: {'selected-box' : $data === $root.box()}"><div class="ict-boxes-dropdown-listitem-col-2"><a class="bttn" href="#" title="edit" data-bind="click: function(){ $root.editIndexCardBoxForm($data); }"><span class="ict-icon icon-edit"></span></a></div><div class="ict-boxes-dropdown-listitem-col-1" data-bind="click: $root.BoxSelected"><span data-bind="text: $data.name"></span></div></div>
             <!-- /ko -->
         <!-- /ko -->
     </div>
@@ -34,9 +34,9 @@
 </ul>
 <!-- /ko -->
 
-<button id="software-bttn-config" class="bttn" data-bind="click: showOptionsDialog"><span class="icon icon-options"></span><span class="bttn-icon-text remove-630px">Einstellungen</span></button>
-<button id="software-bttn-start" class="bttn" data-bind="click: start"><span class="icon icon-restart"></span><span class="bttn-icon-text remove-630px">Start</span></button>
-<button id="bttn-menu" class="bttn" data-bind="click: function() { $root.menuBttnClick(); return false; }, clickBubble: false"><span class="icon icon-menu"></span><span class="bttn-icon-text remove-630px">Menü</span></button>
+<button id="software-bttn-config" class="bttn" data-bind="click: showOptionsDialog"><span class="ict-icon icon-options"></span><span class="bttn-icon-text remove-630px">Einstellungen</span></button>
+<button id="software-bttn-start" class="bttn" data-bind="click: start"><span class="ict-icon icon-restart"></span><span class="bttn-icon-text remove-630px">Start</span></button>
+<button id="bttn-menu" class="bttn" data-bind="click: function() { $root.menuBttnClick(); return false; }, clickBubble: false"><span class="ict-icon icon-menu"></span><span class="bttn-icon-text remove-630px">Menü</span></button>
 
 <script id="ict-move-indexcard-to-box-template" type="text/html">
     <div id="ict-move-indexcard-to-box-container" data-bind="foreach: boxes">
@@ -58,7 +58,7 @@
             <div class="col-stats col-totalCount" title="Karteikarten in Box."><span data-bind="text: $data.boxStats.totalCount"></span></div>
             <div class="col-stats col-learnedPercent" title="Gelernte Karteikarten in Prozent."><span data-bind="text: $data.boxStats.percentLearned + '%'"></span></div>
             <div class="col-stats col-dateLastLearned" title="Der Karteikasten wurde zuletzt vor [x] Tagen aufgerufen.">
-                <span data-bind="text: $data.dateLastLearnedDays === null ? '?' : $data.dateLastLearnedDays"></span><span class="icon icon-date"></span>
+                <span data-bind="text: $data.dateLastLearnedDays === null ? '?' : $data.dateLastLearnedDays"></span><span class="ict-icon icon-date"></span>
             </div>
             <div class="clearfix"></div>
         </div>

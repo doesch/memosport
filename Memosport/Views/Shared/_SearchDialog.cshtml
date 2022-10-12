@@ -1,0 +1,42 @@
+﻿<script id="ict-search-dialog" type="text/html">
+    <div id="ict-search-window">
+
+        <form style="text-align: center;">
+            <input id="ict-search-txt" type="text" /><button id="ict-bttn-search-idc" data-bind="click: function(){ $root.searchIndexCard();};" class="bttn"><span class="icon icon-search"></span><span class="bttn-icon-text remove-630px">Suche</span></button>
+        </form>
+
+        <!-- ko if: $root.searchShowHourGlass() -->
+        <div style="text-align: center;">
+            <img src="/img/hour_glass.gif" alt="Loading..." style="text-align: center;" />
+        </div>
+        <!-- /ko -->
+        <!-- ko if: $root.searchResult().length > 0 -->
+        <table id="ict-search-result-table">
+            <thead>
+                <tr>
+                    <th class="th col-1">Frage</th>
+                    <th class="th col-2">Karteikasten</th>
+                    <th class="th col-3">Gewusst</th>
+                </tr>
+            </thead>
+            <tbody class="tbody" data-bind="foreach: searchResult">
+                <tr class="tr" data-bind="click: function() { $root.searchEditIndexCardClick($data.IndexCard);}">
+                    <td class="td col-1"><span data-bind="html: $data.IndexCard.question"></span></td>
+                    <td class="td col-2"><span data-bind="html: $data.IndexCardBox.name"></span></td>
+                    <td class="td col-3">
+                        <!-- ko if: $data.IndexCard.known < 3 -->
+                        <span></span>
+                        <!-- /ko -->
+                        <!-- ko if: $data.IndexCard.known >= 3 -->
+                        <span class="ict-icon icon-learned"></span>
+                        <!-- /ko -->
+                        <span data-bind="text: $data.IndexCard.known"></span>
+                        <button id="bttn-reset-known" title="Erneut lernen" class="bttn bttn-icon" data-bind="click: function() { $root.resetKnown($data.IndexCard) }, clickBubble: false"><span class="ict-icon icon-thumb-down-white"></span></button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- /ko -->
+    </div>
+</script>

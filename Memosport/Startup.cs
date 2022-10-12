@@ -33,12 +33,11 @@ namespace Memosport
             });
 
 #if DEBUG
-
-            services.AddDbContext<MemosportContext>(options =>
-                options.UseMySql(Configuration.GetConnectionString("DebugConnection")));
+            string lSqlConnectionStr = Configuration.GetConnectionString("DefaultConnection");
+            services.AddDbContext<MemosportContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 #else
-            services.AddDbContext<MemosportContext>(options =>
-                options.UseMySql(Configuration.GetConnectionString("DefaultConnection")));
+            string lSqlConnectionStr = Configuration.GetConnectionString("DefaultConnection");
+            services.AddDbContext<MemosportContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
             
 #endif
 

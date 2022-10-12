@@ -68,7 +68,7 @@ requirejs(["../lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "C
 
         // search window
         self.searchDialog = null; // the search-dialog instance
-        self.searchShowHourGlass = ko.observable(false);
+        self.searchShowHourGlass = ko.observable(false);        
         self.searchResult = ko.observableArray();
 
         // global audio player
@@ -1255,6 +1255,72 @@ requirejs(["../lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "C
 
             // show in ict
             self.currentIndexCard(pIndexCard);
+        };
+
+        // reset known status
+        self.resetKnown = function (pIndexCard) {
+
+            if (!(pIndexCard instanceof indexCard.IndexCard)) {
+                throw "Invalid argument. Expected type IndexCard.";
+            }
+
+            self.loadingScreen.show();
+
+            // reset status
+            pIndexCard.known = 0;
+
+            // convert into payload (formdata)
+            let lFormData = self.indexCardToFormData(pIndexCard);
+
+            // reset status
+            $.ajax({
+                type: 'put',
+                data: lFormData,
+                url: "/IndexCardApi/" + pIndexCard.id,
+                contentType: false,
+                processData: false,
+                dataType: 'json',
+                success: function (data) {
+
+                    var lTmpIndexCard = new indexCard.IndexCard(data);
+
+                    // update card in stack if exists
+                    for (let i = 0; i < self.dataset().length; i++) {
+                        if (self.dataset()[i].id === lTmpIndexCard.id) {
+                            self.dataset()[i] = lTmpIndexCard;
+                            break;
+                        }
+                    }
+
+                    // update card in search table
+                    for (let i = 0; i < self.searchResult().length; i++) {
+                        if (self.searchResult()[i].IndexCard.id === lTmpIndexCard.id) {                            
+
+                            // replace indexcard
+                            self.searchResult()[i].IndexCard = lTmpIndexCard;
+
+                            // re-render
+                            let searchResultTmp = self.searchResult();
+                            self.searchResult([]);
+                            self.searchResult(searchResultTmp);
+                            break;
+                        }
+                    }
+                },
+                error: function (xhr) {
+                    // check for 409 inconsistency which could occur while PUT and the indexcard has a different version
+                    if (self.CheckIfResponseIs409(xhr)) {
+                        self.showInconsistencyDialog();
+                    }
+                    else {
+                        // any other problem
+                        new tsLib.MessageBox("Das Setzen von 'gewusst' hat für diese Karteikarte leider nicht funktioniert. Bitte versuchen Sie es später erneut.").show();
+                    }
+                },
+                complete: function () {
+                    self.loadingScreen.close();
+                }
+            });
         };
 
         /*

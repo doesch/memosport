@@ -645,7 +645,7 @@ input[type="checkbox"]:checked + label, .checkboxChecked {
     width: @GlobalButtonHeight;
     padding: 0;
 
-    .icon {
+    .ict-icon {
         margin-right: 0 !important;
     }
 }
@@ -658,7 +658,7 @@ button {
 }
 
 
-.icon {
+.ict-icon {
     display: inline-block;
     width: 16px;
     height: 16px;
@@ -964,7 +964,12 @@ button {
     background-image: url('/img/bttn_start_software.png');
 }
 
-.bttn-close {
+#bttn-reset-known {
+    background-color: @ButtonBgRed;
+}
+
+.bttn-close
+{
     position: absolute;
     top: 0;
     right: 0;
@@ -1743,7 +1748,7 @@ textarea.ict-question-answer-text {
         margin-right: 0;
         border-top-right-radius: 0;
         border-bottom-right-radius: 0;
-        background-color: rgb(255,102,153);
+        background-color: @ButtonBgRed;
         border-right: 1px solid #fff;
         color: white;
     }
@@ -1911,7 +1916,7 @@ textarea.ict-question-answer-text {
         line-height: @IctProgressBarHeight - 1px;
         box-sizing: border-box;
 
-        .icon {
+        .ict-icon {
             margin-bottom: 0px !important;
         }
     }
