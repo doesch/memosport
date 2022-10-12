@@ -24,14 +24,8 @@
                     <td class="td col-1"><span data-bind="html: $data.IndexCard.question"></span></td>
                     <td class="td col-2"><span data-bind="html: $data.IndexCardBox.name"></span></td>
                     <td class="td col-3">
-                        <!-- ko if: $data.IndexCard.known < 3 -->
-                        <span></span>
-                        <!-- /ko -->
-                        <!-- ko if: $data.IndexCard.known >= 3 -->
-                        <span class="ict-icon icon-learned"></span>
-                        <!-- /ko -->
-                        <span data-bind="text: $data.IndexCard.known"></span>
-                        <button id="bttn-reset-known" title="Erneut lernen" class="bttn bttn-icon" data-bind="click: function() { $root.resetKnown($data.IndexCard) }, clickBubble: false"><span class="ict-icon icon-thumb-down-white"></span></button>
+                        <span data-bind="text: $data.IndexCard.known"></span>                        
+                        <button id="bttn-reset-known" title="Erneut lernen" class="bttn bttn-icon" data-bind="click: function() { $root.resetKnown($data.IndexCard) }, enable: $data.IndexCard.known > 0, clickBubble: false"><span class="ict-icon icon-thumb-down-white"></span></button>
                     </td>
                 </tr>
             </tbody>
