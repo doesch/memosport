@@ -1995,15 +1995,21 @@ textarea.ict-question-answer-text {
 {
     position: relative;
     margin: 0 auto;
-    display: block;
     display: flex;
     flex-direction: row;
+    flex-wrap: wrap;
     align-items: center;
+    margin-bottom: @GlobalMargin;
 
     #search-boxes-dropdown-bttn
     {
         min-width: 100px;
         max-width: 200px;
+    }
+
+    div, span, input
+    {
+        margin-bottom: @GlobalMargin;
     }
 }
 
@@ -2359,8 +2365,6 @@ textarea.ict-question-answer-text {
 
 #ict-search-result-table
 {
-    margin-top: @GlobalMargin;
-
     .t-table
     {
         .t-tr
