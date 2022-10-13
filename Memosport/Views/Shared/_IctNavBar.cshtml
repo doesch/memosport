@@ -50,20 +50,7 @@
     </div>
 </script>
 
-<script id="ict-boxstats-template" type="text/html">
-    <div id="ict-boxstats-dialog-container" data-bind="foreach: boxStats">
-        <div class="ict-boxstats-listitem" data-bind="click: function(){ $root.boxSelectedInStats($data); }">
-            <div class="col-stats col-name"><span data-bind="text: $data.name"></span></div>
-            <div class="col-stats col-unlearned" title="Ungelernte Karteikarten."><span data-bind="text: $data.boxStats.unlearned"></span></div>
-            <div class="col-stats col-totalCount" title="Karteikarten in Box."><span data-bind="text: $data.boxStats.totalCount"></span></div>
-            <div class="col-stats col-learnedPercent" title="Gelernte Karteikarten in Prozent."><span data-bind="text: $data.boxStats.percentLearned + '%'"></span></div>
-            <div class="col-stats col-dateLastLearned" title="Der Karteikasten wurde zuletzt vor [x] Tagen aufgerufen.">
-                <span data-bind="text: $data.dateLastLearnedDays === null ? '?' : $data.dateLastLearnedDays"></span><span class="ict-icon icon-date"></span>
-            </div>
-            <div class="clearfix"></div>
-        </div>
-    </div>
-</script>
+@Html.Partial("_BoxStats")
 
 <script id="ict-duplicate-dialog-template" type="text/html">
     <div id="ict-duplicate-dialog">

@@ -2065,12 +2065,11 @@ textarea.ict-question-answer-text {
 }
 
 #ict-move-indexcard-to-box-container,
-#ict-archive-dialog-container,
-#ict-boxstats-dialog-container {
+#ict-archive-dialog-container
+{
 
     .ict-move-indexcard-to-box-item,
-    .ict-archived-box-listitem,
-    .ict-boxstats-listitem {
+    .ict-archived-box-listitem {
         height: @GlobalButtonHeight;
         line-height: @GlobalButtonHeight;
         border-bottom: 1px solid @GlobalBorderColor;
@@ -2083,46 +2082,10 @@ textarea.ict-question-answer-text {
     }
 }
 
-#ict-boxstats-dialog-container {
-    .ict-boxstats-listitem {
-        .col-stats {
-            float: left;
-            margin: 0px @GlobalMargin / 2;
-            width: 45px;
-            text-align: right;
-            overflow: hidden;
-            white-space: nowrap;
-        }
-
-        .col-name {
-            width: 80px;
-            text-overflow: ellipsis;
-            text-align: left;
-        }
-
-        .col-totalCount,
-        .col-unlearned {
-            width: 30px;
-        }
-
-        .col-learnedPercent {
-            width: 35px;
-        }
-
-        .col-dateLastLearned {
-            .icon-date {
-                margin-bottom: 0px;
-            }
-        }
-    }
-}
-
-
 .ict-label-activated {
     border-left: none !important;
     background-color: white !important;
 }
-
 
 #ict-col-container {
     display: flex;
@@ -2303,6 +2266,12 @@ textarea.ict-question-answer-text {
             &:last-child
             {
                 border-right: none;
+            }
+
+            &.col-30
+            {
+                max-width: 30px;
+                min-width: 30px;
             }
 
             &.col-50

@@ -1,0 +1,24 @@
+﻿<script id="ict-boxstats-template" type="text/html">
+    <div class="t-table">
+        <div class="t-theader">
+            <div class="t-tr">
+                <div class="t-th" title="Karteikasten">Karteikasten</div>
+                <div class="t-th col-30" title="% Gelernt">% Gelernt</div>
+                <div class="t-th col-30" title="Gelernt">Gelernt</div>
+                <div class="t-th col-30" title="Größe">Größe</div>
+                <div class="t-th col-30" title="Zuletzt gelernt">Zuletzt gelernt</div>
+            </div>
+        </div>
+        <div class="t-tbody" data-bind="foreach: boxStats">
+            <div class="t-tr"  data-bind="click: function(){ $root.boxSelectedInStats($data); }">
+                <div class="t-td"><span data-bind="text: $data.name"></span></div>
+                <div class="t-td col-30  text-align-right" title="Gelernte Karteikarten in Prozent."><span data-bind="text: $data.boxStats.percentLearned + '%'"></span></div>
+                <div class="t-td col-30 text-align-right" title="Ungelernte Karteikarten."><span data-bind="text: $data.boxStats.unlearned"></span></div>
+                <div class="t-td col-30 text-align-right" title="Karteikarten in Box."><span data-bind="text: $data.boxStats.totalCount"></span></div>
+                <div class="t-td col-30  text-align-right" title="Der Karteikasten wurde zuletzt vor [x] Tagen aufgerufen.">
+                    <span data-bind="text: $data.dateLastLearnedDays === null ? '?' : $data.dateLastLearnedDays"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+</script>
