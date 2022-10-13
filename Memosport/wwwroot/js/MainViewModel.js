@@ -306,8 +306,6 @@ requirejs(["../lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "C
         // filter box
         self.searchFilterBoxSelected = function (pIndexCardBox) {
 
-            console.log(pIndexCardBox);
-
             // close menu
             self.searchFilterBoxesShowDropdown(false);
 
@@ -1285,7 +1283,7 @@ requirejs(["../lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "C
 
             $.ajax({
                 url: "/IndexCardApi/search",
-                data: { pSearchstring: lSearchString },
+                data: { pSearchstring: lSearchString, pBoxId: self.searchFilterSelectedBox().id },
                 type: "GET",
                 dataType: "json",
                 success: function (data) {

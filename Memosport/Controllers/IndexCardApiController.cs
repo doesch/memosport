@@ -125,7 +125,7 @@ namespace Memosport.Controllers
         /// <param name="pSearchString"></param>
         /// <returns></returns>
         [HttpGet("search")]
-        public async Task<IActionResult> Index(string pSearchString)
+        public async Task<IActionResult> Index(string pSearchString, int pBoxId)
         {
             // get current user
             var lCurrentUser = GetCurrentUser(_context);
@@ -153,6 +153,12 @@ namespace Memosport.Controllers
                     x.IndexCard.Jingle.ToLower().Contains(pSearchString.ToLower()) ||
                     x.IndexCard.Source.ToLower().Contains(pSearchString.ToLower())
                 );
+
+            // filter a box
+            if (pBoxId != -1) // when -1 then ignore filter to query all
+            {
+                lQuery = lQuery.Where(x => x.IndexCardBox.Id == pBoxId);
+            }
 
             // execute query
             var lSearchResult = await lQuery.ToListAsync();
