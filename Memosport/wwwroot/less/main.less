@@ -1285,7 +1285,6 @@ form#index-card-search {
     vertical-align: middle;
     padding: 0 0 0px @GlobalVMargin / 2 * 3;
 
-
     select {
         width: 135px;
         margin: @GlobalVMargin / 2 * 3 @GlobalVMargin 0px 0px;
@@ -1295,6 +1294,11 @@ form#index-card-search {
         display: inline-block;
         width: 175px;
     }
+}
+
+#ict-search-txt
+{
+    margin: 0px @GlobalMargin / 3;
 }
 
 form#index-card-search input[type="text"] {
@@ -2327,6 +2331,8 @@ textarea.ict-question-answer-text {
 
 #ict-search-result-table
 {
+    margin-top: @GlobalMargin;
+
     .t-table
     {
         .t-tr

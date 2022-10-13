@@ -2,7 +2,7 @@
     <div id="ict-search-window">
 
         <form style="text-align: center;">
-            <input id="ict-search-txt" type="text" /><button id="ict-bttn-search-idc" data-bind="click: function(){ $root.searchIndexCard();};" class="bttn"><span class="icon icon-search"></span><span class="bttn-icon-text remove-630px">Suche</span></button>
+            <span class="icon icon-search"></span><input id="ict-search-txt" type="text" title="Suche" /><button id="ict-bttn-search-idc" title="Suche" data-bind="click: function(){ $root.searchIndexCard();};" class="bttn"><span class="ict-icon icon-arrow-right"></span></button>
         </form>
 
         <!-- ko if: $root.searchShowHourGlass() -->
@@ -10,6 +10,7 @@
             <img src="/img/hour_glass.gif" alt="Loading..." style="text-align: center;" />
         </div>
         <!-- /ko -->
+
         <!-- ko if: $root.searchResult().length > 0 -->
 
         <div id="ict-search-result-table" class="t-table">
