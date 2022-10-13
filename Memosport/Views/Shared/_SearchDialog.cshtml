@@ -11,25 +11,26 @@
         </div>
         <!-- /ko -->
         <!-- ko if: $root.searchResult().length > 0 -->
-        <table id="ict-search-result-table">
-            <thead>
-                <tr>
-                    <th class="th col-1">Frage</th>
-                    <th class="th col-2">Karteikasten</th>
-                    <th class="th col-3">Gewusst</th>
-                </tr>
-            </thead>
-            <tbody class="tbody" data-bind="foreach: searchResult">
-                <tr class="tr" data-bind="click: function() { $root.searchEditIndexCardClick($data.IndexCard);}">
-                    <td class="td col-1"><span data-bind="html: $data.IndexCard.question"></span></td>
-                    <td class="td col-2"><span data-bind="html: $data.IndexCardBox.name"></span></td>
-                    <td class="td col-3">
+
+        <div id="ict-search-result-table" class="t-table">
+            <div class="t-thead">
+                <div class="t-tr">
+                    <div class="t-th">Frage</div>
+                    <div class="t-th col-100">Karteikasten</div>
+                    <div class="t-th col-50">Gewusst</div>
+                </div>
+            </div>
+            <div class="t-tbody" data-bind="foreach: searchResult">
+                <div class="t-tr" data-bind="click: function() { $root.searchEditIndexCardClick($data.IndexCard);}">
+                    <div class="t-td"><span data-bind="html: $data.IndexCard.question"></span></div>
+                    <div class="t-td col-100"><span data-bind="html: $data.IndexCardBox.name"></span></div>
+                    <div class="t-td col-50">
                         <span data-bind="text: $data.IndexCard.known"></span>                        
                         <button id="bttn-reset-known" title="Erneut lernen" class="bttn bttn-icon" data-bind="click: function() { $root.resetKnown($data.IndexCard) }, enable: $data.IndexCard.known > 0, clickBubble: false"><span class="ict-icon icon-thumb-down-white"></span></button>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
 
         <!-- /ko -->
     </div>

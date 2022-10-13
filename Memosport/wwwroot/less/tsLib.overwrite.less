@@ -1,11 +1,34 @@
 ﻿@import "shared.less";
 
-.tsl 
+.tsl
 {
-    &.dropdown-window {
+    &.dropdown-window
+    {
         border-top: solid 1px @GlobalBorderColor !important;
         border-left: solid 1px @GlobalBorderColor !important;
         border-right: solid 1px @GlobalBorderColor !important;
         box-shadow: @GlobalBoxShadowDropDown !important;
+    }
+
+    .t-table
+    {
+        .t-tbody
+        {
+            display: initial !important;
+            flex-direction: initial !important;
+            overflow: initial !important;
+            height: initial !important;
+            border-top: initial !important;
+        }
+
+        .t-tr
+        {
+            .t-td,
+            .t-th
+            {
+                height: initial !important;
+                line-height: initial !important;
+            }
+        }
     }
 }
