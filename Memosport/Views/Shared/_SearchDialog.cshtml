@@ -4,10 +4,10 @@
         <form id="search-form">
             <span class="icon icon-search"></span><input id="ict-search-txt" type="text" title="Suche" />
 
-            <button id="search-boxes-dropdown-bttn" class="bttn ict-dropdown-bttn" data-bind="click: function() { $root.searchFilterBoxesToggleShowDropdown(); return false; }, clickBubble: false">
+            <div id="search-boxes-dropdown-bttn" class="bttn ict-dropdown-bttn" data-bind="click: function() { $root.searchFilterBoxesToggleShowDropdown(); return false; }, clickBubble: false">
                 <div id="ict-dropdown-bttn-selecteditem" data-bind="text: $root.searchFilterSelectedBox().name"></div>
                 <div class="ict-icon icon-arrow-down"></div>
-            </button>
+            </div>
 
             <!-- ko if: searchFilterBoxesShowDropdown -->
             <div id="search-filter-boxes-dropdown-list-container" class="dropdown-list-container" data-bind="style: {display: $root.searchFilterBoxesShowDropdown() === true ? 'block' : 'none'}">

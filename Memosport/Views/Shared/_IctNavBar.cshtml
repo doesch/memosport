@@ -1,9 +1,9 @@
 ﻿<button data-bind="click: function(){ $root.searchBttnClick();};" class="bttn"><span class="ict-icon icon-search"></span><span class="bttn-icon-text remove-630px">Suche</span></button>
 
-<button id="ict-boxes-dropdown-bttn" class="bttn ict-dropdown-bttn" data-bind="click: function() { $root.boxesToggleShowDropdown(); return false; }, clickBubble: false">
+<div id="ict-boxes-dropdown-bttn" class="bttn ict-dropdown-bttn" data-bind="click: function() { $root.boxesToggleShowDropdown(); return false; }, clickBubble: false">
     <div id="ict-dropdown-bttn-selecteditem" data-bind="text: $root.box().name"></div>
     <div class="ict-icon icon-arrow-down"></div>
-</button>
+</div>
 <button class="bttn" data-bind="click: function(){$root.NewIndexCard();}"><span class="ict-icon icon-add"></span><span class="bttn-icon-text remove-630px">Neu</span></button>
 
 <!-- ko if: boxesShowDropdown -->
