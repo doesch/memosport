@@ -1998,18 +1998,20 @@ textarea.ict-question-answer-text {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-    align-items: center;
     margin-bottom: @GlobalMargin;
+
+    .wrap-container
+    {
+        display: flex;
+        align-items: center;
+        flex-wrap: nowrap;
+        margin-bottom: @GlobalMargin;
+    }
 
     #search-boxes-dropdown-bttn
     {
         min-width: 100px;
         max-width: 200px;
-    }
-
-    div, span, input
-    {
-        margin-bottom: @GlobalMargin;
     }
 }
 

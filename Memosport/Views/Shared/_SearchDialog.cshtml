@@ -2,28 +2,30 @@
     <div id="ict-search-window">
 
         <form id="search-form" autocomplete="off">
-            <span class="icon icon-search"></span><input id="ict-search-txt" type="text" title="Suche" />
-
-            <div id="search-boxes-dropdown-bttn" class="bttn ict-dropdown-bttn" data-bind="click: function() { $root.searchFilterBoxesToggleShowDropdown(); return false; }, clickBubble: false">
-                <div id="ict-dropdown-bttn-selecteditem" data-bind="text: $root.searchFilterSelectedBox().name"></div>
-                <div class="ict-icon icon-arrow-down"></div>
+            <div class="wrap-container">
+                <span class="icon icon-search"></span><input id="ict-search-txt" type="text" title="Suche" />
             </div>
-
-            <!-- ko if: searchFilterBoxesShowDropdown -->
-            <div id="search-filter-boxes-dropdown-list-container" class="dropdown-list-container" data-bind="style: {display: $root.searchFilterBoxesShowDropdown() === true ? 'block' : 'none'}">
-                <div id="search-filter-boxes-dropdown-scroll-container" class="dropdown-scroll-container">
-                    <!-- ko foreach: $root.searchFilterBoxes -->
-                        <div class="ict-boxes-dropdown-listitem" data-bind="click: function() { $root.searchFilterBoxSelected($data); }, css: {'selected-box' : $data === $root.searchFilterSelectedBox()}">
-                            <span data-bind="text: $data.name"></span>
-                        </div>
-                    <!-- /ko -->
+            <div class="wrap-container">
+                <div id="search-boxes-dropdown-bttn" class="bttn ict-dropdown-bttn" data-bind="click: function() { $root.searchFilterBoxesToggleShowDropdown(); return false; }, clickBubble: false">
+                    <div id="ict-dropdown-bttn-selecteditem" data-bind="text: $root.searchFilterSelectedBox().name"></div>
+                    <div class="ict-icon icon-arrow-down"></div>
                 </div>
-            </div>
-            <!-- /ko -->
+                            <!-- ko if: searchFilterBoxesShowDropdown -->
+                <div id="search-filter-boxes-dropdown-list-container" class="dropdown-list-container" data-bind="style: {display: $root.searchFilterBoxesShowDropdown() === true ? 'block' : 'none'}">
+                    <div id="search-filter-boxes-dropdown-scroll-container" class="dropdown-scroll-container">
+                        <!-- ko foreach: $root.searchFilterBoxes -->
+                            <div class="ict-boxes-dropdown-listitem" data-bind="click: function() { $root.searchFilterBoxSelected($data); }, css: {'selected-box' : $data === $root.searchFilterSelectedBox()}">
+                                <span data-bind="text: $data.name"></span>
+                            </div>
+                        <!-- /ko -->
+                    </div>
+                </div>
+                <!-- /ko -->
 
-            <button id="ict-bttn-search-idc" title="Suche" data-bind="click: function(){ $root.searchIndexCard(); }" class="bttn">
-                <span class="ict-icon icon-arrow-right"></span>
-            </button>
+                <button id="ict-bttn-search-idc" title="Suche" data-bind="click: function(){ $root.searchIndexCard(); }" class="bttn">
+                    <span class="ict-icon icon-arrow-right"></span>
+                </button>
+            </div>
         </form>
 
         <!-- ko if: $root.searchShowHourGlass() -->
