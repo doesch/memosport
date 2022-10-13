@@ -1249,8 +1249,10 @@ requirejs(["../lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "C
 
             // copy all boxes for the filter dropdown in the search-form
             self.searchFilterBoxes([]); // clear
-            self.searchFilterBoxes(self.boxes());
-            self.searchFilterBoxes.unshift(self.searchFilterItemAllBoxes); // add item 'all boxes' to the beginning
+            for (let i = 0; i < self.boxes().length; i++) {
+                self.searchFilterBoxes.push(self.boxes()[i]);
+            }
+            self.searchFilterBoxes.unshift(self.searchFilterItemAllBoxes); // add item 'all boxes' to the beginning            
             self.searchFilterSelectedBox = ko.observable(self.searchFilterItemAllBoxes); // preallocate with item "all boxes"
 
             // open the dialog
