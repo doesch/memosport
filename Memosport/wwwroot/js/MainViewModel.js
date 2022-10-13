@@ -70,6 +70,9 @@ requirejs(["../lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "C
         self.searchDialog = null; // the search-dialog instance
         self.searchShowHourGlass = ko.observable(false);        
         self.searchResult = ko.observableArray();
+        self.searchFilterItemAllBoxes = new indexCardBox.IndexCardBox({ name: "Alle Boxen", id: -1 });
+        self.searchFilterBoxesShowDropdown = ko.observable();
+        self.searchFilterBoxes = ko.observableArray();
 
         // global audio player
         self.Audio = null;
@@ -266,6 +269,60 @@ requirejs(["../lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "C
             }
         };
 
+        self.searchFilterBoxesToggleShowDropdown = function () {
+
+            self.searchFilterBoxesShowDropdown(!self.searchFilterBoxesShowDropdown());
+
+            // when showing, then align the dropdown
+            if (self.searchFilterBoxesShowDropdown()) {
+
+                let lNavbarContainerElement = document.getElementById("search-form");
+                let lControlElement = document.getElementById("search-boxes-dropdown-bttn");
+                let lDropDownElement = document.getElementById("search-filter-boxes-dropdown-list-container");
+                let lDropDownScrollContainerElement = document.getElementById("search-filter-boxes-dropdown-scroll-container");
+                let lDropDownElementPositionLeft = 0; // the position of the dropdown element
+
+                lDropDownScrollContainerElement.style.height = "auto";
+
+                // 1. now calculate the optimal left-position for the dropdown.
+                // the dropdown should fit to the control
+                lDropDownElementPositionLeft = lControlElement.offsetLeft;
+
+                // if the position + widht of the dropdown does not fit into the viewport, then move the dropbox to the left
+                if ((lDropDownElementPositionLeft + lDropDownElement.offsetWidth) > lNavbarContainerElement.offsetWidth) {
+                    lDropDownElementPositionLeft = lNavbarContainerElement.offsetWidth - lDropDownElement.offsetWidth;
+                }
+
+                lDropDownElement.style.left = lDropDownElementPositionLeft + "px";
+
+                // 2. reduce the height of the dropdown
+                if (window.innerHeight < (lDropDownElement.offsetTop + lDropDownElement.offsetHeight)) {
+                    lMarginBottom = 5; // a defined margin to the bottom
+                    lDropDownScrollContainerElement.style.height = (window.innerHeight - (lDropDownElement.offsetTop + lMarginBottom)) + "px";
+                }
+            }
+        };
+
+        // filter box
+        self.searchFilterBoxSelected = function (pIndexCardBox) {
+
+            console.log(pIndexCardBox);
+
+            // close menu
+            self.searchFilterBoxesShowDropdown(false);
+
+            // validate params
+            if (!(pIndexCardBox instanceof indexCardBox.IndexCardBox)) {
+                throw "Invalid argument";
+            }
+
+            // show selected box in select box
+            self.searchFilterSelectedBox(pIndexCardBox);
+
+            // execute search
+            // self.searchIndexCard();
+        };
+
         /// <summary> Play audio file. </summary>
         /// <remarks> Doetsch, 17.12.19. </remarks>
         /// <param name="pFileUrl"> URL of the file. </param>
@@ -352,6 +409,7 @@ requirejs(["../lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "C
             self.latestSourcesDropdownRemove();
             self.mainMenuShowDropdown(false);
             self.boxesShowDropdown(false);
+            self.searchFilterBoxesShowDropdown(false);
         };
 
         /// Get all index card boxes from the server
@@ -1191,6 +1249,13 @@ requirejs(["../lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "C
          */
         self.searchBttnClick = function () {
 
+            // copy all boxes for the filter dropdown in the search-form
+            self.searchFilterBoxes([]); // clear
+            self.searchFilterBoxes(self.boxes());
+            self.searchFilterBoxes.unshift(self.searchFilterItemAllBoxes); // add item 'all boxes' to the beginning
+            self.searchFilterSelectedBox = ko.observable(self.searchFilterItemAllBoxes); // preallocate with item "all boxes"
+
+            // open the dialog
             let lTemplate = document.getElementById("ict-search-dialog");
             self.searchDialog = new tsLib.Dialog(lTemplate, null, null, "ict-search-dialog-container"); //pass callback that binds the knockout viewmodel it´s template
             self.searchDialog.afterRenderCallback = function () { ko.applyBindings(GLOBAL.MainViewModel, this.mHtmlWindow); };
@@ -1199,17 +1264,18 @@ requirejs(["../lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "C
             // set cursor into the field
             document.getElementById("ict-search-txt").focus();
         };
-
+        
         /**
          * search for an index card
          */
+
         self.searchIndexCard = function () {
 
             // clear view
             self.searchResult([]);
 
             // get entered text
-            var lSearchString = document.getElementById("ict-search-txt").value;
+            var lSearchString = document.getElementById("ict-search-txt").value.trim();
 
             // deactivate search button
             document.getElementById("ict-bttn-search-idc").disabled = true;

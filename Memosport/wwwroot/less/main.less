@@ -1992,7 +1992,24 @@ textarea.ict-question-answer-text {
     }
 }
 
-#ict-boxes-dropdown-bttn {
+#search-form
+{
+    position: relative;
+    margin: 0 auto;
+    display: block;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    #search-boxes-dropdown-bttn
+    {
+        min-width: 100px;
+        max-width: 200px;
+    }
+}
+
+.ict-dropdown-bttn
+{
     border: @GlobalBorderControls !important;
     border-radius: @GlobalBorderRadius;
     background-color: white !important;
@@ -2007,11 +2024,13 @@ textarea.ict-question-answer-text {
     display: flex;
     flex-direction: row;
 
-    .icon-arrow-down {
+    .icon-arrow-down
+    {
         margin-top: 8px;
     }
 
-    #ict-boxes-dropdown-bttn-selected-name {
+    .ict-dropdown-bttn-selecteditem
+    {
         display: block;
         flex: 1;
         float: left;
@@ -2025,16 +2044,18 @@ textarea.ict-question-answer-text {
     background-color: #f0f0f0;
 }
 
-#ict-boxes-dropdown-list-container {
+.dropdown-list-container {
     .dropdown-menu;
     display: none;
     z-index: 1;
 
-    #ict-boxes-dropdown-scroll-container {
+    .dropdown-scroll-container
+    {
         overflow-y: scroll;
     }
 
-    .ict-boxes-dropdown-listitem {
+    .ict-boxes-dropdown-listitem
+    {
         @PaddingY: 5px;
         @Height: @GlobalButtonHeight + @PaddingY + @PaddingY;
 
@@ -2043,20 +2064,23 @@ textarea.ict-question-answer-text {
         border-bottom: 1px solid @GlobalBorderColor;
         padding: 0px @PaddingY;
 
-        &:hover {
+        &:hover
+        {
             cursor: pointer;
             background-color: @GlobalHoverBgColor;
         }
 
         @ButtonWidth: 35px;
 
-        .ict-boxes-dropdown-listitem-col-1 {
+        .ict-boxes-dropdown-listitem-col-1
+        {
             float: left;
             min-width: @GlobalDropDownWidth - @ButtonWidth - 30px;
             text-overflow: ellipsis;
         }
 
-        .ict-boxes-dropdown-listitem-col-2 {
+        .ict-boxes-dropdown-listitem-col-2
+        {
             float: right;
         }
     }

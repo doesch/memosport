@@ -1,8 +1,29 @@
 ﻿<script id="ict-search-dialog" type="text/html">
     <div id="ict-search-window">
 
-        <form style="text-align: center;">
-            <span class="icon icon-search"></span><input id="ict-search-txt" type="text" title="Suche" /><button id="ict-bttn-search-idc" title="Suche" data-bind="click: function(){ $root.searchIndexCard();};" class="bttn"><span class="ict-icon icon-arrow-right"></span></button>
+        <form id="search-form">
+            <span class="icon icon-search"></span><input id="ict-search-txt" type="text" title="Suche" />
+
+            <button id="search-boxes-dropdown-bttn" class="bttn ict-dropdown-bttn" data-bind="click: function() { $root.searchFilterBoxesToggleShowDropdown(); return false; }, clickBubble: false">
+                <div id="ict-dropdown-bttn-selecteditem" data-bind="text: $root.searchFilterSelectedBox().name"></div>
+                <div class="ict-icon icon-arrow-down"></div>
+            </button>
+
+            <!-- ko if: searchFilterBoxesShowDropdown -->
+            <div id="search-filter-boxes-dropdown-list-container" class="dropdown-list-container" data-bind="style: {display: $root.searchFilterBoxesShowDropdown() === true ? 'block' : 'none'}">
+                <div id="search-filter-boxes-dropdown-scroll-container" class="dropdown-scroll-container">
+                    <!-- ko foreach: $root.searchFilterBoxes -->
+                        <div class="ict-boxes-dropdown-listitem" data-bind="click: function() { $root.searchFilterBoxSelected($data); }, css: {'selected-box' : $data === $root.searchFilterSelectedBox()}">
+                            <span data-bind="text: $data.name"></span>
+                        </div>
+                    <!-- /ko -->
+                </div>
+            </div>
+            <!-- /ko -->
+
+            <button id="ict-bttn-search-idc" title="Suche" data-bind="click: function(){ $root.searchIndexCard(); }" class="bttn">
+                <span class="ict-icon icon-arrow-right"></span>
+            </button>
         </form>
 
         <!-- ko if: $root.searchShowHourGlass() -->
@@ -26,7 +47,7 @@
                     <div class="t-td"><span data-bind="html: $data.IndexCard.question"></span></div>
                     <div class="t-td col-100"><span data-bind="html: $data.IndexCardBox.name"></span></div>
                     <div class="t-td col-50">
-                        <span data-bind="text: $data.IndexCard.known"></span>                        
+                        <span data-bind="text: $data.IndexCard.known"></span>
                         <button id="bttn-reset-known" title="Erneut lernen" class="bttn bttn-icon" data-bind="click: function() { $root.resetKnown($data.IndexCard) }, enable: $data.IndexCard.known > 0, clickBubble: false"><span class="ict-icon icon-thumb-down-white"></span></button>
                     </div>
                 </div>
