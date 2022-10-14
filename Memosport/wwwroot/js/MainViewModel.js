@@ -68,11 +68,13 @@ requirejs(["../lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "C
 
         // search window
         self.searchDialog = null; // the search-dialog instance
+        self.searchText = ko.observable("");
         self.searchShowHourGlass = ko.observable(false);        
         self.searchResult = ko.observableArray();
-        self.searchFilterItemAllBoxes = new indexCardBox.IndexCardBox({ name: "Alle Boxen", id: -1 });
+        self.searchFilterItemAllBoxes = new indexCardBox.IndexCardBox({ name: "*Alle Boxen", id: -1 });
         self.searchFilterBoxesShowDropdown = ko.observable();
         self.searchFilterBoxes = ko.observableArray();
+        self.searchFilterSelectedBox = ko.observable(); // the selected box
 
         // global audio player
         self.Audio = null;
@@ -1252,8 +1254,15 @@ requirejs(["../lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "C
             for (let i = 0; i < self.boxes().length; i++) {
                 self.searchFilterBoxes.push(self.boxes()[i]);
             }
-            self.searchFilterBoxes.unshift(self.searchFilterItemAllBoxes); // add item 'all boxes' to the beginning            
-            self.searchFilterSelectedBox = ko.observable(self.searchFilterItemAllBoxes); // preallocate with item "all boxes"
+            self.searchFilterBoxes.unshift(self.searchFilterItemAllBoxes); // add item 'all boxes' to the beginning
+
+            // clear results if box has changed
+            if (self.searchFilterSelectedBox() !== self.box()) {
+                self.searchResult([]);
+                self.searchText("");
+            }
+            self.searchFilterSelectedBox(self.box()); // preallocate with the current selected box
+
 
             // open the dialog
             let lTemplate = document.getElementById("ict-search-dialog");
@@ -1274,9 +1283,6 @@ requirejs(["../lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "C
             // clear view
             self.searchResult([]);
 
-            // get entered text
-            var lSearchString = document.getElementById("ict-search-txt").value.trim();
-
             // deactivate search button
             document.getElementById("ict-bttn-search-idc").disabled = true;
 
@@ -1285,7 +1291,7 @@ requirejs(["../lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "C
 
             $.ajax({
                 url: "/IndexCardApi/search",
-                data: { pSearchstring: lSearchString, pBoxId: self.searchFilterSelectedBox().id },
+                data: { pSearchstring: self.searchText().trim(), pBoxId: self.searchFilterSelectedBox().id },
                 type: "GET",
                 dataType: "json",
                 success: function (data) {

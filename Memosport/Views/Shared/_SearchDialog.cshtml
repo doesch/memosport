@@ -3,7 +3,7 @@
 
         <form id="search-form" autocomplete="off">
             <div class="wrap-container">
-                <span class="icon icon-search"></span><input id="ict-search-txt" type="text" title="Suche" />
+                <span class="icon icon-search"></span><input id="ict-search-txt" type="text" title="Suche" data-bind="value: searchText" />
             </div>
             <div class="wrap-container">
                 <div id="search-boxes-dropdown-bttn" class="bttn ict-dropdown-bttn" data-bind="click: function() { $root.searchFilterBoxesToggleShowDropdown(); return false; }, clickBubble: false">
