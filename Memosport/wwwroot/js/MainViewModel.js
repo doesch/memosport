@@ -823,6 +823,7 @@ requirejs(["../lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "C
                     self.selectViewModeByOrigin(lXhrIndexCard);
 
                     self.editIndexCard(null);
+                    self.setProgress();
                 },
                 error: function (xhr) {
                     // check for 409 inconsistency which could occur while PUT and the indexcard has a different version
@@ -849,11 +850,12 @@ requirejs(["../lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "C
                 case 2:
                     self.currentMode('learn');
                     break;
-                case 1, 3:
+                case 1:
+                case 3:
                     self.currentMode('preview');
                     break;
                 default:
-                    throw "The index card has an invalid origin: " + pOrigin;
+                    throw "The index card has an invalid origin: " + pIndexCard.origin;
             }
 
         };
