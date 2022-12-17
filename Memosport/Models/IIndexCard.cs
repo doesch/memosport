@@ -65,5 +65,8 @@ namespace Memosport.Models
         DateTime Created { get; set; }
 
         DateTime Modified { get; set; }
+
+        [NotMapped]
+        IndexCardOrigin Origin { get; set; }
     }
 }

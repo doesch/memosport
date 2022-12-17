@@ -23,6 +23,7 @@ export class IndexCard extends tsLib.HelperBase {
     source: string = null;
     known: number = null;
     modified: Date = null;
+    origin: IndexCardOrigin = IndexCardOrigin.new;
 
     // marker to delete images or audio
     deleteQuestionImage: boolean = false;
@@ -42,4 +43,13 @@ export class IndexCard extends tsLib.HelperBase {
             this.known = 0;
         }
     }
+}
+
+/// defines the origin of the index card which is relevant for the view
+enum IndexCardOrigin
+{
+    unknown,
+    new,
+    learnStack, // the index card is loaded for the lean stack
+    searchResult // the index card comes from the searchResult
 }

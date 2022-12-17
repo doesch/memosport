@@ -39,6 +39,7 @@ define(["require", "exports", "../../lib/tsLib/tsLib"], function (require, expor
             _this.source = null;
             _this.known = null;
             _this.modified = null;
+            _this.origin = IndexCardOrigin["new"];
             _this.deleteQuestionImage = false;
             _this.deleteAnswerImage = false;
             _this.deleteQuestionAudio = false;
@@ -52,5 +53,12 @@ define(["require", "exports", "../../lib/tsLib/tsLib"], function (require, expor
         return IndexCard;
     }(tsLib.HelperBase));
     exports.IndexCard = IndexCard;
+    var IndexCardOrigin;
+    (function (IndexCardOrigin) {
+        IndexCardOrigin[IndexCardOrigin["unknown"] = 0] = "unknown";
+        IndexCardOrigin[IndexCardOrigin["new"] = 1] = "new";
+        IndexCardOrigin[IndexCardOrigin["learnStack"] = 2] = "learnStack";
+        IndexCardOrigin[IndexCardOrigin["searchResult"] = 3] = "searchResult";
+    })(IndexCardOrigin || (IndexCardOrigin = {}));
 });
 //# sourceMappingURL=IndexCard.js.map

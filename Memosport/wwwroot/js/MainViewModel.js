@@ -764,7 +764,9 @@ requirejs(["../lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "C
          * When user pressed the cancel button in the edit mode
          */
         self.editCancel = function () {
-            self.currentMode("learn");
+
+            // select view mode dependent on the origin of the card
+            self.selectViewModeByOrigin(self.editIndexCard());
             self.editIndexCard(null);
             self.setProgress();
         };
@@ -817,16 +819,8 @@ requirejs(["../lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "C
                     // updated view (show index card) (show also when it is a different selected box for verification)
                     self.currentIndexCard(lXhrIndexCard);
 
-                    // when the user has edited the card which he is currently learning, then go back to the learn-mode
-                    if (self.dataset()[self.i()].id === lXhrIndexCard.id)
-                    {
-                        self.currentMode('learn');
-                    }
-                    else
-                    {
-                        // show the index card in preview mode (e.g. the index card is new)
-                        self.currentMode('preview');
-                    }
+                    // select the view mode dependent on the origin of the card
+                    self.selectViewModeByOrigin(lXhrIndexCard);
 
                     self.editIndexCard(null);
                 },
@@ -846,6 +840,22 @@ requirejs(["../lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "C
                     self.editIndexCardIsLoading(false);
                 }
             });
+        };
+
+        /// selects the view mode dependent on the origin of an index card
+        self.selectViewModeByOrigin = function(pIndexCard) {
+
+            switch (pIndexCard.origin) {
+                case 2:
+                    self.currentMode('learn');
+                    break;
+                case 1, 3:
+                    self.currentMode('preview');
+                    break;
+                default:
+                    throw "The index card has an invalid origin: " + pOrigin;
+            }
+
         };
 
         /// Show dialog when inconsistency and provide button to reload indexcard boxes from server
@@ -1244,8 +1254,9 @@ requirejs(["../lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "C
                 self.searchDialog.close();
             }
 
-            // show in ict
+            // show index card as preview
             self.currentIndexCard(pIndexCard);
+            self.currentMode('preview');
         };
 
         // reset known status

@@ -84,6 +84,10 @@ namespace Memosport.Models
 
         public DateTime Modified { get; set; }
 
+        // the origin of the index card. This is property is required for the behavior of the view (usability)
+        [NotMapped]
+        public IndexCardOrigin Origin { get; set; }
+
         /// <summary> Remove all uploaded files. </summary>
         /// <remarks> Doetsch, 19.12.19. </remarks>
         /// <param name="pIndexCard">   . </param>
@@ -95,5 +99,14 @@ namespace Memosport.Models
             Upload.DeleteFile(pIndexCard.QuestionAudioUrl, pWebRootPath);
             Upload.DeleteFile(pIndexCard.AnswerAudioUrl, pWebRootPath);
         }
+    }
+
+    /// defines the origin of the index card which is relevant for the view
+    public enum IndexCardOrigin
+    {
+        Unknown,
+        New,
+        LearnStack, // the index card is loaded for the lean stack
+        SearchResult // the index card comes from the searchResult
     }
 }

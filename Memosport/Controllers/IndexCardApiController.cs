@@ -113,10 +113,16 @@ namespace Memosport.Controllers
             }
 
             // execute sql
-            var lResult = await lQuery.ToListAsync();
+            var result = await lQuery.ToListAsync();
+
+            // set origin
+            foreach (var item in result)
+            {
+                item.Origin = IndexCardOrigin.LearnStack;
+            }
 
             // return dataset
-            return Json(lResult);
+            return Json(result);
         }
 
         /// <summary>
@@ -163,6 +169,12 @@ namespace Memosport.Controllers
             // execute query
             var lSearchResult = await lQuery.ToListAsync();
 
+            // set origin
+            foreach (var item in lSearchResult)
+            {
+                item.IndexCard.Origin = IndexCardOrigin.SearchResult;
+            }
+
             // return created indexcard
             return Json(lSearchResult);
         }
@@ -197,6 +209,9 @@ namespace Memosport.Controllers
 
             // cleanup the indexcard response object
             lIndexCard = CleanupIndexCardResponse(lIndexCard);
+
+            // tag as new index card
+            lIndexCard.Origin = IndexCardOrigin.New;
 
             // return created indexcard
             return Json(lIndexCard);
@@ -280,6 +295,8 @@ namespace Memosport.Controllers
             _context.IndexCards.Add((IndexCard)lIndexCard);
             await _context.SaveChangesAsync();
 
+            // tag as new index card
+            lIndexCard.Origin = IndexCardOrigin.New;
 
             // return created indexcard
             return Json(lIndexCard);
