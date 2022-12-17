@@ -676,7 +676,12 @@ requirejs(["../lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "C
             }
 
             var lProgress = (self.i() + 1) / self.dataset().length * 100;
-            document.getElementById("ict-progress").style.width = lProgress + '%';
+            var element = document.getElementById("ict-progress")
+
+            // checkk if element exists because the preview has no progress bar
+            if (element) {
+                element.style.width = lProgress + '%';
+            }
         };
 
         /**
