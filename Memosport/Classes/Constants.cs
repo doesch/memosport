@@ -9,5 +9,8 @@ namespace Memosport.Classes
     {
         /// <summary> (Immutable) the authentication expire in days. </summary>
         public const int AuthExpireInDays = 365;
+
+        // number of repetitions till the index card disappears from stack
+        public const int Repetitions = 3;
     }
 }

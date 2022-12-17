@@ -564,5 +564,4 @@
     }
 
     Plugin();
-
 }(window));

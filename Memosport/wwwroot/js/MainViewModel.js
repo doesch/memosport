@@ -4,26 +4,22 @@ GLOBAL.BlankImg = "data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs%3D"
 GLOBAL.NoImg = "//:0"; // No image -> use alt text
 
 requirejs(["../lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "Classes/IctOptions", "Classes/SearchResult"], function (tsLib, indexCard, indexCardBox, ictOptions, searchResult) {
-
     // init knockout
     (function () {
-
         /// <summary>JavaScript Init Settings</summary>
 
         ///
         /// when document is ready, init ViewModel
-        /// 
+        ///
         GLOBAL.MainViewModel = new MainViewModel();
         ko.applyBindings(GLOBAL.MainViewModel);
 
         // init the app
         GLOBAL.MainViewModel.Init();
-
     }());
 
     // my viewmodel
     function MainViewModel() {
-
         let self = this;
 
         self.dataset = ko.observableArray(); // contains all index cards for the current training instance
@@ -42,7 +38,7 @@ requirejs(["../lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "C
         }
 
         // self.ictOptions is dedicated for the form
-        self.ictOptions = ko.observable(new ictOptions.IctOptions(JSON.parse(localStorage.getItem('ictOptions')))); 
+        self.ictOptions = ko.observable(new ictOptions.IctOptions(JSON.parse(localStorage.getItem('ictOptions'))));
 
         self.boxesShowDropdown = ko.observable(false); // if the dropdown is visible or not
         self.mainMenuShowDropdown = ko.observable(false); // toggle dropdown of the main menu
@@ -69,7 +65,7 @@ requirejs(["../lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "C
         // search window
         self.searchDialog = null; // the search-dialog instance
         self.searchText = ko.observable("");
-        self.searchShowHourGlass = ko.observable(false);        
+        self.searchShowHourGlass = ko.observable(false);
         self.searchResult = ko.observableArray();
         self.searchFilterItemAllBoxes = new indexCardBox.IndexCardBox({ name: "*Alle Boxen", id: -1 });
         self.searchFilterBoxesShowDropdown = ko.observable();
@@ -105,18 +101,16 @@ requirejs(["../lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "C
 
         // Show Options dialog
         self.showOptionsDialog = function () {
-
             // ToDo -oDoetsch: close main menu if open
 
             // create buttons
             let lButtonApply = new tsLib.Button("Anwenden", function() {
-
                 // write settings into cache
                 // validate shema
                 if (self.ictOptions() instanceof ictOptions.IctOptions === false) {
                     throw new Error("Invalid data type. Expected type: 'Options'");
                 }
-                
+
                 // save options
                 localStorage.setItem('ictOptions', JSON.stringify(self.ictOptions()));
 
@@ -127,7 +121,6 @@ requirejs(["../lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "C
             }, "bttn bttn-main");
 
             let lButtonCancel = new tsLib.Button("Abbrechen", function() {
-
                 // cancel settings and apply cached options
                 self.ictOptions(new ictOptions.IctOptions(JSON.parse(localStorage.getItem('ictOptions'))));
             });
@@ -147,7 +140,6 @@ requirejs(["../lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "C
 
         // click on radio box for order
         self.ictOptionOrderChanged = function(pOrder) {
-
             self.ictOptions().order = pOrder;
             self.ictOptions(self.ictOptions()); // trigger re-render
 
@@ -156,7 +148,6 @@ requirejs(["../lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "C
 
         // click on the radio box for the quantity of cards
         self.ictOptionQuantityChanged = function (pQuantityMode) {
-
             self.ictOptions().quantityMode = pQuantityMode;
             self.ictOptions(self.ictOptions()); // trigger re-render
 
@@ -181,7 +172,6 @@ requirejs(["../lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "C
 
         // show the question/answer image
         self.showImage = function (pType) {
-            
             // validate type
             if (pType !== "question" && pType !== "answer") {
                 throw new Error("Invalid type. Expected: 'answer' or 'question'.");
@@ -195,7 +185,6 @@ requirejs(["../lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "C
 
             // add "load" event
             lImage.addEventListener("load", function (a, b) {
-
                 // create html-template
                 let lContainer = document.createElement("div");
                 lContainer.setAttribute("class", "ict-" + pType + "-image-dialog");
@@ -229,7 +218,6 @@ requirejs(["../lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "C
 
         // show the source of the index card
         self.toggleShowSource = function () {
-
             let lTemplate = document.getElementById("ict-dialog-source-template");
             let lDialog = new tsLib.Dialog(lTemplate, "Quelle");
 
@@ -238,7 +226,6 @@ requirejs(["../lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "C
         };
 
         self.boxesToggleShowDropdown = function () {
-
             self.boxesShowDropdown(!self.boxesShowDropdown());
 
             // when showing, then align the dropdown
@@ -272,12 +259,10 @@ requirejs(["../lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "C
         };
 
         self.searchFilterBoxesToggleShowDropdown = function () {
-
             self.searchFilterBoxesShowDropdown(!self.searchFilterBoxesShowDropdown());
 
             // when showing, then align the dropdown
             if (self.searchFilterBoxesShowDropdown()) {
-
                 let lNavbarContainerElement = document.getElementById("search-form");
                 let lControlElement = document.getElementById("search-boxes-dropdown-bttn");
                 let lDropDownElement = document.getElementById("search-filter-boxes-dropdown-list-container");
@@ -307,7 +292,6 @@ requirejs(["../lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "C
 
         // filter box
         self.searchFilterBoxSelected = function (pIndexCardBox) {
-
             // close menu
             self.searchFilterBoxesShowDropdown(false);
 
@@ -328,7 +312,6 @@ requirejs(["../lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "C
         /// <param name="pFileUrl"> URL of the file. </param>
         /// <returns> . </returns>
         self.PlayAudioFile = function (pFileUrl) {
-
             var lFullFileUrl = Global.Uploads + pFileUrl;
 
             // stop playing if it still plays (toggle)
@@ -372,13 +355,11 @@ requirejs(["../lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "C
             self.start();
         };
 
-
         /**
          * Init the app
          * @constructor
          */
         self.Init = function () {
-
             // when using back button (e.g. smartphone), warn user
             window.onbeforeunload = function () { return "Möchten Sie den Trainier wirklich verlassen? Sie müssten beim nächsten mal von vorne beginnen."; };
 
@@ -387,16 +368,14 @@ requirejs(["../lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "C
 
             // register paste event
             window.addEventListener("paste", function (pEvent) {
-
                 GLOBAL.MainViewModel.PastedFile(pEvent);
-
             }, false);
-            
+
             // remove class on click
             document.getElementById('software-bttn-start').addEventListener("click", function () {
                 tsLib.Style.removeClass(document.getElementById('software-bttn-start'), "mark-start-button");
             });
-            
+
             // get Index Card Boxes into dropdown
             let lCallback = self.LoadLatestLearnedBox;
             self.GetIndexCardBoxes(lCallback);
@@ -404,7 +383,6 @@ requirejs(["../lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "C
 
         // close all menus (click-event on body)
         self.closeAllMenus = function(e) {
-
             // the dropdown for the latest sources of an indexcard.
             self.latestSourcesDropdownRemove();
             self.mainMenuShowDropdown(false);
@@ -414,7 +392,6 @@ requirejs(["../lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "C
 
         /// Get all index card boxes from the server
         self.GetIndexCardBoxes = function (pCallback) {
-
             $.ajax({
                 url: '/IndexCardBoxApi',
                 type: 'get',
@@ -426,7 +403,6 @@ requirejs(["../lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "C
                     self.loadingScreen.close();
                 },
                 success: function (data) {
-
                     var lTmpArr = [];
 
                     // convert response into instances
@@ -439,7 +415,7 @@ requirejs(["../lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "C
 
                     // add all boxes to dropdown
                     self.boxes(lTmpArr);
-                    
+
                     // execute callback if exists
                     if (typeof pCallback !== "undefined") {
                         pCallback();
@@ -450,7 +426,6 @@ requirejs(["../lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "C
 
         // load the latest learned box
         self.LoadLatestLearnedBox = function() {
-
             let lBox = null;
 
             // get latest learned box
@@ -472,7 +447,6 @@ requirejs(["../lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "C
         };
 
         self.BoxSelected = function (pIndexCardBox) {
-
             // close menu
             self.boxesShowDropdown(false);
 
@@ -493,15 +467,13 @@ requirejs(["../lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "C
          */
 
         self.start = function () {
-
             // set index back
             self.i(-1);
 
-            self.loadData(); // init set data and start       
+            self.loadData(); // init set data and start
         };
 
         self.loadData = function () {
-
             // clear dataset
             self.dataset([]);
             self.currentIndexCard(new indexCard.IndexCard());
@@ -522,7 +494,6 @@ requirejs(["../lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "C
                     self.loadingScreen.close();
                 },
                 success: function (data) {
-
                     if (data !== null && data.length > 0) {
                         // create objects
                         var lTmpArr = [];
@@ -568,7 +539,6 @@ requirejs(["../lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "C
         /// <param name="pArr"> The array. </param>
         /// <returns> . </returns>
         self.randomArr = function (pArr) {
-
             var lTmpArr = [];
 
             while (pArr.length > 0) {
@@ -584,11 +554,10 @@ requirejs(["../lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "C
         }
 
         /*
-         * 
+         *
          * Next button clicked
          */
         self.known = function (pKnown) {
-
             // set known / not known
             if (pKnown) {
                 self.currentIndexCard().known += 1;
@@ -609,7 +578,6 @@ requirejs(["../lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "C
                 processData: false,
                 dataType: 'json',
                 success: function (data) {
-
                     var lTmpIndexCard = new indexCard.IndexCard(data);
 
                     // update modified date to keep consistency
@@ -660,7 +628,6 @@ requirejs(["../lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "C
          * Render the index card
          */
         self.showIndexCard = function () {
-
             // clean images
             self.cleanImages();
 
@@ -678,7 +645,6 @@ requirejs(["../lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "C
          * Close the preview
          */
         self.closePreview = function () {
-
             // switch to learn mode
             self.currentMode('learn');
 
@@ -705,7 +671,6 @@ requirejs(["../lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "C
          * @constructor
          */
         self.setProgress = function () {
-
             if (self.i() < 0 || self.dataset().length === 0) {
                 return;
             }
@@ -718,7 +683,6 @@ requirejs(["../lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "C
          * do not show the old image any more
          */
         self.cleanImages = function () {
-
             var lElement = document.querySelector("div.img-mini-container img");
             if (lElement !== null && typeof lElement !== "undefined") {
                 lElement.src = "//:0";
@@ -730,7 +694,6 @@ requirejs(["../lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "C
          * @constructor
          */
         self.NewIndexCard = function () {
-
             let lIndexCard = new indexCard.IndexCard();
             // Assign selected box id
             lIndexCard.indexCardBoxId = self.box().id;
@@ -740,14 +703,12 @@ requirejs(["../lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "C
 
         /// user clicked on a text box to edit the index card
         self.editForm = function (pIndexCard) {
-
             if (!(pIndexCard instanceof indexCard.IndexCard)) {
                 throw new Error("Invalid Arguments. Expected type: IndexCard");
             }
 
             // A box must be selected to relate the new card to an box
             if (!(self.box() instanceof indexCardBox.IndexCardBox)) {
-
                 new tsLib.MessageBox("Bitte wählen Sie einen Karteikasten aus.").show();
 
                 if (self.boxesShowDropdown() === false) {
@@ -760,7 +721,7 @@ requirejs(["../lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "C
 
             self.editIndexCard(pIndexCard);
             self.currentMode("edit");
-            
+
             if (pIndexCard.id === null) {
                 // its a new index card
                 self.showQuestion(true);
@@ -774,10 +735,9 @@ requirejs(["../lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "C
                 menubar: false,
                 resize: false,
                 toolbar: 'bold italic',
-                plugins: "paste", // plugin for paste_as_tesxt paste 
+                plugins: "paste", // plugin for paste_as_tesxt paste
                 paste_as_text: true, // "paste as text" by default!
                 init_instance_callback: function (editor) {
-
                     // set cursor into editor
                     // set focus
                     if (self.showQuestion() === true && editor.settings.id === "ict-question-textarea") {
@@ -789,7 +749,6 @@ requirejs(["../lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "C
                     // update observables when content changed
                     editor.on('change',
                         function(e) {
-
                             // update observable
                             if (e.target.id === "ict-question-textarea") {
                                 self.editIndexCard().question = tinymce.get("ict-question-textarea").getContent();
@@ -805,7 +764,6 @@ requirejs(["../lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "C
          * When user pressed the cancel button in the edit mode
          */
         self.editCancel = function () {
-
             self.currentMode("learn");
             self.editIndexCard(null);
             self.setProgress();
@@ -815,17 +773,16 @@ requirejs(["../lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "C
          * save the index card
          */
         self.editSave = function () {
-
             // show saving...
             self.editIndexCardIsLoading(true);
 
             let lIndexCard = self.editIndexCard();
-            
+
             if (lIndexCard.id === null) {
                 // remove id when not set (new)
                 delete lIndexCard.id;
             }
-            
+
             // convert indexcard to payload
             let lFormData = self.indexCardToFormData(lIndexCard);
 
@@ -845,7 +802,6 @@ requirejs(["../lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "C
                 processData: false,
                 dataType: "json",
                 success: function (xhr) {
-
                     var lXhrIndexCard = new indexCard.IndexCard(xhr);
 
                     // replace, when update.
@@ -869,10 +825,10 @@ requirejs(["../lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "C
                     else
                     {
                         // show the index card in preview mode (e.g. the index card is new)
-                        self.currentMode('preview');                        
+                        self.currentMode('preview');
                     }
-                                        
-                    self.editIndexCard(null);                   
+
+                    self.editIndexCard(null);
                 },
                 error: function (xhr) {
                     // check for 409 inconsistency which could occur while PUT and the indexcard has a different version
@@ -886,7 +842,6 @@ requirejs(["../lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "C
                     }
                 },
                 complete: function () {
-
                     // show buttons again
                     self.editIndexCardIsLoading(false);
                 }
@@ -901,13 +856,11 @@ requirejs(["../lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "C
 
         /// convert an indexcard to an FormData-payload
         self.indexCardToFormData = function (pIndexCard) {
-
             // create post payload for form
             let lFormData = new FormData();
 
             // add data to formdata payload
             for (let lProp in pIndexCard) {
-
                 // do not send properties which are null
                 if (pIndexCard.hasOwnProperty(lProp) === false || pIndexCard[lProp] === null || typeof pIndexCard[lProp] === "function" && pIndexCard[lProp] === null) {
                     continue;
@@ -915,7 +868,6 @@ requirejs(["../lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "C
 
                 // check also in observable
                 if (pIndexCard.hasOwnProperty(lProp) === true) {
-
                     // assign data
                     // distinguish between observable and not observable
                     if (typeof pIndexCard[lProp] === "function") {
@@ -929,15 +881,12 @@ requirejs(["../lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "C
             }
 
             return lFormData;
-
         };
 
         // delete an index card (button-click-event in edit mode)
         self.editDelete = function () {
-
             // show prompt
             let lBttnDelete = new tsLib.Button("Löschen", function() {
-
                 // show buttons again
                 self.editIndexCardIsLoading(true);
 
@@ -947,12 +896,10 @@ requirejs(["../lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "C
                     type: "DELETE",
                     dataType: "json",
                     success: function (data) {
-
                         // remove item from deck
                         let lArr = self.dataset();
                         for (let i = 0, len = lArr.length; i < len; i++) {
                             if (lArr[i].id === self.editIndexCard().id) {
-
                                 lArr.splice(i, 1);
                                 self.dataset(lArr);
                                 break;
@@ -981,12 +928,10 @@ requirejs(["../lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "C
                         new tsLib.MessageBox("Could not delete this post. Please try again later.").show();
                     },
                     complete: function () {
-
                         // show buttons again
                         self.editIndexCardIsLoading(false);
                     }
                 });
-
             });
 
             let lBttnCancel = new tsLib.Button("Abbrechen", function () {
@@ -998,10 +943,9 @@ requirejs(["../lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "C
         };
 
         /**
-         * Show dialog which provides functionality to move an index card into another box 
+         * Show dialog which provides functionality to move an index card into another box
          */
         self.indexCardMoveClick = function () {
-
             // validate param
             if (self.currentIndexCard instanceof indexCard.IndexCard === true) {
                 throw new Error("Invalid argument. Expected type: 'IndexCard'.");
@@ -1019,7 +963,6 @@ requirejs(["../lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "C
             });
 
             let lBttnOk = new tsLib.Button("OK", function () {
-
                 // assign cached box-index
                 self.currentIndexCard().indexCardBoxId = self.boxMoveSelected();
 
@@ -1041,13 +984,10 @@ requirejs(["../lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "C
                         lSandtimer.show();
                     },
                     success: function (xhr) {
-                        
                         // when indexcard belonged to current selected box, then remove
                         if (lOldBoxId === self.box().id) {
-
                             for (var i = 0, len = self.dataset().length; i < len; i++) {
                                 if (self.dataset()[i].id === self.currentIndexCard().id) {
-
                                     self.dataset.remove(self.dataset()[i]);
 
                                     // when in edit-mode, then switch to learn-mode
@@ -1059,9 +999,8 @@ requirejs(["../lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "C
 
                                     break;
                                 }
-                            } 
+                            }
                         }
-
                     }, complete: function () {
                         // close hour glass
                         lSandtimer.close();
@@ -1079,7 +1018,6 @@ requirejs(["../lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "C
 
         // the user selects an differen box for the current indexcard via the dialog
         self.indexCardMoveBoxSelectedClick = function (pIndexCardBox) {
-
             if (pIndexCardBox instanceof indexCardBox.IndexCardBox === false) {
                 throw new Error("Invalid argument. Expected type: 'IndexCardBox'.");
             }
@@ -1092,9 +1030,7 @@ requirejs(["../lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "C
         /// <remarks> Doetsch, 15.01.20. </remarks>
         /// <returns> . </returns>
         self.indexCardDuplicateClick = function() {
-            
             let lBttnOk = new tsLib.Button("OK", function () {
-                
                 // convert into payload (formdata)
                 let lFormData = self.indexCardToFormData(self.currentIndexCard());
 
@@ -1109,7 +1045,6 @@ requirejs(["../lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "C
                         self.loadingScreen.show();
                     },
                     success: function (xhr) {
-
                         // render indexcard
                         let lIndexCard = new indexCard.IndexCard(xhr);
 
@@ -1165,14 +1100,12 @@ requirejs(["../lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "C
 
         ///changed the question image element
         self.QuestionImageChanged = function (pHtmlElement) {
-
             self.editIndexCard().questionImageFile(pHtmlElement.files[0]);
             // re-render
             self.editIndexCard(self.editIndexCard());
         };
 
         self.AnswerImageChanged = function (pHtmlElement) {
-
             self.editIndexCard().answerImageFile(pHtmlElement.files[0]);
             // re-render
             self.editIndexCard(self.editIndexCard());
@@ -1180,25 +1113,21 @@ requirejs(["../lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "C
 
         /// Audio file of question changed
         self.QuestionAudioChanged = function (pHtmlElement) {
-
             self.editIndexCard().questionAudioFile(pHtmlElement.files[0]);
             // re-render
             self.editIndexCard(self.editIndexCard());
         };
 
         self.AnswerAudioChanged = function (pHtmlElement) {
-
             self.editIndexCard().answerAudioFile(pHtmlElement.files[0]);
             // re-render
             self.editIndexCard(self.editIndexCard());
         };
 
-
         /**
          * Delete the question image
          */
         self.DeleteQuestionImage = function () {
-
             var lIndexCard = self.editIndexCard();
             lIndexCard.questionImageUrl = null;
             lIndexCard.questionImageThumbUrl = null;
@@ -1211,7 +1140,6 @@ requirejs(["../lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "C
          * Delete the answer image
          */
         self.DeleteAnswerImage = function () {
-
             var lIndexCard = self.editIndexCard();
             lIndexCard.answerImageUrl = null;
             lIndexCard.answerImageFile(null);
@@ -1224,7 +1152,6 @@ requirejs(["../lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "C
          * Delete the question audio file
          */
         self.DeleteQuestionAudio = function () {
-
             var lIndexCard = self.editIndexCard();
             lIndexCard.questionAudioUrl = null;
             lIndexCard.questionAudioFile(null);
@@ -1236,7 +1163,6 @@ requirejs(["../lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "C
          * Delete the ANSWER audio file
          */
         self.DeleteAnswerAudio = function () {
-
             var lIndexCard = self.editIndexCard();
             lIndexCard.answerAudioUrl = null;
             lIndexCard.answerAudioFile(null);
@@ -1248,7 +1174,6 @@ requirejs(["../lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "C
          * seachbttn clicked
          */
         self.searchBttnClick = function () {
-
             // copy all boxes for the filter dropdown in the search-form
             self.searchFilterBoxes([]); // clear
             for (let i = 0; i < self.boxes().length; i++) {
@@ -1263,7 +1188,6 @@ requirejs(["../lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "C
             }
             self.searchFilterSelectedBox(self.box()); // preallocate with the current selected box
 
-
             // open the dialog
             let lTemplate = document.getElementById("ict-search-dialog");
             self.searchDialog = new tsLib.Dialog(lTemplate, null, null, "ict-search-dialog-container"); //pass callback that binds the knockout viewmodel it´s template
@@ -1273,13 +1197,12 @@ requirejs(["../lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "C
             // set cursor into the field
             document.getElementById("ict-search-txt").focus();
         };
-        
+
         /**
          * search for an index card
          */
 
         self.searchIndexCard = function () {
-
             // clear view
             self.searchResult([]);
 
@@ -1295,7 +1218,6 @@ requirejs(["../lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "C
                 type: "GET",
                 dataType: "json",
                 success: function (data) {
-
                     // parse data
                     var lTmpArr = [];
                     for (var i = 0, len = data.length; i < len; i++) {
@@ -1304,9 +1226,7 @@ requirejs(["../lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "C
 
                     // render search
                     self.searchResult(lTmpArr);
-
                 }, complete: function () {
-
                     document.getElementById("ict-bttn-search-idc").disabled = false;
                     self.searchShowHourGlass(false);
                 }
@@ -1315,9 +1235,8 @@ requirejs(["../lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "C
 
         // Search index Card click event
         self.searchEditIndexCardClick = function (pIndexCard) {
-
             if (!(pIndexCard instanceof indexCard.IndexCard)) {
-                throw "Invalid argument. Expected type IndexCard.";                
+                throw "Invalid argument. Expected type IndexCard.";
             }
 
             // close search window
@@ -1331,7 +1250,6 @@ requirejs(["../lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "C
 
         // reset known status
         self.resetKnown = function (pIndexCard) {
-
             if (!(pIndexCard instanceof indexCard.IndexCard)) {
                 throw "Invalid argument. Expected type IndexCard.";
             }
@@ -1353,7 +1271,6 @@ requirejs(["../lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "C
                 processData: false,
                 dataType: 'json',
                 success: function (data) {
-
                     var lTmpIndexCard = new indexCard.IndexCard(data);
 
                     // update card in stack if exists
@@ -1366,8 +1283,7 @@ requirejs(["../lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "C
 
                     // update card in search table
                     for (let i = 0; i < self.searchResult().length; i++) {
-                        if (self.searchResult()[i].IndexCard.id === lTmpIndexCard.id) {                            
-
+                        if (self.searchResult()[i].IndexCard.id === lTmpIndexCard.id) {
                             // replace indexcard
                             self.searchResult()[i].IndexCard = lTmpIndexCard;
 
@@ -1400,7 +1316,6 @@ requirejs(["../lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "C
          * @param {any} pEvent
          */
         self.PastedFile = function (pEvent) {
-
             // get the current focussed html-element
             var lHtmlElement = document.activeElement;
             var lClipboardData = pEvent.clipboardData;
@@ -1465,15 +1380,12 @@ requirejs(["../lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "C
 
         // click on button to create a new index card box
         self.createNewIndexCardBoxClick = function () {
-
             // fill form with new indexcardbox
             self.editIndexCardBoxForm(new indexCardBox.IndexCardBox());
-
         };
 
         // show form to create or edit an indexcardbox
         self.editIndexCardBoxForm = function(pIndexCardBox) {
-
             // validate argument
             if (pIndexCardBox instanceof indexCardBox.IndexCardBox === false) {
                 throw new Error("Invalid Argument. Expected: IndexCardBox.");
@@ -1487,7 +1399,6 @@ requirejs(["../lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "C
 
             // create buttons
             let lBttnSave = new tsLib.Button("Speichern", function() {
-
                     // edit or create (new)
                     let lHttpVerb = self.editIndexCardBox().id === null ? "POST" : "PUT";
                     let lUri = "/IndexCardBoxApi";
@@ -1503,7 +1414,6 @@ requirejs(["../lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "C
                         contentType: "application/json",
                         dataType: "json",
                         success: function(xhr) {
-
                             let lIndexCardBox = new indexCardBox.IndexCardBox(xhr);
 
                             // when new, then put into the list
@@ -1541,11 +1451,9 @@ requirejs(["../lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "C
             });
 
             let lBttnDelete = new tsLib.Button("Löschen", function() {
-
                 // show propt and ask user to delete
-                
-                let lBttnConfirmDelete = new tsLib.Button("Löschen", function () {
 
+                let lBttnConfirmDelete = new tsLib.Button("Löschen", function () {
                     // show hour glass
                     let lSandtimer = new tsLib.Sandtimer();
 
@@ -1558,14 +1466,12 @@ requirejs(["../lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "C
                             lSandtimer.show();
                         },
                         success: function (xhr) {
-
                             let lIndexCardBox = new indexCardBox.IndexCardBox(xhr);
 
                             // remove from dropdown list
                             let lArr = self.boxes();
                             for (let i = 0, len = lArr.length; i < len; i++) {
                                 if (lArr[i].id === lIndexCardBox.id) {
-
                                     lArr.splice(i, 1);
                                     self.boxes(lArr);
                                     break;
@@ -1574,7 +1480,6 @@ requirejs(["../lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "C
 
                             // when indexboxcard currently selected, then remove
                             if (self.box().id === self.editIndexCardBox().id) {
-
                                 // leave edit mode
                                 self.currentMode("learn");
                                 self.box(self.boxPlaceholder);
@@ -1583,9 +1488,7 @@ requirejs(["../lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "C
                             }
 
                             self.editIndexCardBox(null);
-
                         }, complete: function () {
-
                             // remove hour glass
                             lSandtimer.close();
                         }
@@ -1596,7 +1499,6 @@ requirejs(["../lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "C
 
                 // show prompt now
                 new tsLib.MessageBox("Möchten Sie die Box wirklich löschen? Es werden alle Karteikarten darin gelöscht.", null, [lBttnConfirmDelete, lBttnConfirmCancel]).show();
-
             }, "float-left"); // position button left
 
             let lBttnCancel = new tsLib.Button("Abbrechen", function() {});
@@ -1621,7 +1523,6 @@ requirejs(["../lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "C
 
         // user wants to translate EN/DE
         self.TranslateClick = function (pCurrentLang, pTargetLang) {
-
             // strip html from question
             let lText = tinymce.get("ict-question-textarea").getBody().textContent;
 
@@ -1636,8 +1537,7 @@ requirejs(["../lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "C
                     self.loadingScreen.close();
                 },
                 success: function (xhr) {
-
-                    // pass the translated answer into the textfield   
+                    // pass the translated answer into the textfield
                     tinymce.get("ict-answer-textarea").setContent(xhr);
                     self.editIndexCard().answer = tinymce.get("ict-answer-textarea").getContent();
                 }
@@ -1646,7 +1546,6 @@ requirejs(["../lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "C
 
         /// click on menu button
         self.menuBttnClick = function () {
-
             // toggle menu
             self.mainMenuShowDropdown(!self.mainMenuShowDropdown());
 
@@ -1665,7 +1564,6 @@ requirejs(["../lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "C
 
         // validate if the source input field has an value
         self.sourceInputHasValue = function() {
-
             let lInputElement = document.getElementById("ict-input-source");
 
             if (typeof lInputElement === "undefined" || lInputElement === null) {
@@ -1689,7 +1587,6 @@ requirejs(["../lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "C
 
         /// click or keypress on sources field
         self.sourcesGetFromServer = function () {
-
             // user has entered an value. Remove the dropdown.
             self.latestSourcesDropdownRemove();
 
@@ -1703,14 +1600,13 @@ requirejs(["../lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "C
             let lTemplate = document.getElementById("latest-sources-dropdown-loading-template");
             let lHourglassDropdown = new tsLib.DropdownTextfield(lTemplate);
             lHourglassDropdown.appendTo("ict-input-source").show();
-            
+
             // get latest sources from server
             $.ajax({
                 url: "/IndexCardApi/GetLatestSources",
                 type: "GET",
                 dataType: "json",
                 success: function (xhr) {
-
                     // add results to observable
                     self.latestSources(xhr);
 
@@ -1731,17 +1627,14 @@ requirejs(["../lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "C
                     self.latestSourcesDropdown.show();
                 },
                 complete: function () {
-
                     // hide hourglass
                     lHourglassDropdown.remove();
                 }
             });
-
         };
 
         /// click on resource in dropdown
         self.latestSourcesClick = function(pSource) {
-
             // assign selected value
             document.getElementById("ict-input-source").value = pSource;
             self.editIndexCard().source = pSource;
@@ -1752,7 +1645,6 @@ requirejs(["../lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "C
 
         /// hide the dropdown
         self.latestSourcesDropdownRemove = function() {
-
             if (self.latestSourcesDropdown instanceof tsLib.DropdownTextfield) {
                 self.latestSourcesDropdown.remove();
             }
@@ -1760,7 +1652,6 @@ requirejs(["../lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "C
 
         /// When source is not an url, then convert the source-termin into an google-search
         self.indexcardGetSourceUrl = function (pSource) {
-
             let lSource = pSource.trim();
 
             // validate param
@@ -1785,10 +1676,9 @@ requirejs(["../lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "C
 
         // show the sandtimer dialog
         self.sandtimerShowDialog = function() {
-
             // preallocate the fields when not running or pause.
             if (self.sandtimerState() !== self.sandtimerStateEnum.running && self.sandtimerState() !== self.pause) {
-                self.sandtimerReset(); 
+                self.sandtimerReset();
             }
 
             // show the dialog
@@ -1800,7 +1690,6 @@ requirejs(["../lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "C
 
         // start button click
         self.sandtimerStart = function() {
-
             // clear old interval when exists
             self.sandtimerCancel();
 
@@ -1826,7 +1715,6 @@ requirejs(["../lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "C
 
         // stop the sandtimer
         self.sandtimerCancel = function () {
-
             if (self.sandtimerInterval !== null) {
                 clearInterval(self.sandtimerInterval);
             }
@@ -1838,7 +1726,6 @@ requirejs(["../lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "C
 
         // pause the sandtimer
         self.sandtimerPause = function() {
-
             if (self.sandtimerInterval !== null) {
                 clearInterval(self.sandtimerInterval);
             }
@@ -1854,16 +1741,13 @@ requirejs(["../lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "C
 
         // start the sandtimer
         self.sandtimerRun = function () {
-
             // switch state and layout
             self.sandtimerState(self.sandtimerStateEnum.running);
 
             // start interval
             self.sandtimerInterval = setInterval(function() {
-
                 // show dialog when time is over
                 if (self.sandtimerTotalSeconds <= 0) {
-
                     // stop timer
                     self.sandtimerCancel();
 
@@ -1879,7 +1763,7 @@ requirejs(["../lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "C
 
                 // substract one second
                 self.sandtimerTotalSeconds = self.sandtimerTotalSeconds - 1;
-                
+
                 // calculate the hours, minutes, seconds
                 let lHours = Math.floor(self.sandtimerTotalSeconds) % 60;
                 let lMinutes = Math.floor(self.sandtimerTotalSeconds / 60 % 60);
@@ -1892,7 +1776,6 @@ requirejs(["../lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "C
 
                 // render value
                 self.sandtimerDisplayValue(lDisplayHours + ":" + lDisplayMinutes + ":" + lDisplaySeconds);
-
             }, 1000);
         };
 
@@ -1905,7 +1788,6 @@ requirejs(["../lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "C
 
         // close the sandtimer dialog
         self.sandtimerCloseDialog = function() {
-
             // close the sandtimer dialog
             if (self.sandtimerDialog instanceof tsLib.Dialog) {
                 self.sandtimerDialog.close();
@@ -1917,7 +1799,6 @@ requirejs(["../lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "C
 
         // Region ArchiveBox
         self.archiveIndexCardBoxDialog = function () {
-
             let lBttnOk = new tsLib.Button("OK", function () { });
             let lTemplate = document.getElementById("ict-archive-template");
             let lDialog = new tsLib.Dialog(lTemplate, "Archivierte Karteikästen", [lBttnOk]);
@@ -1927,7 +1808,6 @@ requirejs(["../lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "C
 
         // set archived/not archived in database
         self.indexCardBoxToggleArchived = function (pIndexCardBox) {
-
             if (pIndexCardBox instanceof indexCardBox.IndexCardBox === false) {
                 throw new Error("Invalid argument. Expected type: 'IndexCardBox'.");
             }
@@ -1943,17 +1823,15 @@ requirejs(["../lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "C
                 contentType: "application/json",
                 dataType: "json",
                 success: function (xhr) {
-
                     let lIndexCardBox = new indexCardBox.IndexCardBox(xhr);
                     let lArr = self.boxes();
 
                     // replace box in list
                     for (let i = 0, len = lArr.length; i < len; i++) {
-
                         // found box. Replace now
                         if (lArr[i].id === lIndexCardBox.id) {
                             lArr[i] = lIndexCardBox;
-                            break; 
+                            break;
                         }
                     }
 
@@ -1965,7 +1843,7 @@ requirejs(["../lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "C
                         self.box(self.boxPlaceholder);
                         self.currentMode("learn");
                         self.editIndexCard(null); // current editing index card
-                    }                    
+                    }
                 }
             });
         };
@@ -1975,7 +1853,6 @@ requirejs(["../lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "C
         // Region BoxStatistics
 
         self.showBoxStatistics = function() {
-
             // save box
             $.ajax({
                 url: "/IndexCardBoxApi/GetStats",
@@ -1989,7 +1866,6 @@ requirejs(["../lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "C
                     self.loadingScreen.close();
                 },
                 success: function (xhr) {
-
                     // maps objects
                     let lTmpArr = [];
 
@@ -2012,7 +1888,6 @@ requirejs(["../lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "C
 
         // selected box in stats
         self.boxSelectedInStats = function(pIndexCardBox) {
-            
             // close the dialog
             self.boxStatsDialog.close();
 
@@ -2025,7 +1900,6 @@ requirejs(["../lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "C
         // Region Misc
 
         self.ResetZoom = function () {
-
             window.parent.document.body.style.zoom = 1.0;
         };
 

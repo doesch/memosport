@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Memosport.Classes;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -28,5 +29,10 @@ namespace Memosport.Models
         /// <summary> Gets a value indicating whether the merge learning set. </summary>
         /// <value> True if merge learning set, false if not. </value>
         public bool MergeLearningSet { get; set; } = true;
+
+        /// <summary>
+        /// filters index cards by exact number of 'Known' value
+        /// </summary>
+        public int QuantityExactKnown { get; set; } = Constants.Repetitions;
     }
 }

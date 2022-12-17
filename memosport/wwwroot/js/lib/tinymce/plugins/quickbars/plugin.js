@@ -879,5 +879,4 @@
     }
 
     Plugin();
-
 }(window));

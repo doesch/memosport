@@ -38,5 +38,10 @@ namespace Memosport.Models
         /// <summary> Number of cards per learning-block. </summary>
         /// <value> The quantity. </value>
         int Quantity { get; set; }
+
+        /// <summary>
+        /// Filter indexcards which have exactly known this value
+        /// </summary>
+        public int QuantityExactKnown { get; set; }
     }
 }

@@ -4,8 +4,7 @@ import tsLib = require("../../lib/tsLib/tsLib");
 
 /// <summary> An index card. </summary>
 /// <remarks> Doetsch, 17.12.19. </remarks>
-export class IndexCard extends tsLib.HelperBase
-{
+export class IndexCard extends tsLib.HelperBase {
     id: number = null;
     indexCardBoxId: number = null;
     question: string = null;

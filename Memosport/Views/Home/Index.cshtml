@@ -323,13 +323,15 @@
         <div class="clearfix"></div>
         <ul>
             <li class="col-1">
-                <label for="IndexCardTrainerKnown">Zeige gelernte Karteikarten an (3 grüne Daumen)</label>
+                <label for="IndexCardTrainerKnown">Zeige nur gelernte Karteikarten mit exakt folgenden Wiederholungen an:</label>
             </li>
             <li>
                 <div class="input checkbox">
-                    <input id="IndexCardTrainerKnown" type="checkbox" data-bind="checked: $root.ictOptions().known, css : {checkboxChecked : $root.ictOptions().known}" />
-                    <label for="IndexCardTrainerKnown"></label>
-                </div>
+                    <input id="IndexCardTrainerKnown" type="checkbox" data-bind="checked: $root.ictOptions().known, css : {checkboxChecked : $root.ictOptions().known }" />
+                    <label for="IndexCardTrainerKnown">
+                        <input type="number" min="0" data-bind="value: $root.ictOptions().quantityExactKnown" />
+                    </label>
+                </div>   
             </li>
         </ul>
     </div>

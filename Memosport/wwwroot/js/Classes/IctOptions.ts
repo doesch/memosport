@@ -16,11 +16,10 @@ export enum QuantityMode {
 
 // Options for the index card trainer
 export class IctOptions extends tsLib.HelperBase {
-    
     // if all known index cards should be shown
     known: Boolean = false;
 
-    // the order of the index cards in the trainer 
+    // the order of the index cards in the trainer
     order: Order = Order.Oldest;
 
     // the quantity mode
@@ -31,6 +30,9 @@ export class IctOptions extends tsLib.HelperBase {
 
     // if the leraning set should be merged random
     mergeLearningSet: Boolean = true;
+
+    // filter all index cards which have exact value of 'known'
+    quantityExactKnown: Number = 3;
 
     public constructor(pArgs: any) {
         super();

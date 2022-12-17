@@ -85,14 +85,14 @@ namespace Memosport.Controllers
 
             // filter data by options
             
-            // show cards which not learned or show cards which are already learned.
-            if (ictOptions.Known == false)
+            // filter cards have been exactly known by custom passed value
+            if (ictOptions.Known)
             {
-                lQuery = lQuery.Where(x => x.Known < 3);
+                lQuery = lQuery.Where(x => x.Known == ictOptions.QuantityExactKnown);
             }
             else
             {
-                lQuery = lQuery.Where(x => x.Known >= 3);
+                lQuery = lQuery.Where(x => x.Known < Constants.Repetitions);
             }
 
             // get order
@@ -111,7 +111,7 @@ namespace Memosport.Controllers
             {
                 lQuery = lQuery.Take(ictOptions.Quantity);
             }
-            
+
             // execute sql
             var lResult = await lQuery.ToListAsync();
 

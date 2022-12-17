@@ -36,6 +36,7 @@ define(["require", "exports", "../../lib/tsLib/tsLib"], function (require, expor
             _this.quantityMode = QuantityMode.Custom;
             _this.quantity = 10;
             _this.mergeLearningSet = true;
+            _this.quantityExactKnown = 3;
             _super.prototype.autoConstructor.call(_this, pArgs);
             return _this;
         }

@@ -1,8 +1,7 @@
 ﻿import tsLib = require("../../lib/tsLib/tsLib");
 import * as ko from "../lib/knockout.js";
 
-export class IndexCardBox extends tsLib.HelperBase
-{
+export class IndexCardBox extends tsLib.HelperBase {
     id: number = null; // the id in the database
     name: string = null;
     userId: number = null;
@@ -10,9 +9,8 @@ export class IndexCardBox extends tsLib.HelperBase
     dateLastLearnedDays: number = null; // last learned this box in days ago
     archived: boolean = false;
     boxStats: IBoxStats = null; // IndexCardBox statistics
-    
-    public constructor(pArgs: any)
-    {
+
+    public constructor(pArgs: any) {
         super();
         super.autoConstructor(pArgs);
 
@@ -36,8 +34,7 @@ export interface IBoxStats {
 }
 
 // box statistics
-export class BoxStats extends tsLib.HelperBase implements IBoxStats 
-{
+export class BoxStats extends tsLib.HelperBase implements IBoxStats {
     totalCount: number = null; // total number of index cards
     unlearned: number = null; // number of not learned index cards
     percentLearned: number = null; // number of not learned index cards in %

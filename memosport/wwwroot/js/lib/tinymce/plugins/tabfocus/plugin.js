@@ -126,5 +126,4 @@
     }
 
     Plugin();
-
 }(window));

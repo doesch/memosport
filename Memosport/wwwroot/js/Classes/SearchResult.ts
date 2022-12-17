@@ -2,8 +2,7 @@
 import { IndexCard } from "./IndexCard";
 import { IndexCardBox } from "./IndexCardBox";
 
-export class SearchResult
-{
+export class SearchResult {
     public IndexCard: IndexCard = null;
     public IndexCardBox: IndexCardBox = null;
 
