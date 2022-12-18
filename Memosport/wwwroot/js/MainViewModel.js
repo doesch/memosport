@@ -428,20 +428,16 @@ requirejs(["../lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "C
         self.LoadLatestLearnedBox = function() {
             let lBox = null;
 
-            // get latest learned box
-            for (let i = 0, len = self.boxes().length; i < len; i++) {
-                // could be null when never learned → skip!
-                if (typeof self.boxes()[i] === "undefined" || self.boxes()[i].dateLastLearned === null || typeof self.boxes()[i].dateLastLearned === "undefined") {
-                    continue;
-                }
+            // get latest selected box
+            let boxId = localStorage.getItem('selectedBox');
 
-                if (lBox === null || typeof lBox === "undefined" || lBox.dateLastLearned < self.boxes()[i].dateLastLearned) {
-                    lBox = self.boxes()[i];
-                }
+            if (boxId)
+            {
+                lBox = self.boxes().find(x => x.id === Number(boxId));
             }
 
             // now load the dataset of the latest box
-            if (lBox !== null) {
+            if (lBox) {
                 self.BoxSelected(lBox);
             }
         };
@@ -460,6 +456,9 @@ requirejs(["../lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "C
 
             // load data
             self.loadData();
+
+            // cache selected box
+            localStorage.getItem(localStorage.setItem('selectedBox', pIndexCardBox.id));
         };
 
         /*
