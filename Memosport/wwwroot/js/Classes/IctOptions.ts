@@ -14,25 +14,36 @@ export enum QuantityMode {
     All = 1
 }
 
+// the default option values
+export const DefaultOptionValues = {
+    known: false,
+    order: Order.Oldest,
+    quantityMode: QuantityMode.Custom,
+    quantity: 20,
+    mergeLearningSet: true,
+    quantityExactKnown: 3,
+};
+
 // Options for the index card trainer
 export class IctOptions extends tsLib.HelperBase {
+
     // if all known index cards should be shown
-    known: Boolean = false;
+    known: Boolean = DefaultOptionValues.known;
 
     // the order of the index cards in the trainer
-    order: Order = Order.Oldest;
+    order: Order = DefaultOptionValues.order;
 
     // the quantity mode
-    quantityMode: QuantityMode = QuantityMode.Custom;
+    quantityMode: QuantityMode = DefaultOptionValues.quantityMode;
 
     // the quantity of index cards, when users has selected the QuantityMode.Custom
-    quantity: Number = 10;
+    quantity: Number = DefaultOptionValues.quantity;
 
     // if the leraning set should be merged random
-    mergeLearningSet: Boolean = true;
+    mergeLearningSet: Boolean = DefaultOptionValues.mergeLearningSet;
 
     // filter all index cards which have exact value of 'known'
-    quantityExactKnown: Number = 3;
+    quantityExactKnown: Number = DefaultOptionValues.quantityExactKnown;
 
     public constructor(pArgs: any) {
         super();

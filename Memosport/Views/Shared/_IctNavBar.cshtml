@@ -33,7 +33,15 @@
 </ul>
 <!-- /ko -->
 
-<button id="software-bttn-config" class="bttn" data-bind="click: showOptionsDialog"><span class="ict-icon icon-options"></span><span class="bttn-icon-text remove-630px">Einstellungen</span></button>
+<button id="software-bttn-config" class="bttn" data-bind="click: showOptionsDialog">
+    <!-- ko if: $root.ictOptionsAreDefault() === true -->
+    <span class="ict-icon icon-options"></span>
+    <!-- /ko -->
+    <!-- ko if: $root.ictOptionsAreDefault() === false -->
+    <span class="ict-icon icon-options-not-default"></span>
+    <!-- /ko -->
+    <span class="bttn-icon-text remove-630px">Einstellungen</span>
+</button>
 <button id="software-bttn-start" class="bttn" data-bind="click: start"><span class="ict-icon icon-restart"></span><span class="bttn-icon-text remove-630px">Start</span></button>
 <button id="bttn-menu" class="bttn" data-bind="click: function() { $root.menuBttnClick(); return false; }, clickBubble: false"><span class="ict-icon icon-menu"></span><span class="bttn-icon-text remove-630px">Menü</span></button>
 

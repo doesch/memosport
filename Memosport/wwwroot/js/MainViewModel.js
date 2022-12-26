@@ -34,11 +34,12 @@ requirejs(["../lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "C
 
         // options
         if (localStorage.getItem('ictOptions') === null) { // use default options when nothing cached
-            localStorage.setItem('ictOptions', JSON.stringify(new ictOptions.IctOptions()));
+            localStorage.setItem('ictOptions', JSON.stringify(ictOptions.DefaultOptionValues));
         }
 
         // self.ictOptions is dedicated for the form
         self.ictOptions = ko.observable(new ictOptions.IctOptions(JSON.parse(localStorage.getItem('ictOptions'))));
+        self.ictOptionsAreDefault = ko.observable(true);
 
         self.boxesShowDropdown = ko.observable(false); // if the dropdown is visible or not
         self.mainMenuShowDropdown = ko.observable(false); // toggle dropdown of the main menu
@@ -111,8 +112,9 @@ requirejs(["../lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "C
                     throw new Error("Invalid data type. Expected type: 'Options'");
                 }
 
-                // save options
+                // save options                
                 localStorage.setItem('ictOptions', JSON.stringify(self.ictOptions()));
+                self.checkIfOptionsAreDefault();
 
                 // restart app when any box selected
                 if (self.box() instanceof indexCardBox.IndexCardBox) {
@@ -131,6 +133,11 @@ requirejs(["../lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "C
             let lDialog = new tsLib.Dialog(lTemplate, "Einstellungen", [lButtonApply, lButtonCancel]);
             lDialog.afterRenderCallback = function () { ko.applyBindings(GLOBAL.MainViewModel, this.mHtmlWindow); };
             lDialog.show();
+        };
+
+        // check if ictoptions are default to toggle the icon
+        self.checkIfOptionsAreDefault = function () {
+            self.ictOptionsAreDefault(JSON.stringify(self.ictOptions()) === JSON.stringify(ictOptions.DefaultOptionValues));
         };
 
         /// Check if any box is currently selected
@@ -375,6 +382,9 @@ requirejs(["../lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "C
             document.getElementById('software-bttn-start').addEventListener("click", function () {
                 tsLib.Style.removeClass(document.getElementById('software-bttn-start'), "mark-start-button");
             });
+
+            // show correct icon
+            self.checkIfOptionsAreDefault();
 
             // get Index Card Boxes into dropdown
             let lCallback = self.LoadLatestLearnedBox;

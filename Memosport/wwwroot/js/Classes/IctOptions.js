@@ -16,7 +16,7 @@ var __extends = (this && this.__extends) || (function () {
 define(["require", "exports", "../../lib/tsLib/tsLib"], function (require, exports, tsLib) {
     "use strict";
     exports.__esModule = true;
-    exports.IctOptions = exports.QuantityMode = exports.Order = void 0;
+    exports.IctOptions = exports.DefaultOptionValues = exports.QuantityMode = exports.Order = void 0;
     var Order;
     (function (Order) {
         Order[Order["Oldest"] = 0] = "Oldest";
@@ -27,16 +27,24 @@ define(["require", "exports", "../../lib/tsLib/tsLib"], function (require, expor
         QuantityMode[QuantityMode["Custom"] = 0] = "Custom";
         QuantityMode[QuantityMode["All"] = 1] = "All";
     })(QuantityMode = exports.QuantityMode || (exports.QuantityMode = {}));
+    exports.DefaultOptionValues = {
+        known: false,
+        order: Order.Oldest,
+        quantityMode: QuantityMode.Custom,
+        quantity: 20,
+        mergeLearningSet: true,
+        quantityExactKnown: 3
+    };
     var IctOptions = (function (_super) {
         __extends(IctOptions, _super);
         function IctOptions(pArgs) {
             var _this = _super.call(this) || this;
-            _this.known = false;
-            _this.order = Order.Oldest;
-            _this.quantityMode = QuantityMode.Custom;
-            _this.quantity = 10;
-            _this.mergeLearningSet = true;
-            _this.quantityExactKnown = 3;
+            _this.known = exports.DefaultOptionValues.known;
+            _this.order = exports.DefaultOptionValues.order;
+            _this.quantityMode = exports.DefaultOptionValues.quantityMode;
+            _this.quantity = exports.DefaultOptionValues.quantity;
+            _this.mergeLearningSet = exports.DefaultOptionValues.mergeLearningSet;
+            _this.quantityExactKnown = exports.DefaultOptionValues.quantityExactKnown;
             _super.prototype.autoConstructor.call(_this, pArgs);
             return _this;
         }
