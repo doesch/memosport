@@ -137,7 +137,21 @@ requirejs(["../lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "C
 
         // check if ictoptions are default to toggle the icon
         self.checkIfOptionsAreDefault = function () {
-            self.ictOptionsAreDefault(JSON.stringify(self.ictOptions()) === JSON.stringify(ictOptions.DefaultOptionValues));
+
+            let lResult = false;
+
+            for (let key in ictOptions.DefaultOptionValues)
+            {
+                if (ictOptions.DefaultOptionValues.hasOwnProperty(key) && self.ictOptions().hasOwnProperty(key) && ictOptions.DefaultOptionValues[key] === self.ictOptions()[key]) {
+                    lResult = true;
+                }
+                else {
+                    lResult = false;
+                    break;
+                }
+            }
+
+            self.ictOptionsAreDefault(lResult);
         };
 
         /// Check if any box is currently selected
