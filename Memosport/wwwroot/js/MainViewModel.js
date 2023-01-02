@@ -146,6 +146,7 @@ requirejs(["../lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "C
                     lResult = true;
                 }
                 else {
+                    console.warn("Default Option '" + key + "': " + ictOptions.DefaultOptionValues[key] + " !== Current Option Value: " + self.ictOptions()[key]);
                     lResult = false;
                     break;
                 }
