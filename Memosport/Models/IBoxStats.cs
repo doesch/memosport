@@ -15,5 +15,7 @@ namespace Memosport.Models
 
         // learned indexcards in %
         int PercentLearned { get; }
+
+        List<IBoxStatsGroupedKnown> BoxStatsGroupedKnown { get; set; }
     }
 }

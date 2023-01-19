@@ -27,5 +27,7 @@ namespace Memosport.Models
                 return (TotalCount - Unlearned) * 100 / TotalCount;
             }
         }
+
+        public List<IBoxStatsGroupedKnown> BoxStatsGroupedKnown { get; set; }
     }
 }

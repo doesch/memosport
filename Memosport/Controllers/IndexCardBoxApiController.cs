@@ -172,6 +172,19 @@ namespace Memosport.Controllers
                 lBoxStats.TotalCount = _context.IndexCards.Select(x => x).Count(x => x.IndexCardBoxId == lIndexCardBox.Id);
                 lBoxStats.Unlearned = _context.IndexCards.Select(x => x).Count(x => x.IndexCardBoxId == lIndexCardBox.Id && x.Known < 3);
 
+                // count grouped 'known'
+                // select known, count(known) as countKnown from indexcards where indexcardboxid = '18' group by known order by known
+                var boxStatsGroupedKnown = _context
+                    .IndexCards.GroupBy(x => x.Known)
+                    .Select(group => new BoxStatsGroupedKnown
+                    {
+                        Known = group.Key,
+                        Count = group.Count()
+                    })
+                    .OrderBy(x => x.Known);
+
+                lBoxStats.BoxStatsGroupedKnown = boxStatsGroupedKnown.ToList<IBoxStatsGroupedKnown>();
+
                 // assign stats
                 lIndexCardBox.BoxStats = lBoxStats;
             }
