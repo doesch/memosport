@@ -29,20 +29,18 @@ export class IndexCardBox extends tsLib.HelperBase {
 // box statistics
 export interface IBoxStats {
     totalCount: number;
-    unlearned: number;
-    percentLearned: number;
+    boxStatsGroupedKnown: Array<BoxStatsGroupedKnown>;
 }
 
 export interface IBoxStatsGroupedKnown {
     known: number;
     count: number;
+    countPercent: number;
 }
 
 export class BoxStats extends tsLib.HelperBase implements IBoxStats {
     totalCount: number = null; // total number of index cards
-    unlearned: number = null; // number of not learned index cards
-    percentLearned: number = null; // number of not learned index cards in %
-    boxStatsGroupedKnown: Array<IBoxStatsGroupedKnown> = null;
+    boxStatsGroupedKnown: Array<BoxStatsGroupedKnown> = null;
 
     public constructor(pArgs: any) {
         super();
@@ -53,11 +51,28 @@ export class BoxStats extends tsLib.HelperBase implements IBoxStats {
         if (typeof pArgs !== 'undefined' && pArgs.hasOwnProperty("boxStatsGroupedKnown") && Array.isArray(pArgs.boxStatsGroupedKnown)) {
             for (let i = 0; i < pArgs.boxStatsGroupedKnown.length; i++) {
                 let tmp = new BoxStatsGroupedKnown(pArgs.boxStatsGroupedKnown[i]);
-                // calculate the % for the size of the bar
-                tmp.countPercent = this.totalCount == 0 || null ? 0 : this.totalCount / tmp.count * 100;
                 // add groupedKnown to list
                 this.boxStatsGroupedKnown.push(tmp);
-            }           
+            }
+            // sum up the first 3 known values
+            let tmpBoxStatsKnown = new BoxStatsGroupedKnown({known: 0, count: 0});
+            for (let i = this.boxStatsGroupedKnown.length - 1; i >= 0; i--) {
+                if (this.boxStatsGroupedKnown[i].known < 3) {
+                    tmpBoxStatsKnown.count += this.boxStatsGroupedKnown[i].count;
+                    // remove from List
+                    this.boxStatsGroupedKnown.splice(i, 1);
+                }
+            }
+            // add to list
+            if (tmpBoxStatsKnown.count > 0) {
+                this.boxStatsGroupedKnown.push(tmpBoxStatsKnown);
+            }
+            // calculate the % for the size of the bar
+            for (let i = 0; i < this.boxStatsGroupedKnown.length; i++) {
+                this.boxStatsGroupedKnown[i].countPercent = this.totalCount == 0 || this.totalCount == null ? 0 : this.boxStatsGroupedKnown[i].count * 100 / this.totalCount;
+            }
+            // sort list
+            this.boxStatsGroupedKnown.sort((a, b) => a.known - b.known);
         }
     }
 }

@@ -45,17 +45,28 @@ define(["require", "exports", "../../lib/tsLib/tsLib"], function (require, expor
         function BoxStats(pArgs) {
             var _this = _super.call(this) || this;
             _this.totalCount = null;
-            _this.unlearned = null;
-            _this.percentLearned = null;
             _this.boxStatsGroupedKnown = null;
             _super.prototype.autoConstructor.call(_this, pArgs);
             _this.boxStatsGroupedKnown = [];
             if (typeof pArgs !== 'undefined' && pArgs.hasOwnProperty("boxStatsGroupedKnown") && Array.isArray(pArgs.boxStatsGroupedKnown)) {
                 for (var i = 0; i < pArgs.boxStatsGroupedKnown.length; i++) {
                     var tmp = new BoxStatsGroupedKnown(pArgs.boxStatsGroupedKnown[i]);
-                    tmp.countPercent = _this.totalCount == 0 || null ? 0 : _this.totalCount / tmp.count * 100;
                     _this.boxStatsGroupedKnown.push(tmp);
                 }
+                var tmpBoxStatsKnown = new BoxStatsGroupedKnown({ known: 0, count: 0 });
+                for (var i = _this.boxStatsGroupedKnown.length - 1; i >= 0; i--) {
+                    if (_this.boxStatsGroupedKnown[i].known < 3) {
+                        tmpBoxStatsKnown.count += _this.boxStatsGroupedKnown[i].count;
+                        _this.boxStatsGroupedKnown.splice(i, 1);
+                    }
+                }
+                if (tmpBoxStatsKnown.count > 0) {
+                    _this.boxStatsGroupedKnown.push(tmpBoxStatsKnown);
+                }
+                for (var i = 0; i < _this.boxStatsGroupedKnown.length; i++) {
+                    _this.boxStatsGroupedKnown[i].countPercent = _this.totalCount == 0 || _this.totalCount == null ? 0 : _this.boxStatsGroupedKnown[i].count * 100 / _this.totalCount;
+                }
+                _this.boxStatsGroupedKnown.sort(function (a, b) { return a.known - b.known; });
             }
             return _this;
         }

@@ -11,23 +11,6 @@ namespace Memosport.Models
     {
         public int TotalCount { get; set; }
 
-        // count of not learned cards
-        public int Unlearned { get; set; }
-
-        public int PercentLearned {
-            get
-            {
-                var lResult = 0;
-
-                if (TotalCount == 0 || Unlearned == 0)
-                {
-                    return lResult;
-                }
-
-                return (TotalCount - Unlearned) * 100 / TotalCount;
-            }
-        }
-
         public List<IBoxStatsGroupedKnown> BoxStatsGroupedKnown { get; set; }
     }
 }

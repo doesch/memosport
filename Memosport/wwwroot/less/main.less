@@ -2841,8 +2841,10 @@ div.ict-search-dialog-container
     }
 }
 
-#ict-boxstats-container
+.ict-boxstats-container
 {
+    margin-bottom: @GlobalMargin * 2;
+
     h2
     {
         text-align: center;
@@ -2853,17 +2855,24 @@ div.ict-search-dialog-container
         width: 100%;
         display: flex;
         flex-direction: row;
+        margin-top: @GlobalMargin / 2;
+
+        .stats-section-left,
+        .stats-section-right
+        {
+            flex-grow: 0.5;
+        }
 
         .stats-section-left
         {
             text-align: right;
-            margin: @GlobalMargin;
+            margin-right: @GlobalMargin / 2;
         }
 
         .stats-section-right
         {
             text-align: left;
-            margin: @GlobalMargin;
+            margin-left: @GlobalMargin / 2;
         }
     }
 
@@ -2877,9 +2886,23 @@ div.ict-search-dialog-container
             display: flex;
             flex-direction: column;
 
-            .stats-bar-known-invisible
+            .stats-bar-known-indicator
             {
                 text-align: center;
+            }
+
+            .stats-bar-known-marker-container
+            {
+                height: 5px;
+                text-align: center;
+
+                .stats-bar-known-marker
+                {
+                    border-right: 1px solid @GlobalBorderColor;
+                    display: inline-block;
+                    width: 1px;
+                    border-collapse: collapse;
+                }
             }
 
             .stats-bar-known
@@ -2899,6 +2922,11 @@ div.ict-search-dialog-container
                 &.stats-bar-bg-green
                 {
                     background-color: @ButtonBgGreen;
+                }
+
+                span
+                {
+                    color: white;
                 }
             }
         }

@@ -1,31 +1,30 @@
 ﻿<script id="ict-boxstats-template" type="text/html">
-<div id="ict-boxstats-container">
-    <div class="t-tbody" data-bind="foreach: boxStats">
-        <h2 data-bind="text: $data.name"></h2>
-        <section class="stats-section">
-            <div class="stats-section-left">
-                <div><span>% Gelernte Karteikarten:</span></div>
-                <div><span>Nicht gelernte Karteikarten:</span></div>
-                <div><span>Karteikarten in Box:</span></div>
-                <div><span>Zuletzt aufgerufen:</span></div>
-            </div>
-            <div class="stats-section-right">
-                <div><span data-bind="text: $data.boxStats.percentLearned + '%'"></span></div>
-                <div><span data-bind="text: $data.boxStats.unlearned"></span></div>
-                <div><span data-bind="text: $data.boxStats.totalCount"></span></div>
-                <div><span data-bind="text: 'Vor ' + ($data.dateLastLearnedDays === null ? '?' : $data.dateLastLearnedDays) + ' Tagen'"></span></div>
-            </div>
-        </section>
-        <section class="stats-section-known-bar" data-bind="foreach: $data.boxStats.boxStatsGroupedKnown">
-            <div class="stats-bar-known-container" data-bind="style: { width: countPercent + '%'  }">
-                <div class="stats-bar-known-invisible">
-                    <span data-bind="text: known"></span>
+    <div id="ict-boxstats" data-bind="foreach: boxStats">
+        <div class="ict-boxstats-container">
+            <h2 data-bind="text: $data.name"></h2>
+            <section class="stats-section">
+                <div class="stats-section-left">
+                    <div><span>Karteikarten in Box:</span></div>
+                    <div><span>Zuletzt aufgerufen:</span></div>
                 </div>
-                <div class="stats-bar-known" data-bind="css: { 'stats-bar-bg-red' : known < 3, 'stats-bar-bg-yellow' : known === 3, 'stats-bar-bg-green' : known > 3 }">
-                    <span data-bind="text: count"></span>
+                <div class="stats-section-right">
+                    <div><span data-bind="text: $data.boxStats.totalCount"></span></div>
+                    <div><span data-bind="text: 'Vor ' + ($data.dateLastLearnedDays === null ? '?' : $data.dateLastLearnedDays) + ' Tagen'"></span></div>
                 </div>
-            </div>
-        </section>
+            </section>
+            <section class="stats-section-known-bar" data-bind="foreach: $data.boxStats.boxStatsGroupedKnown">
+                <div class="stats-bar-known-container" data-bind="style: { width: countPercent + '%'  }">
+                    <div class="stats-bar-known-indicator">
+                        <span data-bind="text: known"></span>
+                    </div>
+                    <div class="stats-bar-known-marker-container">
+                        <span class="stats-bar-known-marker">&nbsp;</span>
+                    </div>
+                    <div class="stats-bar-known" data-bind="css: { 'stats-bar-bg-red' : known < 3, 'stats-bar-bg-yellow' : known === 3, 'stats-bar-bg-green' : known > 3 }">
+                        <span data-bind="text: count"></span>
+                    </div>
+                </div>
+            </section>
+        </div>
     </div>
-</div>
 </script>

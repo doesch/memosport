@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Runtime.CompilerServices;
 using System.Security.Claims;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using Memosport.Classes;
 using Memosport.Controllers;
@@ -170,12 +172,13 @@ namespace Memosport.Controllers
 
                 // count total indexcards
                 lBoxStats.TotalCount = _context.IndexCards.Select(x => x).Count(x => x.IndexCardBoxId == lIndexCardBox.Id);
-                lBoxStats.Unlearned = _context.IndexCards.Select(x => x).Count(x => x.IndexCardBoxId == lIndexCardBox.Id && x.Known < 3);
 
                 // count grouped 'known'
                 // select known, count(known) as countKnown from indexcards where indexcardboxid = '18' group by known order by known
                 var boxStatsGroupedKnown = _context
-                    .IndexCards.GroupBy(x => x.Known)
+                    .IndexCards
+                    .Where(x => x.IndexCardBoxId == lIndexCardBox.Id)
+                    .GroupBy(x => x.Known)
                     .Select(group => new BoxStatsGroupedKnown
                     {
                         Known = group.Key,
