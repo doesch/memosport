@@ -49,6 +49,14 @@ define(["require", "exports", "../../lib/tsLib/tsLib"], function (require, expor
             _this.percentLearned = null;
             _this.boxStatsGroupedKnown = null;
             _super.prototype.autoConstructor.call(_this, pArgs);
+            _this.boxStatsGroupedKnown = [];
+            if (typeof pArgs !== 'undefined' && pArgs.hasOwnProperty("boxStatsGroupedKnown") && Array.isArray(pArgs.boxStatsGroupedKnown)) {
+                for (var i = 0; i < pArgs.boxStatsGroupedKnown.length; i++) {
+                    var tmp = new BoxStatsGroupedKnown(pArgs.boxStatsGroupedKnown[i]);
+                    tmp.countPercent = _this.totalCount == 0 || null ? 0 : _this.totalCount / tmp.count * 100;
+                    _this.boxStatsGroupedKnown.push(tmp);
+                }
+            }
             return _this;
         }
         return BoxStats;
@@ -60,6 +68,7 @@ define(["require", "exports", "../../lib/tsLib/tsLib"], function (require, expor
             var _this = _super.call(this) || this;
             _this.known = null;
             _this.count = null;
+            _this.countPercent = null;
             _super.prototype.autoConstructor.call(_this, pArgs);
             return _this;
         }

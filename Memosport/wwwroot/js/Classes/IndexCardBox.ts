@@ -42,17 +42,30 @@ export class BoxStats extends tsLib.HelperBase implements IBoxStats {
     totalCount: number = null; // total number of index cards
     unlearned: number = null; // number of not learned index cards
     percentLearned: number = null; // number of not learned index cards in %
-    boxStatsGroupedKnown: IBoxStatsGroupedKnown[] = null;
+    boxStatsGroupedKnown: Array<IBoxStatsGroupedKnown> = null;
 
     public constructor(pArgs: any) {
         super();
         super.autoConstructor(pArgs);
+
+        // apply further statistics if exists
+        this.boxStatsGroupedKnown = [];
+        if (typeof pArgs !== 'undefined' && pArgs.hasOwnProperty("boxStatsGroupedKnown") && Array.isArray(pArgs.boxStatsGroupedKnown)) {
+            for (let i = 0; i < pArgs.boxStatsGroupedKnown.length; i++) {
+                let tmp = new BoxStatsGroupedKnown(pArgs.boxStatsGroupedKnown[i]);
+                // calculate the % for the size of the bar
+                tmp.countPercent = this.totalCount == 0 || null ? 0 : this.totalCount / tmp.count * 100;
+                // add groupedKnown to list
+                this.boxStatsGroupedKnown.push(tmp);
+            }           
+        }
     }
 }
 
 export class BoxStatsGroupedKnown extends tsLib.HelperBase implements IBoxStatsGroupedKnown {
     known: number = null;
     count: number = null;
+    countPercent: number = null;
 
     public constructor(pArgs: any) {
         super();
