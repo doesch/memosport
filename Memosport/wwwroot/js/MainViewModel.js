@@ -142,11 +142,11 @@ requirejs(["../lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "C
 
             for (let key in ictOptions.DefaultOptionValues)
             {
-                if (ictOptions.DefaultOptionValues.hasOwnProperty(key) && self.ictOptions().hasOwnProperty(key) && ictOptions.DefaultOptionValues[key] === self.ictOptions()[key]) {
+                // hint: keep double '==' to not make a type check, because bindings to textfields change the type from number to string. E.g. the field quantity
+                if (ictOptions.DefaultOptionValues.hasOwnProperty(key) && self.ictOptions().hasOwnProperty(key) && ictOptions.DefaultOptionValues[key] == self.ictOptions()[key]) {
                     lResult = true;
                 }
                 else {
-                    console.warn("Default Option '" + key + "': " + ictOptions.DefaultOptionValues[key] + " !== Current Option Value: " + self.ictOptions()[key]);
                     lResult = false;
                     break;
                 }

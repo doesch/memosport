@@ -28,7 +28,7 @@ export const DefaultOptionValues = {
 export class IctOptions extends tsLib.HelperBase {
 
     // if all known index cards should be shown
-    known: Boolean = DefaultOptionValues.known;
+    known: boolean = DefaultOptionValues.known;
 
     // the order of the index cards in the trainer
     order: Order = DefaultOptionValues.order;
@@ -37,15 +37,15 @@ export class IctOptions extends tsLib.HelperBase {
     quantityMode: QuantityMode = DefaultOptionValues.quantityMode;
 
     // the quantity of index cards, when users has selected the QuantityMode.Custom
-    quantity: Number = DefaultOptionValues.quantity;
+    quantity: number = DefaultOptionValues.quantity;
 
     // if the leraning set should be merged random
-    mergeLearningSet: Boolean = DefaultOptionValues.mergeLearningSet;
+    mergeLearningSet: boolean = DefaultOptionValues.mergeLearningSet;
 
     // filter all index cards which have exact value of 'known'
-    quantityExactKnown: Number = DefaultOptionValues.quantityExactKnown;
+    quantityExactKnown: number = DefaultOptionValues.quantityExactKnown;
 
-    public constructor(pArgs: any) {
+    public constructor(pArgs: object) {
         super();
         super.autoConstructor(pArgs);
     }
