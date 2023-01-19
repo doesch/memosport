@@ -16,7 +16,7 @@ var __extends = (this && this.__extends) || (function () {
 define(["require", "exports", "../../lib/tsLib/tsLib"], function (require, exports, tsLib) {
     "use strict";
     exports.__esModule = true;
-    exports.BoxStats = exports.IndexCardBox = void 0;
+    exports.BoxStatsGroupedKnown = exports.BoxStats = exports.IndexCardBox = void 0;
     var IndexCardBox = (function (_super) {
         __extends(IndexCardBox, _super);
         function IndexCardBox(pArgs) {
@@ -47,11 +47,24 @@ define(["require", "exports", "../../lib/tsLib/tsLib"], function (require, expor
             _this.totalCount = null;
             _this.unlearned = null;
             _this.percentLearned = null;
+            _this.boxStatsGroupedKnown = null;
             _super.prototype.autoConstructor.call(_this, pArgs);
             return _this;
         }
         return BoxStats;
     }(tsLib.HelperBase));
     exports.BoxStats = BoxStats;
+    var BoxStatsGroupedKnown = (function (_super) {
+        __extends(BoxStatsGroupedKnown, _super);
+        function BoxStatsGroupedKnown(pArgs) {
+            var _this = _super.call(this) || this;
+            _this.known = null;
+            _this.count = null;
+            _super.prototype.autoConstructor.call(_this, pArgs);
+            return _this;
+        }
+        return BoxStatsGroupedKnown;
+    }(tsLib.HelperBase));
+    exports.BoxStatsGroupedKnown = BoxStatsGroupedKnown;
 });
 //# sourceMappingURL=IndexCardBox.js.map

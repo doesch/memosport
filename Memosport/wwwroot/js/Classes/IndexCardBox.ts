@@ -33,11 +33,26 @@ export interface IBoxStats {
     percentLearned: number;
 }
 
-// box statistics
+export interface IBoxStatsGroupedKnown {
+    known: number;
+    count: number;
+}
+
 export class BoxStats extends tsLib.HelperBase implements IBoxStats {
     totalCount: number = null; // total number of index cards
     unlearned: number = null; // number of not learned index cards
     percentLearned: number = null; // number of not learned index cards in %
+    boxStatsGroupedKnown: IBoxStatsGroupedKnown[] = null;
+
+    public constructor(pArgs: any) {
+        super();
+        super.autoConstructor(pArgs);
+    }
+}
+
+export class BoxStatsGroupedKnown extends tsLib.HelperBase implements IBoxStatsGroupedKnown {
+    known: number = null;
+    count: number = null;
 
     public constructor(pArgs: any) {
         super();
