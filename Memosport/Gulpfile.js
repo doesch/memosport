@@ -1,4 +1,4 @@
-﻿const appVersion = "1.0.0"; // app version required for cache buster
+﻿const appVersion = "1.0.1"; // app version required for cache buster
 let gulp = require('gulp');
 let less = require('gulp-less');
 let cleanCSS = require('gulp-clean-css');

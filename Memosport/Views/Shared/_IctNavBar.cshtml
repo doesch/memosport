@@ -34,12 +34,8 @@
 <!-- /ko -->
 
 <button id="software-bttn-config" class="bttn" data-bind="click: showOptionsDialog">
-    <!-- ko if: $root.ictOptionsAreDefault() === true -->
-    <span class="ict-icon icon-options"></span>
-    <!-- /ko -->
-    <!-- ko if: $root.ictOptionsAreDefault() === false -->
-    <span class="ict-icon icon-options-not-default"></span>
-    <!-- /ko -->
+    <span class="ict-icon icon-options" data-bind="css: { 'display-none': !$root.ictOptionsAreDefault() }"></span>
+    <span class="ict-icon icon-options-not-default" style="display: none;" data-bind="css: { 'display-inline-block': !$root.ictOptionsAreDefault() }"></span>
     <span class="bttn-icon-text remove-630px">Einstellungen</span>
 </button>
 <button id="software-bttn-start" class="bttn" data-bind="click: start"><span class="ict-icon icon-restart"></span><span class="bttn-icon-text remove-630px">Start</span></button>
