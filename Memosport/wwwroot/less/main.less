@@ -177,6 +177,26 @@ td
     vertical-align: top;
 }
 
+.font-color-white
+{
+    color: white !important;
+}
+
+.bttn-bg-red
+{
+    background-color: @ButtonBgRed !important;
+}
+
+.bttn-bg-green
+{
+    background-color: @ButtonBgGreen !important;
+}
+
+.bttn-bg-yellow
+{
+    background-color: @ButtonBgYellow !important;
+}
+
 .figure-container
 {
     text-align: center;
@@ -2729,6 +2749,36 @@ textarea.ict-question-answer-text
 
 #ict-options-dialog-container
 {
+    #ict-options-quick-bttn-bar
+    {
+        display: flex;
+        flex-direction: row;
+
+        button
+        {
+            flex-grow: 0.5;
+
+            &:not(:last-child)
+            {
+                margin-right: @GlobalMargin / 3;
+            }
+
+            &.font-color-white
+            {
+                color: white !important;
+            }
+        }
+    }
+
+
+    #ict-options-dialog-container
+    {
+        button
+        {
+            min-width: 60px;
+        }
+    }
+
     ul
     {
         margin: @GlobalMargin 0px 0px 0px;

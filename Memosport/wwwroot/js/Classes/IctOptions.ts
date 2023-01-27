@@ -24,6 +24,15 @@ export const DefaultOptionValues = {
     quantityExactKnown: 3,
 };
 
+// options values when user wants to repeat learning
+export const RepeatOptionValues = {
+    known: true,
+    order: Order.Oldest,
+    quantityMode: QuantityMode.All,
+    mergeLeaningSet: true,
+    quantityExactKnown: 3,
+};
+
 // Options for the index card trainer
 export class IctOptions extends tsLib.HelperBase {
 

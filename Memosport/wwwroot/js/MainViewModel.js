@@ -155,6 +155,15 @@ requirejs(["../lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "C
             self.ictOptionsAreDefault(lResult);
         };
 
+        /// Set options to default
+        self.ictOptionsQuickButtonNotLearned = function () {
+            self.ictOptions(new ictOptions.IctOptions(ictOptions.DefaultOptionValues));
+        };
+        // repeat learned index cards
+        self.ictOptionsQuickButtonRepeat = function () {
+            self.ictOptions(new ictOptions.IctOptions(ictOptions.RepeatOptionValues));
+        };
+
         /// Check if any box is currently selected
         self.anyBoxIsSelected = function() {
             return self.box() instanceof indexCardBox.IndexCardBox;

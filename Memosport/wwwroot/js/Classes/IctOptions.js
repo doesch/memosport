@@ -16,7 +16,7 @@ var __extends = (this && this.__extends) || (function () {
 define(["require", "exports", "../../lib/tsLib/tsLib"], function (require, exports, tsLib) {
     "use strict";
     exports.__esModule = true;
-    exports.IctOptions = exports.DefaultOptionValues = exports.QuantityMode = exports.Order = void 0;
+    exports.IctOptions = exports.RepeatOptionValues = exports.DefaultOptionValues = exports.QuantityMode = exports.Order = void 0;
     var Order;
     (function (Order) {
         Order[Order["Oldest"] = 0] = "Oldest";
@@ -33,6 +33,13 @@ define(["require", "exports", "../../lib/tsLib/tsLib"], function (require, expor
         quantityMode: QuantityMode.Custom,
         quantity: 20,
         mergeLearningSet: true,
+        quantityExactKnown: 3
+    };
+    exports.RepeatOptionValues = {
+        known: true,
+        order: Order.Oldest,
+        quantityMode: QuantityMode.All,
+        mergeLeaningSet: true,
         quantityExactKnown: 3
     };
     var IctOptions = (function (_super) {

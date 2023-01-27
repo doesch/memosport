@@ -284,56 +284,62 @@
 </script>
 
 <script id="ict-options-dialog-template" type="text/html">
-    <div id="ict-options-dialog-container" class="list-table software">
-        <ul>
-            <li class="col-1">Reihenfolge:</li>
-            <li>
-                <input id="IndexCardTrainerOrderAscending" type="radio" data-bind="value: 0, checked: $root.ictOptions().order">
-                <label for="IndexCardTrainerOrderAscending" data-bind="css : {radioChecked : $root.ictOptions().order === 0}, click: function(){ $root.ictOptionOrderChanged(0); }">Älteste</label>
-                <br>
-                <input id="IndexCardTrainerOrderDescending" type="radio" data-bind="value: 1, checked: $root.ictOptions().order">
-                <label for="IndexCardTrainerOrderDescending" data-bind="css : {radioChecked : $root.ictOptions().order === 1}, click: function(){ $root.ictOptionOrderChanged(1); }">Neuste</label>
-            </li>
-        </ul>
-        <div class="clearfix"></div>
-        <ul>
-            <li class="col-1">Anzahl:</li>
-            <li>
-                <input id="IndexCardTrainerCustomQuantityMode" type="radio" data-bind="value: 0, checked: $root.ictOptions().quantityMode">
-                <label for="IndexCardTrainerCustomQuantityMode" data-bind="css : {radioChecked : $root.ictOptions().quantityMode === 0}, click: function(){ $root.ictOptionQuantityChanged(0); }">
-                    <input type="number" min="1" data-bind="value: $root.ictOptions().quantity" />
-                </label>
-                <br>
-                <input id="IndexCardTrainerAllQuantityMode" type="radio" data-bind="value: 1, checked: $root.ictOptions().quantityMode">
-                <label for="IndexCardTrainerAllQuantityMode" data-bind="css : {radioChecked : $root.ictOptions().quantityMode === 1}, click: function(){ $root.ictOptionQuantityChanged(1); }">Alle</label>
-            </li>
-        </ul>
-        <div class="clearfix"></div>
-        <ul>
-            <li class="col-1">
-                <label for="IndexCardTrainerKnown">Lernsatz mischen</label>
-            </li>
-            <li>
-                <div class="input checkbox">
-                    <input id="IndexCardTrainerMergeLearningSet" type="checkbox" data-bind="checked: $root.ictOptions().mergeLearningSet, css : {checkboxChecked : $root.ictOptions().mergeLearningSet}" />
-                    <label for="IndexCardTrainerMergeLearningSet"></label>
-                </div>
-            </li>
-        </ul>
-        <div class="clearfix"></div>
-        <ul>
-            <li class="col-1">
-                <label for="IndexCardTrainerKnown">Zeige nur gelernte Karteikarten mit exakt folgenden Wiederholungen an:</label>
-            </li>
-            <li>
-                <div class="input checkbox">
-                    <input id="IndexCardTrainerKnown" type="checkbox" data-bind="checked: $root.ictOptions().known, css : {checkboxChecked : $root.ictOptions().known }" />
-                    <label for="IndexCardTrainerKnown">
-                        <input type="number" min="0" data-bind="value: $root.ictOptions().quantityExactKnown" />
+    <div id="ict-options-dialog-container" class="list-table software">        
+        <div id="ict-options-quick-bttn-bar">
+            <button class="bttn bttn-bg-red font-color-white" data-bind="click: $root.ictOptionsQuickButtonNotLearned">0-2</button>
+            <button class="bttn bttn-bg-yellow font-color-white" data-bind="click: $root.ictOptionsQuickButtonRepeat">3</button>
+        </div>
+        <div>
+            <ul>
+                <li class="col-1">Reihenfolge:</li>
+                <li>
+                    <input id="IndexCardTrainerOrderAscending" type="radio" data-bind="value: 0, checked: $root.ictOptions().order">
+                    <label for="IndexCardTrainerOrderAscending" data-bind="css : {radioChecked : $root.ictOptions().order === 0}, click: function(){ $root.ictOptionOrderChanged(0); }">Älteste</label>
+                    <br>
+                    <input id="IndexCardTrainerOrderDescending" type="radio" data-bind="value: 1, checked: $root.ictOptions().order">
+                    <label for="IndexCardTrainerOrderDescending" data-bind="css : {radioChecked : $root.ictOptions().order === 1}, click: function(){ $root.ictOptionOrderChanged(1); }">Neuste</label>
+                </li>
+            </ul>
+            <div class="clearfix"></div>
+            <ul>
+                <li class="col-1">Anzahl:</li>
+                <li>
+                    <input id="IndexCardTrainerCustomQuantityMode" type="radio" data-bind="value: 0, checked: $root.ictOptions().quantityMode">
+                    <label for="IndexCardTrainerCustomQuantityMode" data-bind="css : {radioChecked : $root.ictOptions().quantityMode === 0}, click: function(){ $root.ictOptionQuantityChanged(0); }">
+                        <input type="number" min="1" data-bind="value: $root.ictOptions().quantity" />
                     </label>
-                </div>   
-            </li>
-        </ul>
+                    <br>
+                    <input id="IndexCardTrainerAllQuantityMode" type="radio" data-bind="value: 1, checked: $root.ictOptions().quantityMode">
+                    <label for="IndexCardTrainerAllQuantityMode" data-bind="css : {radioChecked : $root.ictOptions().quantityMode === 1}, click: function(){ $root.ictOptionQuantityChanged(1); }">Alle</label>
+                </li>
+            </ul>
+            <div class="clearfix"></div>
+            <ul>
+                <li class="col-1">
+                    <label for="IndexCardTrainerKnown">Lernsatz mischen</label>
+                </li>
+                <li>
+                    <div class="input checkbox">
+                        <input id="IndexCardTrainerMergeLearningSet" type="checkbox" data-bind="checked: $root.ictOptions().mergeLearningSet, css : {checkboxChecked : $root.ictOptions().mergeLearningSet}" />
+                        <label for="IndexCardTrainerMergeLearningSet"></label>
+                    </div>
+                </li>
+            </ul>
+            <div class="clearfix"></div>
+            <ul>
+                <li class="col-1">
+                    <label for="IndexCardTrainerKnown">Zeige nur gelernte Karteikarten mit exakt folgenden Wiederholungen an:</label>
+                </li>
+                <li>
+                    <div class="input checkbox">
+                        <input id="IndexCardTrainerKnown" type="checkbox" data-bind="checked: $root.ictOptions().known, css : {checkboxChecked : $root.ictOptions().known }" />
+                        <label for="IndexCardTrainerKnown">
+                            <input type="number" min="0" data-bind="value: $root.ictOptions().quantityExactKnown" />
+                        </label>
+                    </div>
+                </li>
+            </ul>
+        </div>
     </div>
 </script>
 
