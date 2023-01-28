@@ -40,6 +40,7 @@ requirejs(["../lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "C
         // self.ictOptions is dedicated for the form
         self.ictOptions = ko.observable(new ictOptions.IctOptions(JSON.parse(localStorage.getItem('ictOptions'))));
         self.ictOptionsAreDefault = ko.observable(true);
+        self.ictOptionsDialog = null;
 
         self.boxesShowDropdown = ko.observable(false); // if the dropdown is visible or not
         self.mainMenuShowDropdown = ko.observable(false); // toggle dropdown of the main menu
@@ -124,16 +125,16 @@ requirejs(["../lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "C
             var lTemplate = document.getElementById("ict-options-dialog-template");
 
             // show dialog
-            let lDialog = new tsLib.Dialog(lTemplate, "Einstellungen", [lButtonApply, lButtonCancel]);
-            lDialog.afterRenderCallback = function () { ko.applyBindings(GLOBAL.MainViewModel, this.mHtmlWindow); };
-            lDialog.show();
+            self.ictOptionsDialog = new tsLib.Dialog(lTemplate, "Einstellungen", [lButtonApply, lButtonCancel]);
+            self.ictOptionsDialog.afterRenderCallback = function () { ko.applyBindings(GLOBAL.MainViewModel, this.mHtmlWindow); };
+            self.ictOptionsDialog.show();
         };
 
         /// apply the selected options
         self.applyOptions = function (loadBox) {
 
             // load current box by default
-            loadBox = typeof loadBox == "boolean" ? loadBox : true;
+            loadBox = typeof loadBox === "boolean" ? loadBox : true;
 
             // save options                
             localStorage.setItem('ictOptions', JSON.stringify(self.ictOptions()));
@@ -178,12 +179,13 @@ requirejs(["../lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "C
         self.ictOptionsQuickButtonNotLearned = function () {
             self.ictOptionsSetToDefault();
             self.applyOptions();
-
+            self.ictOptionsDialog.close();
         };
         
         self.ictOptionsQuickButtonRepeat = function () {
             self.ictOptionsSetToRepeat();
             self.applyOptions();
+            self.ictOptionsDialog.close();
         };
 
         /// Check if any box is currently selected
