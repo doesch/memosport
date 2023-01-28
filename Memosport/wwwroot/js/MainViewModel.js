@@ -112,14 +112,8 @@ requirejs(["../lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "C
                     throw new Error("Invalid data type. Expected type: 'Options'");
                 }
 
-                // save options                
-                localStorage.setItem('ictOptions', JSON.stringify(self.ictOptions()));
-                self.checkIfOptionsAreDefault();
+                self.applyOptions();
 
-                // restart app when any box selected
-                if (self.box() instanceof indexCardBox.IndexCardBox) {
-                    self.restart();
-                }
             }, "bttn bttn-main");
 
             let lButtonCancel = new tsLib.Button("Abbrechen", function() {
@@ -133,6 +127,19 @@ requirejs(["../lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "C
             let lDialog = new tsLib.Dialog(lTemplate, "Einstellungen", [lButtonApply, lButtonCancel]);
             lDialog.afterRenderCallback = function () { ko.applyBindings(GLOBAL.MainViewModel, this.mHtmlWindow); };
             lDialog.show();
+        };
+
+        /// apply the selected options
+        self.applyOptions = function () {
+
+            // save options                
+            localStorage.setItem('ictOptions', JSON.stringify(self.ictOptions()));
+            self.checkIfOptionsAreDefault();
+
+            // restart app when any box selected
+            if (self.box() instanceof indexCardBox.IndexCardBox) {
+                self.restart();
+            }
         };
 
         // check if ictoptions are default to toggle the icon
@@ -158,10 +165,13 @@ requirejs(["../lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "C
         /// Set options to default
         self.ictOptionsQuickButtonNotLearned = function () {
             self.ictOptions(new ictOptions.IctOptions(ictOptions.DefaultOptionValues));
+            self.applyOptions();
+
         };
         // repeat learned index cards
         self.ictOptionsQuickButtonRepeat = function () {
             self.ictOptions(new ictOptions.IctOptions(ictOptions.RepeatOptionValues));
+            self.applyOptions();
         };
 
         /// Check if any box is currently selected
