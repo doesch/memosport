@@ -163,14 +163,23 @@ requirejs(["../lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "C
         };
 
         /// Set options to default
-        self.ictOptionsQuickButtonNotLearned = function () {
+        self.ictOptionsSetToDefault = function () {
             self.ictOptions(new ictOptions.IctOptions(ictOptions.DefaultOptionValues));
+        };
+
+        // set optons to repeat index cards (yellow)
+        self.ictOptionsSetToRepeat = function () {
+            self.ictOptions(new ictOptions.IctOptions(ictOptions.RepeatOptionValues));
+        };
+                
+        self.ictOptionsQuickButtonNotLearned = function () {
+            self.ictOptionsSetToDefault();
             self.applyOptions();
 
         };
-        // repeat learned index cards
+        
         self.ictOptionsQuickButtonRepeat = function () {
-            self.ictOptions(new ictOptions.IctOptions(ictOptions.RepeatOptionValues));
+            self.ictOptionsSetToRepeat();
             self.applyOptions();
         };
 
@@ -1951,17 +1960,16 @@ requirejs(["../lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "C
             self.boxStatsDialog.close();
 
             // set the options dependent on known
-            switch (known) {
-                case < 3:
-                    self.ictOptions(new ictOptions.IctOptions(ictOptions.DefaultOptionValues));
-                    break;
-                case 3:
-                    break;
-                case > 3:
-                    break;
-                default:
-                    break;
+            if (known < 3) {
+                self.ictOptionsSetToDefault();
             }
+            else {
+                self.ictOptionsSetToRepeat();
+                self.ictOptions().quantityExactKnown = known;
+            }
+
+            // apply optons
+            self.applyOptions();
 
             // load the box
             self.BoxSelected(indexCardBox);

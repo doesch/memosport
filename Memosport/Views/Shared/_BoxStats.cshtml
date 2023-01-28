@@ -20,7 +20,7 @@
                     <div class="stats-bar-known-marker-container">
                         <span class="stats-bar-known-marker">&nbsp;</span>
                     </div>
-                    <div class="stats-bar-known" data-bind="css: { 'stats-bar-bg-red' : known < 3, 'stats-bar-bg-yellow' : known === 3, 'stats-bar-bg-green' : known > 3 }, click: function() { $root.boxStatsKnownBarClick($parent, known); }">
+                    <div class="stats-bar-known cursor-pointer" data-bind="css: { 'stats-bar-bg-red' : known < 3, 'stats-bar-bg-yellow' : known === 3, 'stats-bar-bg-green' : known > 3 }, click: function() { $root.boxStatsKnownBarClick($parent, known); }">
                         <span data-bind="text: count"></span>
                     </div>
                 </div>

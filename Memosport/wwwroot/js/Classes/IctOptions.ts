@@ -36,7 +36,7 @@ export const RepeatOptionValues = {
 // Options for the index card trainer
 export class IctOptions extends tsLib.HelperBase {
 
-    // if all known index cards should be shown
+    // checkox, if all known index cards should be shown 
     known: boolean = DefaultOptionValues.known;
 
     // the order of the index cards in the trainer
