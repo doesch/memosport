@@ -1937,13 +1937,24 @@ requirejs(["../lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "C
             });
         };
 
-        // selected box in stats
-        self.boxSelectedInStats = function(pIndexCardBox) {
-            // close the dialog
+        self.boxStatsKnownBarClick = function (indexCardBox, known) {
             self.boxStatsDialog.close();
 
+            // set the options dependent on known
+            switch (known) {
+                case < 3:
+                    self.ictOptions(new ictOptions.IctOptions(ictOptions.DefaultOptionValues));
+                    break;
+                case 3:
+                    break;
+                case > 3:
+                    break;
+                default:
+                    break;
+            }
+
             // load the box
-            self.BoxSelected(pIndexCardBox);
+            self.BoxSelected(indexCardBox);
         };
 
         // EndRegion BoxStatistics

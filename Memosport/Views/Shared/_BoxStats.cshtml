@@ -13,14 +13,14 @@
                 </div>
             </section>
             <section class="stats-section-known-bar" data-bind="foreach: $data.boxStats.boxStatsGroupedKnown">
-                <div class="stats-bar-known-container" data-bind="style: { width: countPercent + '%'  }">
+                <div class="stats-bar-known-container" data-bind="style: { width: countPercent + '%' }">
                     <div class="stats-bar-known-indicator">
                         <span data-bind="text: known"></span>
                     </div>
                     <div class="stats-bar-known-marker-container">
                         <span class="stats-bar-known-marker">&nbsp;</span>
                     </div>
-                    <div class="stats-bar-known" data-bind="css: { 'stats-bar-bg-red' : known < 3, 'stats-bar-bg-yellow' : known === 3, 'stats-bar-bg-green' : known > 3 }">
+                    <div class="stats-bar-known" data-bind="css: { 'stats-bar-bg-red' : known < 3, 'stats-bar-bg-yellow' : known === 3, 'stats-bar-bg-green' : known > 3 }, click: function() { $root.boxStatsKnownBarClick($parent, known); }">
                         <span data-bind="text: count"></span>
                     </div>
                 </div>
