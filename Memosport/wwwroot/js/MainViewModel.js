@@ -130,14 +130,17 @@ requirejs(["../lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "C
         };
 
         /// apply the selected options
-        self.applyOptions = function () {
+        self.applyOptions = function (loadBox) {
+
+            // load current box by default
+            loadBox = typeof loadBox == "boolean" ? loadBox : true;
 
             // save options                
             localStorage.setItem('ictOptions', JSON.stringify(self.ictOptions()));
             self.checkIfOptionsAreDefault();
 
             // restart app when any box selected
-            if (self.box() instanceof indexCardBox.IndexCardBox) {
+            if (loadBox && self.box() instanceof indexCardBox.IndexCardBox) {
                 self.restart();
             }
         };
@@ -1969,7 +1972,7 @@ requirejs(["../lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "C
             }
 
             // apply optons
-            self.applyOptions();
+            self.applyOptions(false);
 
             // load the box
             self.BoxSelected(indexCardBox);
