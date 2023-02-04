@@ -10,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Pomelo.EntityFrameworkCore.MySql.Storage;
 
 namespace Memosport
 {
@@ -33,11 +34,12 @@ namespace Memosport
             });
 
 #if DEBUG
-            string lSqlConnectionStr = Configuration.GetConnectionString("DefaultConnection");
-            services.AddDbContext<MemosportContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+
+            services.AddDbContext<MemosportContext>(options =>
+                options.UseMySql(Configuration.GetConnectionString("DebugConnection")));
 #else
-            string lSqlConnectionStr = Configuration.GetConnectionString("DefaultConnection");
-            services.AddDbContext<MemosportContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddDbContext<MemosportContext>(options =>
+                options.UseMySql(Configuration.GetConnectionString("DefaultConnection")));
             
 #endif
 
