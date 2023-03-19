@@ -34,13 +34,15 @@ requirejs(["../lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "C
 
         // options
         if (localStorage.getItem('ictOptions') === null) { // use default options when nothing cached
-            localStorage.setItem('ictOptions', JSON.stringify(ictOptions.DefaultOptionValues));
+            localStorage.setItem('ictOptions', JSON.stringify(ictOptions.LearnModeOne));
         }
 
         // self.ictOptions is dedicated for the form
         self.ictOptions = ko.observable(new ictOptions.IctOptions(JSON.parse(localStorage.getItem('ictOptions'))));
-        self.ictOptionsAreDefault = ko.observable(true);
         self.ictOptionsDialog = null;
+
+        // the learnstate
+        self.learnMode = ko.observable();
 
         self.boxesShowDropdown = ko.observable(false); // if the dropdown is visible or not
         self.mainMenuShowDropdown = ko.observable(false); // toggle dropdown of the main menu
@@ -138,7 +140,7 @@ requirejs(["../lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "C
 
             // save options                
             localStorage.setItem('ictOptions', JSON.stringify(self.ictOptions()));
-            self.checkIfOptionsAreDefault();
+            self.detectLearnMode();
 
             // restart app when any box selected
             if (loadBox && self.box() instanceof indexCardBox.IndexCardBox) {
@@ -146,34 +148,44 @@ requirejs(["../lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "C
             }
         };
 
-        // check if ictoptions are default to toggle the icon
-        self.checkIfOptionsAreDefault = function () {
+        self.matchLearnMode = function(pattern) {
+            let result = false;
 
-            let lResult = false;
-
-            for (let key in ictOptions.DefaultOptionValues)
-            {
+            for (let key in pattern) {
                 // hint: keep double '==' to not make a type check, because bindings to textfields change the type from number to string. E.g. the field quantity
-                if (ictOptions.DefaultOptionValues.hasOwnProperty(key) && self.ictOptions().hasOwnProperty(key) && ictOptions.DefaultOptionValues[key] == self.ictOptions()[key]) {
-                    lResult = true;
+                if (pattern.hasOwnProperty(key) && self.ictOptions().hasOwnProperty(key) && pattern[key] == self.ictOptions()[key]) {
+                    result = true;
                 }
                 else {
-                    lResult = false;
+                    result = false;
                     break;
                 }
             }
 
-            self.ictOptionsAreDefault(lResult);
+            return result;
+        }
+
+        // check if ictoptions are default to toggle the icon
+        self.detectLearnMode = function () {
+            if (self.matchLearnMode(ictOptions.LearnModeOne)) {
+                self.learnMode("learn-mode-one");
+            } else if (self.matchLearnMode(ictOptions.LearnModeTwo)) {
+                self.learnMode("learn-mode-two");
+            } else if (self.matchLearnMode(ictOptions.LearnModeThree)) {
+                self.learnMode("learn-mode-three");
+            } else {
+                self.learnMode("learn-mode-custom");
+            }
         };
 
         /// Set options to default
         self.ictOptionsSetToDefault = function () {
-            self.ictOptions(new ictOptions.IctOptions(ictOptions.DefaultOptionValues));
+            self.ictOptions(new ictOptions.IctOptions(ictOptions.LearnModeOne));
         };
 
         // set optons to repeat index cards (yellow)
         self.ictOptionsSetToRepeat = function () {
-            self.ictOptions(new ictOptions.IctOptions(ictOptions.RepeatOptionValues));
+            self.ictOptions(new ictOptions.IctOptions(ictOptions.LearnModeTwo));
         };
                 
         self.ictOptionsQuickButtonNotLearned = function () {
@@ -431,12 +443,12 @@ requirejs(["../lib/tsLib/tsLib", "Classes/IndexCard", "Classes/IndexCardBox", "C
                 tsLib.Style.removeClass(document.getElementById('software-bttn-start'), "mark-start-button");
             });
 
-            // show correct icon
-            self.checkIfOptionsAreDefault();
-
             // get Index Card Boxes into dropdown
             let lCallback = self.LoadLatestLearnedBox;
             self.GetIndexCardBoxes(lCallback);
+
+            // apply learn mode
+            self.detectLearnMode();
         };
 
         // close all menus (click-event on body)

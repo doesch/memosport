@@ -34,8 +34,8 @@
 <!-- /ko -->
 
 <button id="software-bttn-config" class="bttn" data-bind="click: showOptionsDialog">
-    <span class="ict-icon icon-options" data-bind="css: { 'display-none': !$root.ictOptionsAreDefault() }"></span>
-    <span class="ict-icon icon-options-not-default" style="display: none;" data-bind="css: { 'display-inline-block': !$root.ictOptionsAreDefault() }"></span>
+    <span class="ict-icon icon-options"></span>
+    <span id="icon-options-circle" data-bind="css : { 'bg-color-learn-mode-one' : $root.learnMode() === 'learn-mode-one', 'bg-color-learn-mode-two' : $root.learnMode() === 'learn-mode-two',  'bg-color-learn-mode-three' : $root.learnMode() === 'learn-mode-three', 'bg-color-learn-mode-custom' : $root.learnMode() === 'learn-mode-custom'}"></span>
     <span class="bttn-icon-text remove-630px">Einstellungen</span>
 </button>
 <button id="software-bttn-start" class="bttn" data-bind="click: start"><span class="ict-icon icon-restart"></span><span class="bttn-icon-text remove-630px">Start</span></button>

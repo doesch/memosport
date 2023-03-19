@@ -197,6 +197,26 @@ td
     background-color: @ButtonBgYellow !important;
 }
 
+.bg-color-learn-mode-one
+{
+   background-color: @ColorLearnState-1 !important;
+}
+
+.bg-color-learn-mode-two
+{
+    background-color: @ColorLearnState-2 !important;
+}
+
+.bg-color-learn-mode-three
+{
+    background-color: @ColorLearnState-3 !important;
+}
+
+.bg-color-learn-mode-custom
+{
+    background-color: @ButtonBgRed !important;
+}
+
 .figure-container
 {
     text-align: center;
@@ -561,6 +581,23 @@ td
                 background-color: @GlobalHoverBgColor !important;
             }
         }
+    }
+}
+
+#software-bttn-config
+{
+    position: relative;
+
+    #icon-options-circle
+    {
+        position: absolute;
+        z-index: 1;
+        top: 10px;
+        left: 18px;
+        width: 6px;
+        height: 6px;
+        border: solid 1px white;
+        border-radius: 50%;
     }
 }
 
@@ -2052,7 +2089,6 @@ textarea.ict-question-answer-text
         margin-left: 0;
         border-top-left-radius: 0;
         border-bottom-left-radius: 0;
-        background-color: @ButtonBgGreen;
         color: white;
     }
 
@@ -2061,7 +2097,7 @@ textarea.ict-question-answer-text
         margin-right: 0;
         border-top-right-radius: 0;
         border-bottom-right-radius: 0;
-        background-color: @ButtonBgRed;
+        background-color: @ColorLearnState-1;
         border-right: 1px solid #fff;
         color: white;
     }
@@ -2964,19 +3000,19 @@ div.ict-search-dialog-container
             {
                 text-align: center;
 
-                &.stats-bar-bg-red
+                &.stats-bar-1
                 {
-                    background-color: @ButtonBgRed;
+                    background-color: @ColorLearnState-1;
                 }
 
-                &.stats-bar-bg-yellow
+                &.stats-bar-2
                 {
-                    background-color: @ButtonBgYellow;
+                    background-color: @ColorLearnState-2;
                 }
 
-                &.stats-bar-bg-green
+                &.stats-bar-3
                 {
-                    background-color: @ButtonBgGreen;
+                    background-color: @ColorLearnState-3;
                 }
 
                 span
